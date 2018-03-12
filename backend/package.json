@@ -15,11 +15,10 @@
     "babel-preset-env": "^1.6.1"
   },
   "scripts": {
-  	"babel-node": "babel-node",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose",
     "start": "NODE_ENV=production babel-node index",
-    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon --exec npm run babel-node -- ./index.js"
+    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon --exec babel-node -- ./index.js"
   },
   "author": "Jarno Luukkonen",
   "license": "ISC",
