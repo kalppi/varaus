@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import { log } from './utils';
-import { sequelize } from './models';
+import { sequelize } from './models';
 
 let port = process.env.PORT;
 
