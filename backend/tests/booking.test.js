@@ -4,13 +4,14 @@ import { app, server } from '../index';
 import { sequelize, models } from '../models';
 
 const { Item, Booking, UserData } = models;
-
 const api = supertest(app);
+
+let items = null;
 
 beforeAll(async () => {
 	await sequelize.sync({ force: true });
 	
-	const items = await Item.bulkCreate([{
+	items = await Item.bulkCreate([{
 		name: 'AAA'
 	}, {
 		name: 'BBB'
@@ -37,6 +38,23 @@ describe('api', () => {
 			.get('/booking')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
+
+		expect(data.body.length).toBe(2);
+	});
+
+	test('can create a booking', async () => {
+		const rtn = await api
+			.post('/booking')
+			.send({
+				start: '2018-12-12',
+				end: '2018-12-13',
+				ItemId: items[2].get('id')
+			})
+			.set('Content-Type', 'application/json')
+			.expect(201);
+
+		expect(rtn.body.start).toBe('2018-12-12');
+		expect(rtn.body.end).toBe('2018-12-13');
 	});
 });
 
