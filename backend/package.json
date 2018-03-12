@@ -10,13 +10,25 @@
     "express": "^4.16.2",
     "nodemon": "^1.17.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
   "scripts": {
+  	"babel-node": "babel-node",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose",
-    "start": "NODE_ENV=production node index.js",
-    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon index.js"
+    "start": "NODE_ENV=production babel-node index",
+    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon --exec npm run babel-node -- ./index.js"
   },
   "author": "Jarno Luukkonen",
-  "license": "ISC"
+  "license": "ISC",
+  "nodemonConfig": {
+    "nodeArgs": "--experimental-modules"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  }
 }
