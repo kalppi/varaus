@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "nodemon": "^1.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "lint": "eslint .",
+    "test": "NODE_ENV=test jest --verbose",
+    "start": "NODE_ENV=production node index.js",
+    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,18 @@
+title: Työaikakirjanpito
+output: tyoaikakirjanpito.md
+sum:
+  text: yht.
+  column: 2
+columns:
+    -
+      text: päivä
+      align: center
+    -
+      text: aika
+      align: left 
+    -
+      text: mitä tein
+      align: left
+data:
+    - ['12.3.', 1, 'Tein apuvälineen tämän taulukon luomiseen (kalppi/md-table-generator)']
+    - ['12.3.', 2, 'Backendin aloittelua']
