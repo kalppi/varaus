@@ -21,13 +21,10 @@
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose",
     "start": "NODE_ENV=production babel-node index",
-    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon --exec babel-node -- ./load-env.js"
+    "watch": "NODE_ENV=DEV node_modules/.bin/nodemon --exec babel-node -- ./load-env"
   },
   "author": "Jarno Luukkonen",
   "license": "ISC",
-  "nodemonConfig": {
-    "nodeArgs": "--experimental-modules"
-  },
   "babel": {
     "presets": [
       "env"
