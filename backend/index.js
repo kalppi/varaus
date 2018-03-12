@@ -30,4 +30,4 @@ server.listen(port, () => {
 	log(`Server running on port ${port}`);
 });
 
-export { app, server };
+export { app, server };

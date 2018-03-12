@@ -8,9 +8,9 @@ test('bookings are returned as json', async () => {
 	await api
 		.get('/booking')
 		.expect(200)
-		.expect('Content-Type', /application\/json/)
+		.expect('Content-Type', /application\/json/);
 });
 
 afterAll(() => {
-	server.close()
+	server.close();
 });
