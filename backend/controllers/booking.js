@@ -5,7 +5,7 @@ const route = Router();
 
 route.route('/')
 	.get((req, res) => {
-		res.json(bookingService.getAll());
+		res.json([]);
 	});
 
 export default route;

@@ -1,7 +1,9 @@
+import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
+import { log } from './utils';
 
 let port = process.env.PORT;
 
@@ -22,6 +24,10 @@ app.use(bodyParser.json());
 
 app.use('/booking', bookingRoute);
 
-app.listen(port, () => {
-	console.log(`Server running on port ${port}`);
+const server = http.createServer(app);
+
+server.listen(port, () => {
+	log(`Server running on port ${port}`);
 });
+
+export { app, server };
