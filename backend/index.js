@@ -2,10 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-
-if (process.env.NODE_ENV !== 'production') {
-	dotenv.config();
-}
+import bookingRoute from './controllers/booking';
 
 let port = process.env.PORT;
 
@@ -23,6 +20,8 @@ const app = express();
 
 app.use(cors())
 app.use(bodyParser.json());
+
+app.use('/booking', bookingRoute);
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
