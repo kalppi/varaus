@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "varaus-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -17,6 +17,6 @@
     "start": "NODE_ENV=production node index.js",
     "watch": "NODE_ENV=DEV node_modules/.bin/nodemon index.js"
   },
-  "author": "",
+  "author": "Jarno Luukkonen",
   "license": "ISC"
 }
