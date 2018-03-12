@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "dotenv": "^5.0.1",
     "eslint": "^4.18.2",
@@ -22,7 +23,7 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
-  	"precommit": "npm run lint && npm test",
+    "precommit": "npm run lint && npm test",
     "lint": "node_modules/.bin/eslint .",
     "test": "NODE_ENV=test jest --verbose",
     "start": "NODE_ENV=production babel-node index",
@@ -33,6 +34,9 @@
   "babel": {
     "presets": [
       "env"
+    ],
+    "plugins": [
+    	"transform-object-rest-spread"
     ]
   }
 }

@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import { log } from './utils';
 import { sequelize } from './models';
+import { models } from './models';
 
 let port = process.env.PORT;
 
