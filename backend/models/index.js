@@ -28,6 +28,4 @@ Object.keys(models).forEach(modelName => {
 	}
 });
 
-sequelize.sync();
-
 export { sequelize, models };

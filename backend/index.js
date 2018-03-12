@@ -4,12 +4,13 @@ import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import { log } from './utils';
 import { sequelize } from './models';
-import { models } from './models';
 
 let port = process.env.PORT;
 
 if (process.env.NODE_ENV === 'test') {
 	port = process.env.TEST_PORT;
+} else {
+	sequelize.sync();
 }
 
 if(port === undefined) {
@@ -32,6 +33,5 @@ const server = app.listen(port, () => {
 server.on('close', () => {
 	sequelize.close();
 });
-
 
 export { app, server };

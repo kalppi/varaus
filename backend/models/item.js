@@ -1,6 +1,8 @@
 
 export default (sequelize, DataTypes) => {
-	return sequelize.define('Item', {
+	const Item = sequelize.define('Item', {
 		name: DataTypes.STRING
 	});
+
+	return Item;
 };

@@ -25,7 +25,7 @@
   "scripts": {
     "precommit": "npm run lint && npm test",
     "lint": "node_modules/.bin/eslint .",
-    "test": "NODE_ENV=test jest --verbose",
+    "test": "NODE_ENV=test jest --runInBand",
     "start": "NODE_ENV=production babel-node index",
     "watch": "NODE_ENV=dev node_modules/.bin/nodemon --exec babel-node -- ./load-env"
   },
