@@ -17,10 +17,12 @@
     "babel-preset-env": "^1.6.1",
     "dotenv": "^5.0.1",
     "eslint": "^4.18.2",
+    "husky": "^0.14.3",
     "jest": "^22.4.2",
     "supertest": "^3.0.0"
   },
   "scripts": {
+  	"precommit": "npm run lint && npm test",
     "lint": "node_modules/.bin/eslint .",
     "test": "NODE_ENV=test jest --verbose",
     "start": "NODE_ENV=production babel-node index",
