@@ -1,5 +1,5 @@
 title: Työaikakirjanpito
-output: tyoaikakirjanpito.md
+output: dokumentaatio/tyoaikakirjanpito.md
 sum:
   text: yht.
   column: 2
