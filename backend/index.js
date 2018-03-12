@@ -1,9 +1,9 @@
-import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import { log } from './utils';
+import { sequelize } from './models';
 
 let port = process.env.PORT;
 
@@ -24,10 +24,13 @@ app.use(bodyParser.json());
 
 app.use('/booking', bookingRoute);
 
-const server = http.createServer(app);
-
-server.listen(port, () => {
+const server = app.listen(port, () => {
 	log(`Server running on port ${port}`);
 });
+
+server.on('close', () => {
+	sequelize.close();
+});
+
 
 export { app, server };

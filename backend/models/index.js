@@ -3,13 +3,13 @@ import pg from 'pg';
 
 pg.defaults.ssl = true;
 
-const seq = new Sequelize(process.env.DB, {
+const sequelize = new Sequelize(process.env.DB, {
 	operatorsAliases: false,
 	logging: process.env.NODE_ENV === 'dev'
 });
 
-const Item = seq.import('./item');
+const Item = sequelize.import('./item');
 
-seq.sync();
+sequelize.sync();
 
-export { Item };
+export { sequelize, Item };
