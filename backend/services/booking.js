@@ -2,8 +2,12 @@ import { models } from '../models';
 
 const { Booking } = models;
 
-const getAll = () => {
-	return Booking.findAll();
+const getAll = async () => {
+	return await Booking.findAll();
 };
 
-export default { getAll };
+const create = async (data) => {
+	return await Booking.create(data);
+};
+
+export default { getAll, create };

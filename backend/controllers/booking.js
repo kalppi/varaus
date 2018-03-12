@@ -4,8 +4,16 @@ import bookingService from '../services/booking';
 const route = Router();
 
 route.route('/')
-	.get((req, res) => {
-		res.json(bookingService.getAll());
+	.get(async (req, res) => {
+		const data = await bookingService.getAll();
+
+		res.json(data);
+	})
+	.post(async (req, res) => {
+		const data = req.body;
+		const ret = await bookingService.create(data);
+
+		res.status(201).json(ret);
 	});
 
 export default route;
