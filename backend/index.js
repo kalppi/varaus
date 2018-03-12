@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import bookingRoute from './controllers/booking';
 
 let port = process.env.PORT;
@@ -18,7 +17,7 @@ if(port === undefined) {
 
 const app = express();
 
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/booking', bookingRoute);

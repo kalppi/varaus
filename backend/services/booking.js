@@ -2,6 +2,6 @@ import { Item } from '../models';
 
 const getAll = () => {
 	
-}
+};
 
-export default { getAll };
+export default { getAll };
