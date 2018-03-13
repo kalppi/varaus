@@ -22,7 +22,7 @@ beforeAll(async () => {
 	});
 });
 
-describe.only('api', () => {
+describe.skip('api', () => {
 	test('items are returned as json', async () => {
 		const data = await api
 			.get('/api/items')
