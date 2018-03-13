@@ -7,12 +7,6 @@ const getAll = async () => {
 };
 
 const create = async (data) => {
-	/*try {
-		return await Booking.create(data);
-	} catch (e) {
-		return null;
-	}*/
-
 	return await Booking.create(data);
 };
 
