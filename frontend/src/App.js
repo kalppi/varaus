@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BookingTable from './components/BookingTable';
 import { loadBookings } from './reducers/bookingsReducer';
+import { loadItems } from './reducers/itemsReducer';
 
 class App extends Component {
 	componentDidMount() {
+		this.props.loadItems();
 		this.props.loadBookings();	
 	}
 
@@ -28,5 +30,5 @@ class App extends Component {
 }
 
 export default connect(null, {
-	loadBookings
+	loadBookings, loadItems
 })(App);

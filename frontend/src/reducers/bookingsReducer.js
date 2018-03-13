@@ -1,4 +1,4 @@
-import bookingsService from '../services/bookingsService';
+import bookingService from '../services/bookingService';
 
 export default (state = [], action) => {
 	switch(action.type) {
@@ -11,7 +11,7 @@ export default (state = [], action) => {
 
 export const loadBookings = () => {
 	return async (dispatch) => {
-		const bookings = await bookingsService.getAll();
+		const bookings = await bookingService.getAll();
 
 		dispatch({
 			type: 'INIT_BOOKINGS',

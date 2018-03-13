@@ -1,15 +1,33 @@
 #bookings {
 	width: 100%;
-	border: 1px solid #ccc;
 	margin: 10px;
 }
 
-#bookings td {
-	height: 50px;
+#bookings th {
 	text-align: center;
-	background: #eee;
+	background: #d8d8d8;
+	padding: 5px;
+	border-right: 4px solid white;
+	border-bottom: 2px solid white;
 }
 
-td.day-right {
-	
+#bookings td {
+	width: 35px;
+	height: 35px;
+	text-align: center;
+	background: #eee;
+	border-bottom: 1px solid white;
+}
+
+#bookings td.day-left {
+	border-right: 2px solid white;
+}
+
+#bookings td.day-right {
+	border-right: 4px solid white;
+}
+
+#bookings .item-name {
+	border-right: 2px solid white;
+	width: 100px;
 }
