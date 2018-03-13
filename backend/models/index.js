@@ -29,8 +29,16 @@ Object.keys(models).forEach(modelName => {
 	}
 });
 
-const query = fs.readFileSync(__dirname + '/query.sql');
+const oldSync = sequelize.sync;
 
-sequelize.query(query.toString());
+sequelize.sync = async (...args) => {
+	await oldSync.apply(sequelize, args);
+
+	const query = fs.readFileSync(__dirname + '/query.sql');
+
+	await sequelize.query(query.toString());
+};
+
+
 
 export { sequelize, models };

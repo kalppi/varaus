@@ -18,7 +18,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION validity_check() RETURNS trigger AS $$
 BEGIN
 	IF(SELECT is_valid(NEW.start, NEW."end") IS false) THEN
-		RAISE EXCEPTION 'invalid';
+		RAISE EXCEPTION 'overlap';
 	END IF;
 
 	RETURN NEW;

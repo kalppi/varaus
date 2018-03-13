@@ -1,12 +1,13 @@
 import 'dotenv/config';
 import supertest from 'supertest';
 import { app, server } from '../index';
-import { sequelize, models } from '../models';
+import { sequelize, models, loadQueries } from '../models';
 
 const { Item, Booking, UserData } = models;
 const api = supertest(app);
 
 let items = null;
+let bookings = null;
 
 beforeAll(async () => {
 	await sequelize.sync({ force: true });
@@ -21,7 +22,7 @@ beforeAll(async () => {
 		returning: true
 	});
 
-	Booking.bulkCreate([{
+	bookings = [{
 		start: '2018-10-13',
 		end: '2018-10-14',
 		ItemId: items[0].get('id')
@@ -29,7 +30,17 @@ beforeAll(async () => {
 		start: '2018-10-14',
 		end: '2018-10-16',
 		ItemId: items[0].get('id')
-	}]);
+	}, {
+		start: '2018-10-19',
+		end: '2018-10-22',
+		ItemId: items[0].get('id')
+	}, {
+		start: '2018-10-23',
+		end: '2018-10-25',
+		ItemId: items[0].get('id')
+	}];
+
+	Booking.bulkCreate(bookings);
 });
 
 describe('api', () => {
@@ -39,7 +50,7 @@ describe('api', () => {
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
-		expect(data.body.length).toBe(2);
+		expect(data.body.length).toBe(bookings.length);
 	});
 
 	test('can create a booking', async () => {
@@ -55,6 +66,41 @@ describe('api', () => {
 
 		expect(rtn.body.start).toBe('2018-12-12');
 		expect(rtn.body.end).toBe('2018-12-13');
+	});
+
+	test.only('can\'t create overlapping bookings', async () => {
+		const bookings = [{
+				start: '2018-10-12',
+				end: '2018-10-15',		
+			}, {
+				start: '2018-10-10',
+				end: '2018-10-14',
+			}, {
+				start: '2018-10-13',
+				end: '2018-10-15',
+			}, {
+				start: '2018-10-22',
+				end: '2018-10-27',
+			}];
+
+		const promises = [];
+		for(let booking of bookings) {
+			promises.push(await api
+				.post('/booking')
+				.send({
+					...booking,
+					ItemId: items[0].get('id')
+				})
+				.set('Content-Type', 'application/json')
+			);
+		}
+
+		const rtns = (await Promise.all(promises))
+			.map(p => p.body);
+
+		for(let rtn of rtns) {
+			expect(rtn).toMatchObject({error: 'overlap'});
+		}
 	});
 });
 

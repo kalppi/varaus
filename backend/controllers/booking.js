@@ -11,9 +11,20 @@ route.route('/')
 	})
 	.post(async (req, res) => {
 		const data = req.body;
-		const ret = await bookingService.create(data);
 
-		res.status(201).json(ret);
+		try {
+			const ret = await bookingService.create(data);
+
+			res.status(201).json(ret);
+		} catch (e) {
+			let error = 'unknown';
+
+			if(e.toString().match(/overlap/)) {
+				error = 'overlap';
+			}
+
+			res.status(400).json({ error });
+		}
 	});
 
 export default route;
