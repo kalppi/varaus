@@ -1,13 +1,16 @@
 import fs from 'fs';
 import Sequelize from 'sequelize';
 import pg from 'pg';
+import { log } from '../utils';
 
 pg.defaults.ssl = true;
 
 const sequelize = new Sequelize(process.env.DB, {
 	operatorsAliases: false,
 	dialect: 'postgres',
-	logging: process.env.NODE_ENV === 'dev' ? console.log : false
+	logging: (text) => {
+		log(text);
+	}
 });
 
 const modelFiles = fs.readdirSync(__dirname)
@@ -38,7 +41,5 @@ sequelize.sync = async (...args) => {
 
 	await sequelize.query(query.toString());
 };
-
-
 
 export { sequelize, models };

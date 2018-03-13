@@ -12,7 +12,7 @@ export default (state = [], action) => {
 export const loadBookings = () => {
 	return async (dispatch) => {
 		const bookings = await bookingService.getAll();
-
+		
 		dispatch({
 			type: 'INIT_BOOKINGS',
 			data: bookings

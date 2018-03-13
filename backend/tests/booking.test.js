@@ -2,6 +2,7 @@ import 'dotenv/config';
 import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
+import setup from './setup';
 
 const { Item, Booking, UserData } = models;
 const api = supertest(app);
@@ -10,37 +11,7 @@ let items = null;
 let bookings = null;
 
 beforeAll(async () => {
-	await sequelize.sync({ force: true });
-	
-	items = await Item.bulkCreate([{
-		name: 'AAA'
-	}, {
-		name: 'BBB'
-	}, {
-		name: 'CCC'
-	}], {
-		returning: true
-	});
-
-	bookings = [{
-		start: '2018-10-13',
-		end: '2018-10-14',
-		ItemId: items[0].get('id')
-	}, {
-		start: '2018-10-14',
-		end: '2018-10-16',
-		ItemId: items[0].get('id')
-	}, {
-		start: '2018-10-19',
-		end: '2018-10-22',
-		ItemId: items[0].get('id')
-	}, {
-		start: '2018-10-23',
-		end: '2018-10-25',
-		ItemId: items[0].get('id')
-	}];
-
-	return Booking.bulkCreate(bookings);
+	({items, bookings} = await setup(sequelize, models));
 });
 
 describe('api', () => {

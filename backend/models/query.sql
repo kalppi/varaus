@@ -1,15 +1,18 @@
 CREATE OR REPLACE FUNCTION is_valid
-	(s DATE, e DATE, OUT result BOOLEAN)
+	(s DATE, e DATE, ii INT, OUT result BOOLEAN)
 	AS $$
 BEGIN
 	SELECT COUNT(*) = 0
 	FROM "Bookings" b
 	WHERE
-		(s >= b.start AND s < b.end)
-	 	OR
-	 	(e > b.start AND e <= b.end)
-	 	OR
-	 	(s < b.start AND e > b.end)
+		ii = b."ItemId"
+		AND (
+			(s >= b.start AND s < b.end)
+		 	OR
+		 	(e > b.start AND e <= b.end)
+		 	OR
+		 	(s < b.start AND e > b.end)
+	 	)
 	 INTO result;
 	 RETURN;
 END;
@@ -17,7 +20,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION validity_check() RETURNS trigger AS $$
 BEGIN
-	IF(SELECT is_valid(NEW.start, NEW."end") IS false) THEN
+	IF(SELECT is_valid(NEW.start, NEW."end", NEW."ItemId") IS false) THEN
 		RAISE EXCEPTION 'overlap';
 	END IF;
 
