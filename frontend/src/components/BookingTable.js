@@ -11,51 +11,44 @@ class BookingTable extends Component {
 	}
 
 	getCell(itemId, date, lr) {
-		const id = `cell-${itemId}-${date}-${lr}`;
+		const id = `${itemId}-${date.format('YYYY-MM-DD')}-${lr}`;
 		return this.cells[id];
 	}
 
 	componentDidUpdate() {
 		for(let booking of this.props.bookings) {
-			const length = moment(booking.end, 'YYYY-MM-DD').diff(moment(booking.start, 'YYYY-MM-DD'), 'days');
+			let cell = this.getCell(booking.ItemId, booking.m_start, 'right');
 
-			let id = `cell-${booking.ItemId}-${booking.start}-right`;
-
-			if(this.cells[id]) {
-				this.cells[id].colSpan = length * 2;
-				this.cells[id].className += ' booking';
+			if(cell) {
+				cell.colSpan = booking.length * 2;
+				cell.className += ' booking';
+			} else {
+				continue;
 			}
-/*
-			id = `cell-${booking.ItemId}-${booking.end}-left`;
 
-			if(this.cells[id]) {
-				this.cells[id].innerHTML = 'E';
-			}*/
-
-			const date = moment(booking.start, 'YYYY-MM-DD');
-			const end = moment(booking.end, 'YYYY-MM-DD').subtract(1, 'days');
+			const date = moment(booking.m_start);
+			const end = moment(booking.m_end).subtract(1, 'days');
 
 			while(date.isBefore(end)) {
 				date.add(1, 'day');
 
-			//	console.log(date.format('YYYY-MM-DD') + " / " + end.format('YYYY-MM-DD'))
-
-				let cell = this.getCell(booking.ItemId, date.format('YYYY-MM-DD'), 'left');
+				cell = this.getCell(booking.ItemId, date, 'left');
 				if(cell) {
 					cell.innerHTML = '#';
 					cell.style.display = 'none';
-				}
 
-				cell = this.getCell(booking.ItemId, date.format('YYYY-MM-DD'), 'right');
-				if(cell) {
+					cell = this.getCell(booking.ItemId, date, 'right');
 					cell.innerHTML = '#';
 					cell.style.display = 'none';
+					
+				} else {
+					break;
 				}
 			}
 
 			date.add(1, 'day');
 
-			let cell = this.getCell(booking.ItemId, date.format('YYYY-MM-DD'), 'left');
+			cell = this.getCell(booking.ItemId, date, 'left');
 			if(cell) {
 				cell.innerHTML = '#';
 				cell.style.display = 'none';
@@ -64,37 +57,15 @@ class BookingTable extends Component {
 	}
 
 	render() {
-		console.log(this.props.bookings)
+		for(let booking of this.props.bookings) {
+			booking.m_start = moment(booking.start, 'YYYY-MM-DD');
+			booking.m_end = moment(booking.end, 'YYYY-MM-DD');
+			booking.length = booking.m_end.diff(booking.m_start, 'days');
+		}
 
 		const weekNumbers = [];
 		const dates = [];
 		const date = moment(this.props.startDate);
-
-		/*
-		const getBookingAtDate = (date, item) => {
-			const booking = this.props.bookings.find(b =>
-				b.ItemId === item.id && b.start === date.compare);
-
-			if(booking) return booking;
-			else return null;
-		};
-
-		const getBookingAtDate2 = (date, item) => {
-			for(let booking of this.props.bookings) {
-				if(booking.ItemId === item.id && date.isBetween(
-					moment(booking.start, 'YYYY-MM-DD'),
-					moment(booking.end, 'YYYY-MM-DD'),
-					null,
-					'[]'
-				)) {
-					
-					console.log(booking.start + "-" + booking.end + " / " + date.format('YYYY-MM-DD'))
-					return true;
-				}
-			}
-			
-			return false;
-		};*/
 
 		for(let i = 0; i < 10; i++) {
 			dates.push({
@@ -128,28 +99,6 @@ class BookingTable extends Component {
 			return acc;
 		}, []);
 
-/*
-		const rows = [];
-
-		for(let item of this.props.items) {
-			const row = [];
-
-			for(let date of dates) {
-				const booking = getBookingAtDate(date.date, item);
-
-				row.push({
-					key: date.text,
-					booking: booking ? 1 : null
-				});
-			}
-
-			rows.push({
-				text: item.name,
-				key: item.id,
-				data: row
-			});
-		}*/
-
 		return <table id='bookings' ref={ref => this.table = ref}>
 		<thead>
 		<tr>
@@ -174,25 +123,7 @@ class BookingTable extends Component {
 		</tr>
 		</thead>
 		<tbody>
-		 { 
-/*
-		 	rows.map(row =>
-		 		<tr key={row.key}>
-		 		 {
-		 		 	[<td key={row.key} className='item-name'>
-		 		 		{ row.text }
-		 		 	</td>,
-		 		 	row.data.map(cell =>
-		 		 		[
-		 		 		<td key={cell.key + 'l'} className='day-left'>{cell.booking}</td>,
-		 		 		<td key={cell.key + 'r'} className='day-right'>{cell.booking}</td>
-		 		 		])
-		 		 	]
-		 		 }
-		 		</tr>)*/
-
-
-		 this.props.items.map(item => 
+		 { this.props.items.map(item => 
 	 		<tr key={item.id}>
 	 			{[
 	 				<td key={item.id} className='item-name'>
@@ -200,10 +131,10 @@ class BookingTable extends Component {
 	 				</td>,
 	 				dates.map(date => {
 	 					return [
-	 						<td key={`${date.text}-left`}  className='day-left' ref={ref => this.cells[`cell-${item.id}-${date.full}-left`] = ref}>
+	 						<td key={`${date.text}-left`}  className='day-left' ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}>
 	 							
 	 						</td>,
-	 						<td key={`${date.text}-right`} className='day-right' ref={ref => this.cells[`cell-${item.id}-${date.full}-right`] = ref}>
+	 						<td key={`${date.text}-right`} className='day-right' ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}>
 
 	 						</td>
 	 						]
