@@ -40,7 +40,7 @@ beforeAll(async () => {
 		ItemId: items[0].get('id')
 	}];
 
-	Booking.bulkCreate(bookings);
+	return Booking.bulkCreate(bookings);
 });
 
 describe('api', () => {
@@ -68,7 +68,7 @@ describe('api', () => {
 		expect(rtn.body.end).toBe('2018-12-13');
 	});
 
-	test.only('can\'t create overlapping bookings', async () => {
+	test('can\'t create overlapping bookings', async () => {
 		const bookings = [{
 				start: '2018-10-12',
 				end: '2018-10-15',		
