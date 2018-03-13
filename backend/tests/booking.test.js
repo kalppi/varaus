@@ -46,7 +46,7 @@ beforeAll(async () => {
 describe('api', () => {
 	test('bookings are returned as json', async () => {
 		const data = await api
-			.get('/booking')
+			.get('/api/booking')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
@@ -55,7 +55,7 @@ describe('api', () => {
 
 	test('can create a booking', async () => {
 		const rtn = await api
-			.post('/booking')
+			.post('/api/booking')
 			.send({
 				start: '2018-12-12',
 				end: '2018-12-13',
@@ -86,7 +86,7 @@ describe('api', () => {
 		const promises = [];
 		for(let booking of bookings) {
 			promises.push(await api
-				.post('/booking')
+				.post('/api/booking')
 				.send({
 					...booking,
 					ItemId: items[0].get('id')

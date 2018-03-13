@@ -24,7 +24,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/booking', bookingRoute);
+app.use('/api', bookingRoute);
 
 const server = app.listen(port, () => {
 	log(`Server running on port ${port}`);

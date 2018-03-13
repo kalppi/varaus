@@ -1,0 +1,15 @@
+#bookings {
+	width: 100%;
+	border: 1px solid #ccc;
+	margin: 10px;
+}
+
+#bookings td {
+	height: 50px;
+	text-align: center;
+	background: #eee;
+}
+
+td.day-right {
+	
+}
