@@ -22,6 +22,8 @@ class BookingTable extends Component {
 			if(cell) {
 				cell.colSpan = booking.length * 2;
 				cell.className += ' booking';
+
+				cell.addEventListener('click', this.props.onBookingSelect.bind(null, booking));
 			} else {
 				continue;
 			}
@@ -34,11 +36,9 @@ class BookingTable extends Component {
 
 				cell = this.getCell(booking.ItemId, date, 'left');
 				if(cell) {
-					cell.innerHTML = '#';
 					cell.style.display = 'none';
 
 					cell = this.getCell(booking.ItemId, date, 'right');
-					cell.innerHTML = '#';
 					cell.style.display = 'none';
 					
 				} else {
@@ -50,7 +50,6 @@ class BookingTable extends Component {
 
 			cell = this.getCell(booking.ItemId, date, 'left');
 			if(cell) {
-				cell.innerHTML = '#';
 				cell.style.display = 'none';
 			}
 		}
@@ -102,9 +101,9 @@ class BookingTable extends Component {
 		return <table id='bookings' ref={ref => this.table = ref}>
 		<thead>
 		<tr>
-			{[<th key='empty'></th>,
+			{[<th key='empty' className='empty'></th>,
 			WeekNumberColumns.map(week => [
-				<th colSpan={ week.count * 2 } key={`${week}`}  className='day-left'>
+				<th colSpan={ week.count * 2 } key={`${week}`}>
 					{ week.number }
 				</th>,
 				]

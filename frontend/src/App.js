@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BookingTable from './components/BookingTable';
+import Info from './components/Info';
+import { selectBooking } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
 import { loadItems } from './reducers/itemsReducer';
+import './App.css';
 
 class App extends Component {
 	componentDidMount() {
@@ -15,10 +18,12 @@ class App extends Component {
 			<div className='container-fluid'>
 				<div className='row'>
 					<div className='col-md-2'>
-						
+						<Info />
 					</div>
 					<div className='col-md-8'>
-						<BookingTable />
+						<BookingTable
+							onBookingSelect={this.props.selectBooking}
+						/>
 					</div>
 					<div className='col-md-2'>
 						
@@ -30,5 +35,5 @@ class App extends Component {
 }
 
 export default connect(null, {
-	loadBookings, loadItems
+	loadBookings, loadItems, selectBooking
 })(App);

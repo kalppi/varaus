@@ -1,6 +1,5 @@
 #bookings {
 	width: 100%;
-	margin: 10px;
 }
 
 #bookings th {
@@ -34,4 +33,9 @@
 
 #bookings td.booking {
 	background: #2ad62a;
+	cursor: pointer;
+}
+
+#bookings th.empty {
+	background: transparent;
 }
