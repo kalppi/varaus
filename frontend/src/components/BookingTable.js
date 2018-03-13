@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import deepEqual from 'deep-equal';
 import './BookingTable.css';
 
 class BookingTable extends Component {
@@ -8,6 +9,10 @@ class BookingTable extends Component {
 		super(props);
 
 		this.cells = {};
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return !deepEqual(nextProps.bookings, this.props.bookings);
 	}
 
 	getCell(itemId, date, lr) {
@@ -22,8 +27,6 @@ class BookingTable extends Component {
 			if(cell) {
 				cell.colSpan = booking.length * 2;
 				cell.className += ' booking';
-
-				cell.addEventListener('click', this.props.onBookingSelect.bind(null, booking));
 			} else {
 				continue;
 			}
@@ -55,7 +58,18 @@ class BookingTable extends Component {
 		}
 	}
 
+	onClick = (ItemId, date) => {
+		const booking = this.props.bookings.find(booking => 
+			booking.ItemId === ItemId && moment(booking.start).isSame(date.date, 'day'))
+		
+		if(booking) {
+			this.props.onBookingSelect(booking);
+		}
+	}
+
 	render() {
+		console.log("#");
+
 		for(let booking of this.props.bookings) {
 			booking.m_start = moment(booking.start, 'YYYY-MM-DD');
 			booking.m_end = moment(booking.end, 'YYYY-MM-DD');
@@ -130,12 +144,17 @@ class BookingTable extends Component {
 	 				</td>,
 	 				dates.map(date => {
 	 					return [
-	 						<td key={`${date.text}-left`}  className='day-left' ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}>
-	 							
-	 						</td>,
-	 						<td key={`${date.text}-right`} className='day-right' ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}>
-
-	 						</td>
+	 						<td
+	 							key={`${date.text}-left`}
+	 							className='day-left'
+	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
+	 						></td>,
+	 						<td
+	 							key={`${date.text}-right`}
+	 							className='day-right'
+	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
+	 							onClick={() => this.onClick(item.id, date) }
+	 						></td>
 	 						]
 	 				})
 	 			]}
