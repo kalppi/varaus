@@ -39,6 +39,28 @@ describe('api', () => {
 		expect(rtn.body.end).toBe('2018-12-13');
 	});
 
+	test('can create a booking with info', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2018-11-11',
+				end: '2018-11-12',
+				ItemId: items[2].get('id'),
+				info: {
+					name: 'Pera',
+					email: 'pera@google.fi'
+				}
+			})
+			.set('Content-Type', 'application/json')
+			.expect(201);
+
+		const { start, end, UserInfoId } = rtn.body;
+
+		expect(start).toBe('2018-11-11');
+		expect(end).toBe('2018-11-12');
+		expect(UserInfoId).toBeDefined();
+	});
+
 	test('can\'t create overlapping bookings', async () => {
 		const bookings = [{
 				start: '2018-10-12',

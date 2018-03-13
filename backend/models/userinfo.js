@@ -6,10 +6,10 @@ export default (sequelize, DataTypes) => {
 	});
 
 	UserInfo.associate = ({UserInfo, Booking}) => {
-		UserInfo.belongsTo(Booking, {
+		UserInfo.hasOne(Booking, {
 			onDelete: 'CASCADE',
 			foreignKey: {
-				allowNull: false
+				allowNull: true
 			}
 		});
 	};
