@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import deepEqual from 'deep-equal';
+import tinycolor from 'tinycolor2';
+import { selectBooking } from '../reducers/appReducer';
 import './BookingTable.css';
 
 class BookingTable extends Component {
@@ -9,10 +11,26 @@ class BookingTable extends Component {
 		super(props);
 
 		this.cells = {};
+		this.selected = null;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(this.props.selectedBooking !== nextProps.selectedBooking) {
+			const oldCell = this.getBookingCell(this.props.selectedBooking);
+			const newCell = this.getBookingCell(nextProps.selectedBooking);
+
+			this.clearTint(oldCell);
+			if(newCell) this.tint(newCell);
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
 		return !deepEqual(nextProps.bookings, this.props.bookings);
+	}
+
+	getBookingCell(booking) {
+		if(!booking) return null;
+		return this.getCell(booking.ItemId, booking.m_start, 'right');
 	}
 
 	getCell(itemId, date, lr) {
@@ -58,18 +76,32 @@ class BookingTable extends Component {
 		}
 	}
 
-	onClick = (ItemId, date) => {
+	tint(el) {
+		const color = tinycolor(window.getComputedStyle(el).getPropertyValue('background-color'));
+		el.oldColor = color;
+		el.style.backgroundColor = tinycolor.mix(color, '#F9EFA2', 50).toHexString();
+	}
+
+	clearTint(el) {
+		if(el && el.oldColor) {
+			el.style.backgroundColor = el.oldColor;
+		}
+	}
+
+	onClick = (e, ItemId, date) => {
 		const booking = this.props.bookings.find(booking => 
 			booking.ItemId === ItemId && moment(booking.start).isSame(date.date, 'day'))
 		
 		if(booking) {
-			this.props.onBookingSelect(booking);
+			if(this.props.selectedBooking && this.props.selectedBooking.id === booking.id) {
+				this.props.selectBooking(null);
+			} else {
+				this.props.selectBooking(booking);
+			}
 		}
 	}
 
 	render() {
-		console.log("#");
-
 		for(let booking of this.props.bookings) {
 			booking.m_start = moment(booking.start, 'YYYY-MM-DD');
 			booking.m_end = moment(booking.end, 'YYYY-MM-DD');
@@ -153,7 +185,7 @@ class BookingTable extends Component {
 	 							key={`${date.text}-right`}
 	 							className='day-right'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
-	 							onClick={() => this.onClick(item.id, date) }
+	 							onClick={e => this.onClick(e, item.id, date) }
 	 						></td>
 	 						]
 	 				})
@@ -170,6 +202,9 @@ export default connect((state) => {
 	return {
 		bookings: state.bookings,
 		items: state.items,
-		startDate: moment('20181011', 'YYYYMMDD')
+		startDate: moment('20181011', 'YYYYMMDD'),
+		selectedBooking: state.app.selectedBooking
 	}
+}, {
+	selectBooking
 })(BookingTable);

@@ -21,9 +21,7 @@ class App extends Component {
 						<Info />
 					</div>
 					<div className='col-md-8'>
-						<BookingTable
-							onBookingSelect={this.props.selectBooking}
-						/>
+						<BookingTable />
 					</div>
 					<div className='col-md-2'>
 						
