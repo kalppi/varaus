@@ -3,7 +3,7 @@ import bookingService from '../services/booking';
 
 const route = Router();
 
-route.route('/booking')
+route.route('/')
 	.get(async (req, res) => {
 		const data = await bookingService.getAll();
 

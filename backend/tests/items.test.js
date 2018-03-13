@@ -22,10 +22,10 @@ beforeAll(async () => {
 	});
 });
 
-describe.skip('api', () => {
+describe('api', () => {
 	test('items are returned as json', async () => {
 		const data = await api
-			.get('/api/items')
+			.get('/api/item')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
