@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import bookingsService from '../services/bookings';
+import bookingService from '../services/booking';
 
 const route = Router();
 
 route.route('/booking')
 	.get(async (req, res) => {
-		const data = await bookingsService.getAll();
+		const data = await bookingService.getAll();
 
 		res.json(data);
 	})
@@ -13,7 +13,7 @@ route.route('/booking')
 		const data = req.body;
 
 		try {
-			const ret = await bookingsService.create(data);
+			const ret = await bookingService.create(data);
 
 			res.status(201).json(ret);
 		} catch (e) {

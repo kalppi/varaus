@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import supertest from 'supertest';
 import { app, server } from '../index';
-import { sequelize, models, loadQueries } from '../models';
+import { sequelize, models } from '../models';
 
 const { Item, Booking, UserData } = models;
 const api = supertest(app);
