@@ -12,6 +12,10 @@ class BookingTable extends Component {
 
 		this.cells = {};
 		this.selected = null;
+
+		this.selectStart = null;
+		this.selectEnd = null;
+		this.selectedCells = [];
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -77,6 +81,8 @@ class BookingTable extends Component {
 	}
 
 	tint(el) {
+		if(!el) return;
+
 		const color = tinycolor(window.getComputedStyle(el).getPropertyValue('background-color'));
 		el.oldColor = color;
 		el.style.backgroundColor = tinycolor.mix(color, '#F9EFA2', 50).toHexString();
@@ -98,6 +104,66 @@ class BookingTable extends Component {
 			} else {
 				this.props.selectBooking(booking);
 			}
+		}
+	}
+
+	onMouseDown = (item, date) => {
+		this.selectStart = { item, date };
+	}
+
+	onMouseUp = (item, date) => {
+		this.selectStart = null;
+	}
+
+	onMouseMove = (item, date) => {
+		if(this.selectStart) {
+			this.selectEnd = { item, date };
+
+			this.markSelection();
+		}
+	}
+
+	clearSelection() {
+		for(let cell of this.selectedCells) {
+			this.clearTint(cell);
+		}
+
+		this.selectedCells = [];
+	}
+
+	markSelection() {
+		this.clearSelection();
+
+		if(this.selectStart.item === this.selectEnd.item) {
+			if(this.selectStart.date.date === this.selectEnd.date.date) return;
+
+			if(this.selectEnd.date.date.isAfter(this.selectStart.date.date)) {
+				let cell = this.getCell(this.selectStart.item.id, this.selectStart.date.date, 'right');
+				const cellEnd = this.getCell(this.selectEnd.item.id, this.selectEnd.date.date, 'right');
+
+				while(cell !== cellEnd) {
+					if(!cell) break;
+
+					this.tint(cell);
+					this.selectedCells.push(cell);
+
+					cell = cell.nextSibling;
+				}
+			} else {
+				let cell = this.getCell(this.selectStart.item.id, this.selectStart.date.date, 'left');
+				const cellEnd = this.getCell(this.selectEnd.item.id, this.selectEnd.date.date, 'left');
+
+				while(cell !== cellEnd) {
+					if(!cell) break;
+
+					this.tint(cell);
+					this.selectedCells.push(cell);
+
+					cell = cell.previousSibling;
+				}
+			}
+
+			
 		}
 	}
 
@@ -144,7 +210,7 @@ class BookingTable extends Component {
 			return acc;
 		}, []);
 
-		return <table id='bookings' ref={ref => this.table = ref}>
+		return <table id='bookings'>
 		<thead>
 		<tr>
 			{[<th key='empty' className='empty'></th>,
@@ -180,12 +246,18 @@ class BookingTable extends Component {
 	 							key={`${date.text}-left`}
 	 							className='day-left'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
+	 							onMouseDown={e => this.onMouseDown(item, date)}
+	 							onMouseUp={e => this.onMouseUp(item, date)}
+	 							onMouseMove={e => this.onMouseMove(item, date)}
 	 						></td>,
 	 						<td
 	 							key={`${date.text}-right`}
 	 							className='day-right'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
-	 							onClick={e => this.onClick(e, item.id, date) }
+	 							onClick={e => this.onClick(e, item.id, date)}
+	 							onMouseDown={e => this.onMouseDown(item, date)}
+	 							onMouseUp={e => this.onMouseUp(item, date)}
+	 							onMouseMove={e => this.onMouseMove(item, date)}
 	 						></td>
 	 						]
 	 				})
