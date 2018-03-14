@@ -1,3 +1,4 @@
+import bookingService from '../services/bookingService';
 
 export default (state = {}, action) => {
 	switch(action.type) {
@@ -8,10 +9,20 @@ export default (state = {}, action) => {
 	}
 };
 
-
 export const selectBooking = (booking) => {
-	return {
-		type: 'SELECT_BOOKING',
-		data: { booking }
+	return async (dispatch) => {
+		if(!booking) {
+			dispatch({
+				type: 'SELECT_BOOKING',
+				data: { booking: null }
+			});
+		} else {
+			const fullBooking = await bookingService.getOne(booking.id);
+			
+			dispatch({
+				type: 'SELECT_BOOKING',
+				data: { booking: fullBooking }
+			});
+		}
 	};
 };

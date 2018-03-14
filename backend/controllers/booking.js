@@ -27,4 +27,12 @@ route.route('/')
 		}
 	});
 
+route.route('/:id')
+	.get(async (req, res) => {
+		const id = req.params.id;
+		const data = await bookingService.getOne(id);
+
+		res.json(data);
+	});
+
 export default route;

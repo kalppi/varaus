@@ -8,4 +8,7 @@
 | 12.3. | 2 | Aivan liian kauan Sequelizen sielunelämän kartoittamiseen ja bugien fixailuun. Testien tekemisen aloittelua. | 
 | 13.3. | 2 | Varausten päällekkäisyyksien estämistä postgres triggerillä, ja siihen testit. | 
 | 13.3. | 1 | Frontendin aloittelua. | 
-| yht. | 10
+| 13.3. | 2 | Testejä, backendiä ja frontendin komponenttien toteutusta. | 
+| 13.3. | 3 | BookingTable komponentin rakentelua. Kinkkistä. | 
+| 14.3. | 1 | Varauksen tietojen nätyttäminen. | 
+| yht. | 16

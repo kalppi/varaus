@@ -20,7 +20,7 @@ class App extends Component {
 					<div className='col-md-2'>
 						<Info />
 					</div>
-					<div className='col-md-8'>
+					<div className='col-md-8 nopadding'>
 						<BookingTable />
 					</div>
 					<div className='col-md-2'>

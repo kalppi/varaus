@@ -6,6 +6,10 @@ const getAll = async () => {
 	return await Booking.findAll();
 };
 
+const getOne = async (id) => {
+	return await Booking.find({ where: { id }, include: [ UserInfo ]});
+};
+
 const create = async (data) => {
 	if(data.info) {
 		const info = await UserInfo.create(data.info);
@@ -16,4 +20,4 @@ const create = async (data) => {
 	}
 };
 
-export default { getAll, create };
+export default { getAll, getOne, create };

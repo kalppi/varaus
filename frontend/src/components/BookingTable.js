@@ -30,7 +30,7 @@ class BookingTable extends Component {
 
 	getBookingCell(booking) {
 		if(!booking) return null;
-		return this.getCell(booking.ItemId, booking.m_start, 'right');
+		else return this.getCell(booking.ItemId, moment(booking.start, 'YYYY-MM-DD'), 'right');
 	}
 
 	getCell(itemId, date, lr) {
