@@ -1,13 +1,13 @@
 import { models } from '../models';
 
-const { Booking, UserInfo } = models;
+const { Booking, UserInfo, Item } = models;
 
 const getAll = async () => {
 	return await Booking.findAll();
 };
 
 const getOne = async (id) => {
-	return await Booking.find({ where: { id }, include: [ UserInfo ]});
+	return await Booking.find({ where: { id }, include: [ Item, UserInfo ]});
 };
 
 const create = async (data) => {
