@@ -96,21 +96,41 @@ class BookingTable extends Component {
 		}
 	}
 
-	onClick = (e, ItemId, date) => {
+	onClick = (item, date, lr) => {
 		const booking = this.props.bookings.find(booking => 
-			booking.ItemId === ItemId && moment(booking.start).isSame(date.date, 'day'))
+			booking.ItemId === item.id && moment(booking.start).isSame(date.date, 'day'))
 		
-		if(booking) {
+		if(lr === 'right' && booking) {
 			if(this.props.selectedBooking && this.props.selectedBooking.id === booking.id) {
 				this.props.selectBooking(null);
 			} else {
 				this.props.selectBooking(booking);
 			}
+		} else {
+			/*
+			if(lr === 'right') {
+				this.markSelection( { item, date: date.date },  { item, date: moment(date.date).add(1, 'days') });
+			} else {
+				this.markSelection( { item, date: moment(date.date).add(-1, 'days') },  { item, date: date.date });
+			}
+			*/
 		}
 	}
 
-	onMouseDown = (item, date) => {
-		this.selectStart = { item, date };
+	onMouseDown = (item, date, lr) => {
+		/*if(lr === 'left') {
+			this.selectStart = { item, date: moment(date.date).add(-1, 'days') };
+		} else {
+			this.selectStart = { item, date: date.date };
+		}*/
+
+		this.selectStart = { item, date: date.date, type: lr };
+
+		if(lr === 'right') {
+			this.markSelection( { item, date: date.date },  { item, date: moment(date.date).add(1, 'days') });
+		} else {
+			this.markSelection( { item, date: moment(date.date).add(-1, 'days') },  { item, date: date.date });
+		}
 	}
 
 	onMouseUp = (item, date) => {
@@ -119,7 +139,7 @@ class BookingTable extends Component {
 
 	onMouseMove = (item, date) => {
 		if(this.selectStart) {
-			this.selectEnd = { item, date };
+			this.selectEnd = { item, date: date.date };
 
 			this.markSelection();
 		}
@@ -141,15 +161,49 @@ class BookingTable extends Component {
 		cell.classList.add('selected');
 	}
 
-	markSelection() {
+	markSelection(start, end) {
 		this.clearSelection();
 
-		if(this.selectStart.item === this.selectEnd.item) {
-			if(this.selectStart.date.date === this.selectEnd.date.date) return;
+		if(!start && !end) {
+			start = this.selectStart;
+			end = this.selectEnd;
+		}
+/*
+		console.log();
+		console.log(start.date.format('DD'));
+		console.log(end.date.format('DD'));
+*/
+		if(start.item === end.item) {
+			if(start.date === end.date) {
+				//console.log("#")
+				//return;
 
-			if(this.selectEnd.date.date.isAfter(this.selectStart.date.date)) {
-				let cell = this.getCell(this.selectStart.item.id, this.selectStart.date.date, 'right');
-				const cellEnd = this.getCell(this.selectEnd.item.id, this.selectEnd.date.date, 'right');
+				let startDate = start.date;
+				let endDate = end.date;
+
+				if(start.type === 'right') {
+					endDate = moment(endDate).add(1, 'days');
+				} else {
+					startDate = moment(startDate).add(-1, 'days');
+				}
+
+				let cellStart = this.getCell(start.item.id, startDate, 'right');
+				let cellEnd = this.getCell(end.item.id, endDate, 'left');
+
+				this.selectCell(cellStart);
+				this.selectCell(cellEnd);
+
+				cellEnd.classList.add('select-end');
+			}
+			else if(end.date.isAfter(start.date)) {
+				let startDate = start.date;
+
+				if(start.type === 'left') {
+					startDate = moment(startDate).add(-1, 'days');
+				}
+
+				let cell = this.getCell(start.item.id, startDate, 'right');
+				const cellEnd = this.getCell(end.item.id, end.date, 'right');
 
 				while(cell !== cellEnd) {
 					if(!cell) break;
@@ -161,8 +215,16 @@ class BookingTable extends Component {
 
 				cellEnd.previousSibling.classList.add('select-end');
 			} else {
-				let cell = this.getCell(this.selectStart.item.id, this.selectStart.date.date, 'left');
-				const cellEnd = this.getCell(this.selectEnd.item.id, this.selectEnd.date.date, 'left');
+				let startDate = start.date;
+
+				if(start.type === 'right') {
+					startDate = moment(startDate).add(1, 'days');
+				}
+
+				let cell = this.getCell(start.item.id, startDate, 'left');
+				const cellEnd = this.getCell(end.item.id, end.date, 'left');
+
+				cell.classList.add('select-end');
 
 				while(cell !== cellEnd) {
 					if(!cell) break;
@@ -171,9 +233,7 @@ class BookingTable extends Component {
 
 					cell = cell.previousSibling;
 				}
-			}
-
-			
+			}			
 		}
 	}
 
@@ -256,7 +316,8 @@ class BookingTable extends Component {
 	 							key={`${date.text}-left`}
 	 							className='day-left'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
-	 							onMouseDown={e => this.onMouseDown(item, date)}
+	 							onClick={e => this.onClick(item, date, 'left')}
+	 							onMouseDown={e => this.onMouseDown(item, date, 'left')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
 	 							onMouseMove={e => this.onMouseMove(item, date)}
 	 						></td>,
@@ -264,8 +325,8 @@ class BookingTable extends Component {
 	 							key={`${date.text}-right`}
 	 							className='day-right'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
-	 							onClick={e => this.onClick(e, item.id, date)}
-	 							onMouseDown={e => this.onMouseDown(item, date)}
+	 							onClick={e => this.onClick(item, date, 'right')}
+	 							onMouseDown={e => this.onMouseDown(item, date, 'right')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
 	 							onMouseMove={e => this.onMouseMove(item, date)}
 	 						></td>
