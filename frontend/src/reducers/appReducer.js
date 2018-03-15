@@ -1,9 +1,18 @@
 import bookingService from '../services/bookingService';
 
-export default (state = {}, action) => {
+const initialState = () => {
+	return {
+		selectedBooking: null,
+		selection: null
+	};
+};
+
+export default (state = initialState(), action) => {
 	switch(action.type) {
 		case 'SELECT_BOOKING':
 			return {...state, selectedBooking: action.data.booking};
+		case 'SET_SELECTION_INFO':
+			return {...state, selection: action.data};
 		default:
 			return state;
 	}
@@ -24,5 +33,12 @@ export const selectBooking = (booking) => {
 				data: { booking: fullBooking }
 			});
 		}
+	};
+};
+
+export const setSelectionInfo = (item, start, end) => {
+	return {
+		type: 'SET_SELECTION_INFO',
+		data: { item, start, end }
 	};
 };

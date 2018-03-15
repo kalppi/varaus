@@ -7,7 +7,7 @@ import './Info.css';
 
 class Info extends Component {
 	render() {
-		const { selected } = this.props;
+		const { selected, selection } = this.props;
 		let data = {};
 
 		if(selected) {
@@ -19,7 +19,17 @@ class Info extends Component {
 				name: selected.UserInfo.name,
 				email: selected.UserInfo.email
 			};
+		} else if(selection) {
+			data = {
+				item: selection.item.name,
+				start: formatDate(selection.start),
+				end: formatDate(selection.end),
+				nights: moment(selection.end, 'YYYY-MM-DD').diff(moment(selection.start, 'YYYY-MM-DD'), 'days'),
+			};
 		}
+
+		const button = (selected === null || selected === undefined) ? '' :
+			selected.id ? 'save' : 'create';
 
 		return <div id='info'>
 			<h4>Booking info</h4>
@@ -32,12 +42,15 @@ class Info extends Component {
 			</SingleRow>
 			<Field name='name' value={data.name || ''} />
 			<Field name='email' value={data.email || ''} />
+
+			{button}			
 		</div>;
 	}
 }
 
 export default connect((state) => {
 	return {
-		selected: state.app.selectedBooking
+		selected: state.app.selectedBooking,
+		selection: state.app.selection
 	}
 })(Info);

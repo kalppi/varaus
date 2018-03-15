@@ -3,7 +3,7 @@ import { models } from '../models';
 const { Booking, UserInfo, Item } = models;
 
 const getAll = async () => {
-	return await Booking.findAll();
+	return await Booking.findAll({include: [{model: UserInfo, attributes: ['name']}]});
 };
 
 const getOne = async (id) => {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import deepEqual from 'deep-equal';
 import tinycolor from 'tinycolor2';
-import { selectBooking } from '../reducers/appReducer';
+import { selectBooking, setSelectionInfo } from '../reducers/appReducer';
 import './BookingTable.css';
 
 class BookingTable extends Component {
@@ -26,7 +26,7 @@ class BookingTable extends Component {
 			this.clearTint(oldCell);
 			if(newCell) this.tint(newCell);
 
-			this.clearSelection();
+			if(nextProps.selectedBooking !== null) this.clearSelection();
 		}
 	}
 
@@ -51,6 +51,8 @@ class BookingTable extends Component {
 			if(cell) {
 				cell.colSpan = booking.length * 2;
 				cell.classList.add('booking');
+
+				cell.innerHTML = booking.UserInfo.name;
 			} else {
 				continue;
 			}
@@ -67,7 +69,6 @@ class BookingTable extends Component {
 
 					cell = this.getCell(booking.ItemId, date, 'right');
 					cell.style.display = 'none';
-					
 				} else {
 					break;
 				}
@@ -153,74 +154,80 @@ class BookingTable extends Component {
 			end = this.selectEnd;
 		}
 
-		if(start.item === end.item) {
-			if(start.date === end.date) {
-				let startDate = start.date;
-				let endDate = end.date;
+		if(start.item !== end.item) return;
 
-				if(start.type === 'right') {
-					endDate = moment(endDate).add(1, 'days');
-				} else {
-					startDate = moment(startDate).add(-1, 'days');
-				}
+		if(start.date === end.date) {
+			let startDate = start.date;
+			let endDate = end.date;
 
-				let cellStart = this.getCell(start.item.id, startDate, 'right');
-				let cellEnd = this.getCell(end.item.id, endDate, 'left');
-
-				this.selectCell(cellStart);
-				this.selectCell(cellEnd);
-
-				cellEnd.classList.add('select-end');
-			}
-			else if(end.date.isAfter(start.date)) {
-				let startDate = start.date;
-
-				if(start.type === 'left') {
-					startDate = moment(startDate).add(-1, 'days');
-				}
-
-				let cell = this.getCell(start.item.id, startDate, 'right');
-				const cellEnd = this.getCell(end.item.id, end.date, 'right');
-
-				while(cell !== cellEnd) {
-					if(!cell) break;
-
-					if(cell.classList.contains('booking')) {
-						cell.previousSibling.classList.add('select-end');
-						break;
-					}
-
-					this.selectCell(cell);
-
-					cell = cell.nextSibling;
-				}
-
-				cellEnd.previousSibling.classList.add('select-end');
+			if(start.type === 'right') {
+				endDate = moment(endDate).add(1, 'days');
 			} else {
-				let startDate = start.date;
+				startDate = moment(startDate).add(-1, 'days');
+			}
 
-				if(start.type === 'right') {
-					startDate = moment(startDate).add(1, 'days');
-				}
+			let cellStart = this.getCell(start.item.id, startDate, 'right');
+			let cellEnd = this.getCell(end.item.id, endDate, 'left');
 
-				let cell = this.getCell(start.item.id, startDate, 'left');
-				const cellEnd = this.getCell(end.item.id, end.date, 'left');
+			this.selectCell(cellStart);
+			this.selectCell(cellEnd);
 
-				cell.classList.add('select-end');
-
-				while(cell !== cellEnd) {
-					if(!cell) break;
-
-					if(cell.classList.contains('booking')) {
-						break;
-					}
-
-					this.selectCell(cell);
-
-					cell = cell.previousSibling;
-				}
-			}			
+			cellEnd.classList.add('select-end');
 		}
+		else if(end.date.isAfter(start.date)) {
+			let startDate = start.date;
+
+			if(start.type === 'left') {
+				startDate = moment(startDate).add(-1, 'days');
+			}
+
+			let cell = this.getCell(start.item.id, startDate, 'right');
+			const cellEnd = this.getCell(end.item.id, end.date, 'right');
+
+			while(cell !== cellEnd) {
+				if(!cell) break;
+
+				if(cell.classList.contains('booking')) {
+					cell.previousSibling.classList.add('select-end');
+					break;
+				}
+
+				this.selectCell(cell);
+
+				cell = cell.nextSibling;
+			}
+
+			cellEnd.previousSibling.classList.add('select-end');
+
+			this.props.setSelectionInfo(start.item, startDate, end.date);
+		} else {
+			let startDate = start.date;
+
+			if(start.type === 'right') {
+				startDate = moment(startDate).add(1, 'days');
+			}
+
+			let cell = this.getCell(start.item.id, startDate, 'left');
+			const cellEnd = this.getCell(end.item.id, end.date, 'left');
+
+			cell.classList.add('select-end');
+
+			while(cell !== cellEnd) {
+				if(!cell) break;
+
+				if(cell.classList.contains('booking')) {
+					break;
+				}
+
+				this.selectCell(cell);
+
+				cell = cell.previousSibling;
+			}
+
+			this.props.setSelectionInfo(start.item, end.date, startDate);
+		}
+
+		this.props.selectBooking(null);
 	}
 
 	render() {
@@ -333,5 +340,5 @@ export default connect((state) => {
 		selectedBooking: state.app.selectedBooking
 	}
 }, {
-	selectBooking
+	selectBooking, setSelectionInfo
 })(BookingTable);
