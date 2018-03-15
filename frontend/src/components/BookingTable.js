@@ -185,6 +185,11 @@ class BookingTable extends Component {
 				while(cell !== cellEnd) {
 					if(!cell) break;
 
+					if(cell.classList.contains('booking')) {
+						cell.previousSibling.classList.add('select-end');
+						break;
+					}
+
 					this.selectCell(cell);
 
 					cell = cell.nextSibling;
@@ -205,6 +210,10 @@ class BookingTable extends Component {
 
 				while(cell !== cellEnd) {
 					if(!cell) break;
+
+					if(cell.classList.contains('booking')) {
+						break;
+					}
 
 					this.selectCell(cell);
 
