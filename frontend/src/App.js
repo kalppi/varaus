@@ -10,7 +10,7 @@ import './App.css';
 class App extends Component {
 	componentDidMount() {
 		this.props.loadItems();
-		this.props.loadBookings();	
+		this.props.loadBookings();
 	}
 
 	render() {

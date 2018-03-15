@@ -22,4 +22,6 @@ data:
     - ['13.3.', 1, 'Frontendin aloittelua.']
     - ['13.3.', 2, 'Testejä, backendiä ja frontendin komponenttien toteutusta.']
     - ['13.3.', 3, 'BookingTable komponentin rakentelua. Kinkkistä.']
-    - ['14.3.', 1, 'Varauksen tietojen nätyttäminen.']
+    - ['14.3.', 1, 'Varauksen tietojen näyttäminen.']
+    - ['14.3.', 2, 'BookingTablen solujen hiirellä valinta, ja yleistä fiksailua.']
+    - ['15.3.', 1, 'Sass käyttöön.']

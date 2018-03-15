@@ -25,6 +25,8 @@ class BookingTable extends Component {
 
 			this.clearTint(oldCell);
 			if(newCell) this.tint(newCell);
+
+			this.clearSelection();
 		}
 	}
 
@@ -48,7 +50,7 @@ class BookingTable extends Component {
 
 			if(cell) {
 				cell.colSpan = booking.length * 2;
-				cell.className += ' booking';
+				cell.classList.add('booking');
 			} else {
 				continue;
 			}
@@ -126,9 +128,17 @@ class BookingTable extends Component {
 	clearSelection() {
 		for(let cell of this.selectedCells) {
 			this.clearTint(cell);
+			cell.classList.remove('selected');
+			cell.classList.remove('select-end');
 		}
 
 		this.selectedCells = [];
+	}
+
+	selectCell(cell) {
+		this.tint(cell);
+		this.selectedCells.push(cell);
+		cell.classList.add('selected');
 	}
 
 	markSelection() {
@@ -144,11 +154,12 @@ class BookingTable extends Component {
 				while(cell !== cellEnd) {
 					if(!cell) break;
 
-					this.tint(cell);
-					this.selectedCells.push(cell);
+					this.selectCell(cell);
 
 					cell = cell.nextSibling;
 				}
+
+				cellEnd.previousSibling.classList.add('select-end');
 			} else {
 				let cell = this.getCell(this.selectStart.item.id, this.selectStart.date.date, 'left');
 				const cellEnd = this.getCell(this.selectEnd.item.id, this.selectEnd.date.date, 'left');
@@ -156,8 +167,7 @@ class BookingTable extends Component {
 				while(cell !== cellEnd) {
 					if(!cell) break;
 
-					this.tint(cell);
-					this.selectedCells.push(cell);
+					this.selectCell(cell);
 
 					cell = cell.previousSibling;
 				}
