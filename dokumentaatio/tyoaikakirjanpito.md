@@ -10,5 +10,8 @@
 | 13.3. | 1 | Frontendin aloittelua. | 
 | 13.3. | 2 | Testejä, backendiä ja frontendin komponenttien toteutusta. | 
 | 13.3. | 3 | BookingTable komponentin rakentelua. Kinkkistä. | 
-| 14.3. | 1 | Varauksen tietojen nätyttäminen. | 
-| yht. | 16
+| 14.3. | 1 | Varauksen tietojen näyttäminen. | 
+| 14.3. | 2 | BookingTablen solujen hiirellä valinta, ja yleistä fiksailua. | 
+| 15.3. | 1 | Sass käyttöön. | 
+| 15.3. | 3 | Kivojen formikomponenttien rakentelua, ja niiden eriyttäminen omaan projektiinsa, jospa vaikka tulee joskus laajennettua kunnolla [kalppi/react-form-helper](https://github.com/kalppi/react-form-helper). | 
+| yht. | 22

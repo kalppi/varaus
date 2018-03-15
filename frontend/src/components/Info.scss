@@ -1,8 +1,17 @@
 #info {
 	background: #eee;
 	padding: 8px;
+	max-width: 400px;
+	margin-bottom: 10px;
 
-	.group {
-		margin-bottom: 5px;
+	.form-group {
+
+		label {
+			width: 100%
+		}
+
+		label[for=info-nights] {
+			text-align: center;
+		}
 	}
 }

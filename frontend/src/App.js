@@ -17,10 +17,10 @@ class App extends Component {
 		return (
 			<div className='container-fluid'>
 				<div className='row'>
-					<div className='col-md-2'>
+					<div className='col-md-3'>
 						<Info />
 					</div>
-					<div className='col-md-8 nopadding'>
+					<div className='col-md-7 nopadding'>
 						<BookingTable />
 					</div>
 					<div className='col-md-2'>
