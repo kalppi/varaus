@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { setButtonEnabled, setIsChanged } from '../reducers/appReducer';
+import { setInfoValues } from '../reducers/appReducer';
 import { Form, Field, SingleRow } from 'react-form-helper';
 import { formatDate } from '../utils';
 import './Info.css';
@@ -15,22 +15,22 @@ class Info extends Component {
 		};
 	}
 
-	isValid(values) {return;
-		if(values.name.length > 0) {
-			this.props.setButtonEnabled(true);
-		} else {
-			this.props.setButtonEnabled(false);
-		}
-	}
-
 	onSubmit = () => {
 		
 	}
 
+	async setValues(values) {
+		await this.form.clearValues();
+
+		if(values) await this.form.setValues(values);
+		else await this.form.clearValues();
+
+		this.props.setInfoValues(values);
+	}
+
 	async componentWillReceiveProps(nextProps) {
 		if(!nextProps.selected && !nextProps.selection) {
-			this.form.clearValues();
-			this.isValid(this.form.getValues());
+			this.setValues(null);
 			return;
 		}
 
@@ -56,12 +56,9 @@ class Info extends Component {
 					email: nextProps.selected.UserInfo.email
 				};
 
-				await this.form.clearValues();
-				await this.form.setValues(values);
-
-				this.isValid(this.form.getValues());
+				this.setValues(values);
 			} else {
-				this.form.clearValues();
+				this.setValues(null);
 			}
 		}
 
@@ -73,32 +70,13 @@ class Info extends Component {
 				nights: moment(nextProps.selection.end, 'YYYY-MM-DD').diff(moment(nextProps.selection.start, 'YYYY-MM-DD'), 'days'),
 			};
 
-			await this.form.clearValues();
-			await this.form.setValues(values);
-
-			this.isValid(this.form.getValues());
+			this.setValues(values);
 		}		
-	}
-
-	hasChanged(values) {
-		const selected = this.props.selected;
-
-		if(values.item.value !== selected.ItemId) return true;
-		else if(values.start.value !== selected.start) return  true;
-		else if(values.end.value !== selected.end) return true;
-		else if(values.name !== selected.UserInfo.name) return true;
-		else if(values.email !== selected.UserInfo.email) return true;
-
-		return false;
 	}
 
 	onChange = (form) => {
 		const values = this.form.getValues();
-
-		this.isValid(values);
-
-		this.props.setIsChanged(this.hasChanged(values));
-
+		this.props.setInfoValues(values);
 	}
 
 	render() {
@@ -138,12 +116,49 @@ class Info extends Component {
 	}
 }
 
+const hasChanged = (selected, values) => {
+	if(values.item.value !== selected.ItemId) return true;
+	else if(values.start.value !== selected.start) return  true;
+	else if(values.end.value !== selected.end) return true;
+	else if(values.name !== selected.UserInfo.name) return true;
+	else if(values.email !== selected.UserInfo.email) return true;
+
+	return false;
+};
+
+const validValues = (values) => {
+	const errors = [];
+
+	if(values.name.length === 0) errors.push('name');
+	if(values.email.length < 5 || values.email.indexOf('@') === -1) errors.push('email');
+
+	if(errors.length === 0) {
+		return { isValid: true };
+	}else {
+		return { isValid: false, errors };
+	}
+}
+
 export default connect((state) => {
+	let buttonEnabled = false;
+
+	const { infoValues, selectedBooking } = state.app;
+
+	if(selectedBooking && infoValues) {
+		const changed = hasChanged(selectedBooking, infoValues);
+
+		if(changed) {
+			const valid = validValues(infoValues);
+
+			buttonEnabled = valid.isValid;
+		}
+	}
+
 	return {
-		selected: state.app.selectedBooking,
+		selected: selectedBooking,
 		selection: state.app.selection,
-		buttonEnabled: state.app.buttonEnabled
+		buttonEnabled: buttonEnabled
 	}
 }, {
-	setButtonEnabled, setIsChanged
+	setInfoValues
 })(Info);

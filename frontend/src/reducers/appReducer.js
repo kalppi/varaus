@@ -4,8 +4,7 @@ const initialState = () => {
 	return {
 		selectedBooking: null,
 		selection: null,
-		buttonEnabled: false,
-		changed: false
+		infoValues: null
 	};
 };
 
@@ -17,10 +16,8 @@ export default (state = initialState(), action) => {
 			return {...state, selectedBooking: action.data.booking};
 		case 'SET_SELECTION_INFO':
 			return {...state, selection: action.data};
-		case 'SET_BUTTON_ENABLED':
-			return {...state, buttonEnabled: action.data.enabled};
-		case 'SET_IS_CHANGED':
-			return {...state, changed: action.data.changed};
+		case 'SET_INFO_VALUES':
+			return {...state, infoValues: action.data};
 		default:
 			return state;
 	}
@@ -63,24 +60,9 @@ export const clearSelectionInfo = () => {
 	}
 };
 
-export const setButtonEnabled = (enabled) => {
+export const setInfoValues = (values) => {
 	return {
-		type: 'SET_BUTTON_ENABLED',
-		data: { enabled }
+		type: 'SET_INFO_VALUES',
+		data: values
 	}
-};
-
-export const setIsChanged = (changed) => {
-	const actions = [{
-		type: 'SET_IS_CHANGED',
-		data: { changed }
-	}];
-
-	if(changed) {
-		actions.push(setButtonEnabled(true));
-	} else {
-		actions.push(setButtonEnabled(false));
-	}
-
-	return actions;
 };

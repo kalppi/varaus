@@ -28,3 +28,4 @@ data:
     - ['15.3.', 3, 'Kivojen formikomponenttien rakentelua, ja niiden eriyttäminen omaan projektiinsa, jospa vaikka tulee joskus laajennettua kunnolla [kalppi/react-form-helper](https://github.com/kalppi/react-form-helper).']
     - ['15.3.', 1, 'BookingTablen hiirellä solujen valinnan parantelua.']
     - ['16.3.', 5, 'Info komponentin logiikan viilausta, ja whack-a-molen pelaamista siihen liittyvien bugien kanssa.']
+    - ['16.3.', 3, 'Varauksen tietojen päivitys, Info komponentin nappilogiikkojen eteenpäin viemistä.']
