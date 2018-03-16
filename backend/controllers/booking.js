@@ -33,6 +33,14 @@ route.route('/:id')
 		const data = await bookingService.getOne(id);
 
 		res.json(data);
+	})
+	.put(async (req, res) => {
+		const id = req.params.id;
+		const data = req.body;
+
+		await bookingService.update(id, data);
+
+		res.status(204).json({});
 	});
 
 export default route;

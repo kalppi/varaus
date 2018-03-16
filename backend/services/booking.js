@@ -11,8 +11,8 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
-	if(data.info) {
-		const info = await UserInfo.create(data.info);
+	if(data.UserInfo) {
+		const info = await UserInfo.create(data.UserInfo);
 
 		return await Booking.create({...data, UserInfoId: info.get('id')})
 	} else {
@@ -20,4 +20,14 @@ const create = async (data) => {
 	}
 };
 
-export default { getAll, getOne, create };
+const update = async (id, data) => {
+	const rtn = await Booking.update(data, { where: { id }, fields: Object.keys(data), returning: true });
+
+	if(data.UserInfo) {
+		await UserInfo.update(data.UserInfo, { where: {id: rtn[1][0].get('UserInfoId')}, fields: Object.keys(data.UserInfo)});
+	}
+
+	return rtn;
+};
+
+export default { getAll, getOne, create, update };

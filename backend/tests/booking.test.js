@@ -39,6 +39,33 @@ describe('api', () => {
 		expect(rtn.body.end).toBe('2018-12-13');
 	});
 
+	test('can update a booking', async () => {
+		await api
+			.put('/api/booking/' + items[0].get('id'))
+			.send({
+				start: '2018-11-12',
+				end: '2018-11-13',
+				ItemId: items[1].get('id'),
+				UserInfo: {
+					name: 'Matti',
+					email: 'matti@google.fi'
+				}
+			})
+			.set('Content-Type', 'application/json')
+			.expect(204);
+
+		const rtn = await api
+			.get('/api/booking/' + items[0].get('id'));
+
+		const { start, end, ItemId, UserInfo } = rtn.body;
+
+		expect(start).toBe('2018-11-12');
+		expect(end).toBe('2018-11-13');
+		expect(ItemId).toBe(items[1].get('id'));
+		expect(UserInfo.name).toBe('Matti');
+		expect(UserInfo.email).toBe('matti@google.fi');
+	});
+
 	test('can create a booking with info', async () => {
 		const rtn = await api
 			.post('/api/booking')
@@ -46,7 +73,7 @@ describe('api', () => {
 				start: '2018-11-11',
 				end: '2018-11-12',
 				ItemId: items[2].get('id'),
-				info: {
+				UserInfo: {
 					name: 'Pera',
 					email: 'pera@google.fi'
 				}
@@ -58,7 +85,7 @@ describe('api', () => {
 
 		expect(start).toBe('2018-11-11');
 		expect(end).toBe('2018-11-12');
-		expect(UserInfoId).toBeDefined();
+		expect(UserInfoId).toBeTruthy();
 	});
 
 	test('can\'t create overlapping bookings', async () => {
