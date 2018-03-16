@@ -3,7 +3,8 @@ import bookingService from '../services/bookingService';
 const initialState = () => {
 	return {
 		selectedBooking: null,
-		selection: null
+		selection: null,
+		buttonEnabled: false
 	};
 };
 
@@ -13,6 +14,8 @@ export default (state = initialState(), action) => {
 			return {...state, selectedBooking: action.data.booking};
 		case 'SET_SELECTION_INFO':
 			return {...state, selection: action.data};
+		case 'SET_BUTTON_ENABLED':
+			return {...state, buttonEnabled: action.data.enabled};
 		default:
 			return state;
 	}
@@ -41,4 +44,18 @@ export const setSelectionInfo = (item, start, end) => {
 		type: 'SET_SELECTION_INFO',
 		data: { item, start, end }
 	};
+};
+
+export const clearSelectionInfo = () => {
+	return {
+		type: 'SET_SELECTION_INFO',
+		data: null
+	}
+};
+
+export const setButtonEnabled = (enabled) => {
+	return {
+		type: 'SET_BUTTON_ENABLED',
+		data: { enabled }
+	}
 };

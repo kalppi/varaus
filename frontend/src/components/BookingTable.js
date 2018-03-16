@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import deepEqual from 'deep-equal';
 import tinycolor from 'tinycolor2';
-import { selectBooking, setSelectionInfo } from '../reducers/appReducer';
+import { selectBooking, setSelectionInfo, clearSelectionInfo } from '../reducers/appReducer';
 import './BookingTable.css';
 
 class BookingTable extends Component {
@@ -16,6 +16,9 @@ class BookingTable extends Component {
 		this.selectStart = null;
 		this.selectEnd = null;
 		this.selectedCells = [];
+
+		this.oldStart = null;
+		this.oldEnd = null;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -101,7 +104,9 @@ class BookingTable extends Component {
 		const booking = this.props.bookings.find(booking => 
 			booking.ItemId === item.id && moment(booking.start).isSame(date.date, 'day'))
 
-		if(booking) {
+		if(booking && lr === 'right') {
+			this.clearSelection();
+			
 			if(this.props.selectedBooking && this.props.selectedBooking.id === booking.id) {
 				this.props.selectBooking(null);
 			} else {
@@ -138,6 +143,7 @@ class BookingTable extends Component {
 		}
 
 		this.selectedCells = [];
+		this.props.clearSelectionInfo();
 	}
 
 	selectCell(cell) {
@@ -147,14 +153,26 @@ class BookingTable extends Component {
 	}
 
 	markSelection(start, end) {
-		this.clearSelection();
-
 		if(!start && !end) {
 			start = this.selectStart;
 			end = this.selectEnd;
 		}
 
+		if(this.oldStart === start && this.oldEnd === end) return;
+
 		if(start.item !== end.item) return;
+
+		if(this.oldStart && this.oldEnd) {
+			if(this.oldStart.item.id === start.item.id &&
+				this.oldEnd.item.id === end.item.id &&
+				this.oldStart.date.isSame(start.date, 'day') &&
+				this.oldEnd.date.isSame(end.date, 'day')) {
+
+				return;
+			}
+		}
+
+		this.clearSelection();
 
 		if(start.date === end.date) {
 			let startDate = start.date;
@@ -173,6 +191,8 @@ class BookingTable extends Component {
 			this.selectCell(cellEnd);
 
 			cellEnd.classList.add('select-end');
+
+			this.props.setSelectionInfo(start.item, startDate, endDate);
 		}
 		else if(end.date.isAfter(start.date)) {
 			let startDate = start.date;
@@ -228,6 +248,9 @@ class BookingTable extends Component {
 		}
 
 		this.props.selectBooking(null);
+
+		this.oldStart = start;
+		this.oldEnd = end;
 	}
 
 	render() {
@@ -340,5 +363,5 @@ export default connect((state) => {
 		selectedBooking: state.app.selectedBooking
 	}
 }, {
-	selectBooking, setSelectionInfo
+	selectBooking, setSelectionInfo, clearSelectionInfo
 })(BookingTable);

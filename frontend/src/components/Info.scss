@@ -5,13 +5,18 @@
 	margin-bottom: 10px;
 
 	.form-group {
+		margin-bottom: 3px;
 
 		label {
 			width: 100%
 		}
 
-		label[for=info-nights] {
+		input#info-nights, label[for=info-nights] {
 			text-align: center;
 		}
+	}
+
+	button {
+		margin-top: 5px;
 	}
 }
