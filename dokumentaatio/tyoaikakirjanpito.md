@@ -14,4 +14,6 @@
 | 14.3. | 2 | BookingTablen solujen hiirellä valinta, ja yleistä fiksailua. | 
 | 15.3. | 1 | Sass käyttöön. | 
 | 15.3. | 3 | Kivojen formikomponenttien rakentelua, ja niiden eriyttäminen omaan projektiinsa, jospa vaikka tulee joskus laajennettua kunnolla [kalppi/react-form-helper](https://github.com/kalppi/react-form-helper). | 
-| yht. | 22
+| 15.3. | 1 | BookingTablen hiirellä solujen valinnan parantelua. | 
+| 16.3. | 5 | Info komponentin logiikan viilausta, ja whack-a-molen pelaamista siihen liittyvien bugien kanssa. | 
+| yht. | 28
