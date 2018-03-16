@@ -143,7 +143,7 @@ class BookingTable extends Component {
 		}
 
 		this.selectedCells = [];
-		this.props.clearSelectionInfo();
+		//this.props.clearSelectionInfo();
 	}
 
 	selectCell(cell) {
@@ -173,6 +173,7 @@ class BookingTable extends Component {
 		}
 
 		this.clearSelection();
+		if(this.props.selectedBooking) this.props.selectBooking(null);
 
 		if(start.date === end.date) {
 			let startDate = start.date;
@@ -246,8 +247,6 @@ class BookingTable extends Component {
 
 			this.props.setSelectionInfo(start.item, end.date, startDate);
 		}
-
-		this.props.selectBooking(null);
 
 		this.oldStart = start;
 		this.oldEnd = end;

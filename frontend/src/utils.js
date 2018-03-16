@@ -1,5 +1,9 @@
 import moment from 'moment';
 
 export const formatDate = (date) => {
-	return moment(date).format('DD.MM. YYYY');
+	const mDate =  moment(date);
+
+	if(!mDate.isValid()) return '';
+
+	return mDate.format('DD.MM. YYYY');
 };

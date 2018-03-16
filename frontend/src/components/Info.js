@@ -1,82 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { setInfoValues } from '../reducers/appReducer';
-import { Form, Field, SingleRow } from 'react-form-helper';
+import { Form, Field, SingleRow, Button } from 'react-form-helper';
 import { formatDate } from '../utils';
+
 import './Info.css';
 
 class Info extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			values: {}
-		};
-	}
-
 	onSubmit = () => {
 		
 	}
 
-	async setValues(values) {
-		await this.form.clearValues();
-
-		if(values) await this.form.setValues(values);
-		else await this.form.clearValues();
-
-		this.props.setInfoValues(values);
-	}
-
-	async componentWillReceiveProps(nextProps) {
-		if(!nextProps.selected && !nextProps.selection) {
-			this.setValues(null);
-			return;
+	format(name, value) {
+		switch(name) {
+			case 'start':
+			case 'end':
+				return formatDate(value);
+			default:
+				return value;
 		}
-
-		if(nextProps.selected !== this.props.selected) {
-			await this.form.clearValues();
-
-			if(nextProps.selected) {
-				const values = {
-					item: {
-						text: nextProps.selected.Item.name,
-						value: nextProps.selected.Item.id
-					},
-					start: {
-						text: formatDate(nextProps.selected.start),
-						value: nextProps.selected.start
-					},
-					end: {
-						text: formatDate(nextProps.selected.end),
-						value: nextProps.selected.end
-					},
-					nights: moment(nextProps.selected.end, 'YYYY-MM-DD').diff(moment(nextProps.selected.start, 'YYYY-MM-DD'), 'days'),
-					name: nextProps.selected.UserInfo.name,
-					email: nextProps.selected.UserInfo.email
-				};
-
-				this.setValues(values);
-			} else {
-				this.setValues(null);
-			}
-		}
-
-		if(nextProps.selection) {
-			const values = {
-				item: nextProps.selection.item.name,
-				start: formatDate(nextProps.selection.start),
-				end: formatDate(nextProps.selection.end),
-				nights: moment(nextProps.selection.end, 'YYYY-MM-DD').diff(moment(nextProps.selection.start, 'YYYY-MM-DD'), 'days'),
-			};
-
-			this.setValues(values);
-		}		
-	}
-
-	onChange = (form) => {
-		const values = this.form.getValues();
-		this.props.setInfoValues(values);
 	}
 
 	render() {
@@ -92,13 +34,20 @@ class Info extends Component {
 
 		if(buttonType !== 'none') {
 			const options = buttonOptions[buttonType];
-			button = <button className='btn' {...options.opts || {}} disabled={!this.props.buttonEnabled}>{options.text}</button>
+			button = <Button enabled={this.props.buttonEnabled} text={options.text} />
 		}
 
 		return <div id='info'>
 			<h4>Booking info</h4>
 
-			<Form ref={ref => this.form = ref} onSubmit={this.onSubmit} onChange={this.onChange} name='info'>
+			<Form
+				ref={ref => this.form = ref}
+				onSubmit={this.onSubmit}
+				name='info'
+				save={this.props.setValues}
+				values={this.props.values}
+				format={this.format}
+				>
 				<Field name='item' />
 
 				<SingleRow>
@@ -117,20 +66,31 @@ class Info extends Component {
 }
 
 const hasChanged = (selected, values) => {
-	if(values.item.value !== selected.ItemId) return true;
-	else if(values.start.value !== selected.start) return  true;
-	else if(values.end.value !== selected.end) return true;
-	else if(values.name !== selected.UserInfo.name) return true;
-	else if(values.email !== selected.UserInfo.email) return true;
+	if(values.item === undefined) return false;
 
-	return false;
+	const changed = [];
+
+	if(values.item.value !== selected.ItemId) changed.push('item');
+	if(values.start !== selected.start) changed.push('start');
+	if(values.end !== selected.end) changed.push('end');
+	if(values.name !== selected.UserInfo.name) changed.push('name');
+	if(values.email !== selected.UserInfo.email) changed.push('email');
+/*
+	console.log(changed);
+
+	console.log(values.item);
+	console.log(selected.ItemId)*/
+
+	return changed.length > 0;
 };
 
 const validValues = (values) => {
 	const errors = [];
 
-	if(values.name.length === 0) errors.push('name');
-	if(values.email.length < 5 || values.email.indexOf('@') === -1) errors.push('email');
+	const { name = '', email = '' } = values;
+
+	if(name.length === 0) errors.push('name');
+	if(email.length < 5 || email.indexOf('@') === -1) errors.push('email');
 
 	if(errors.length === 0) {
 		return { isValid: true };
@@ -143,13 +103,17 @@ export default connect((state) => {
 	let buttonEnabled = false;
 
 	const { infoValues, selectedBooking } = state.app;
+	
+	if(infoValues) {
+		if(selectedBooking) {
+			const changed = hasChanged(selectedBooking, infoValues);
 
-	if(selectedBooking && infoValues) {
-		const changed = hasChanged(selectedBooking, infoValues);
-
-		if(changed) {
+			if(changed) {
+				const valid = validValues(infoValues);
+				buttonEnabled = valid.isValid;
+			}
+		} else {
 			const valid = validValues(infoValues);
-
 			buttonEnabled = valid.isValid;
 		}
 	}
@@ -157,8 +121,9 @@ export default connect((state) => {
 	return {
 		selected: selectedBooking,
 		selection: state.app.selection,
-		buttonEnabled: buttonEnabled
+		buttonEnabled: buttonEnabled,
+		values: state.app.infoValues
 	}
 }, {
-	setInfoValues
+	setValues: setInfoValues
 })(Info);
