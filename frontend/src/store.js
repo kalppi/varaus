@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import multi from 'redux-multi';
 import appReducer from './reducers/appReducer';
 import bookingsReducer from './reducers/bookingsReducer';
 import itemsReducer from './reducers/itemsReducer';
@@ -12,7 +13,7 @@ const reducer = combineReducers({
 
 const store = createStore(
 	reducer,
-	applyMiddleware(thunk)
+	applyMiddleware(thunk, multi)
 );
 
 export default store;

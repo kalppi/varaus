@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { setButtonEnabled } from '../reducers/appReducer';
+import { setButtonEnabled, setIsChanged } from '../reducers/appReducer';
 import { Form, Field, SingleRow } from 'react-form-helper';
 import { formatDate } from '../utils';
 import './Info.css';
@@ -15,9 +15,7 @@ class Info extends Component {
 		};
 	}
 
-	isValid() {
-		const values = this.form.getValues();
-		
+	isValid(values) {return;
 		if(values.name.length > 0) {
 			this.props.setButtonEnabled(true);
 		} else {
@@ -30,12 +28,29 @@ class Info extends Component {
 	}
 
 	async componentWillReceiveProps(nextProps) {
+		if(!nextProps.selected && !nextProps.selection) {
+			this.form.clearValues();
+			this.isValid(this.form.getValues());
+			return;
+		}
+
 		if(nextProps.selected !== this.props.selected) {
+			await this.form.clearValues();
+
 			if(nextProps.selected) {
 				const values = {
-					item: nextProps.selected.Item.name,
-					start: formatDate(nextProps.selected.start),
-					end: formatDate(nextProps.selected.end),
+					item: {
+						text: nextProps.selected.Item.name,
+						value: nextProps.selected.Item.id
+					},
+					start: {
+						text: formatDate(nextProps.selected.start),
+						value: nextProps.selected.start
+					},
+					end: {
+						text: formatDate(nextProps.selected.end),
+						value: nextProps.selected.end
+					},
 					nights: moment(nextProps.selected.end, 'YYYY-MM-DD').diff(moment(nextProps.selected.start, 'YYYY-MM-DD'), 'days'),
 					name: nextProps.selected.UserInfo.name,
 					email: nextProps.selected.UserInfo.email
@@ -44,7 +59,7 @@ class Info extends Component {
 				await this.form.clearValues();
 				await this.form.setValues(values);
 
-				this.isValid();
+				this.isValid(this.form.getValues());
 			} else {
 				this.form.clearValues();
 			}
@@ -61,12 +76,29 @@ class Info extends Component {
 			await this.form.clearValues();
 			await this.form.setValues(values);
 
-			this.isValid();
+			this.isValid(this.form.getValues());
 		}		
 	}
 
+	hasChanged(values) {
+		const selected = this.props.selected;
+
+		if(values.item.value !== selected.ItemId) return true;
+		else if(values.start.value !== selected.start) return  true;
+		else if(values.end.value !== selected.end) return true;
+		else if(values.name !== selected.UserInfo.name) return true;
+		else if(values.email !== selected.UserInfo.email) return true;
+
+		return false;
+	}
+
 	onChange = (form) => {
-		this.isValid();
+		const values = this.form.getValues();
+
+		this.isValid(values);
+
+		this.props.setIsChanged(this.hasChanged(values));
+
 	}
 
 	render() {
@@ -113,5 +145,5 @@ export default connect((state) => {
 		buttonEnabled: state.app.buttonEnabled
 	}
 }, {
-	setButtonEnabled
+	setButtonEnabled, setIsChanged
 })(Info);
