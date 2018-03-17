@@ -15,12 +15,12 @@
 | 15.3. | 1 | Sass käyttöön. | 
 |  | 3 | Kivojen formikomponenttien rakentelua, ja niiden eriyttäminen omaan projektiinsa, jospa vaikka tulee joskus laajennettua kunnolla [kalppi/react-form-helper](https://github.com/kalppi/react-form-helper). | 
 |  | 1 | BookingTablen hiirellä solujen valinnan parantelua. | 
-| 16.3. | 5 | Info komponentin logiikan viilausta, ja whack-a-molen pelaamista siihen liittyvien bugien kanssa. | 
-|  | 3 | Varauksen tietojen päivitys, Info komponentin nappilogiikkojen eteenpäin viemistä. | 
-|  | 3 | Info komponenttien logiikan uudelleenkirjoitusta, tietojen validointia. | 
+| 16.3. | 3 | Info komponentin logiikan viilausta, ja whack-a-molen pelaamista siihen liittyvien bugien kanssa. | 
+|  | 2 | Varauksen tietojen päivitys, Info komponentin nappilogiikkojen eteenpäin viemistä. | 
+|  | 2 | Info komponenttien logiikan uudelleenkirjoitusta, tietojen validointia. | 
 | 17.3. | 3 | Info komponentin formin rakentelua paremmaksi ja päheemmin toimivaksi. | 
 |  | 1 | Uuden varauksen voi luoda. | 
-|  | 2 | Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen. | 
+|  | 1 | Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen. | 
 |  | 2 | Varausten poistaminen onnistuu, kysyy varmistuksen. | 
-|  | 2 | Ulkoasun kehitystä ja validointilogiikaa. | 
-| yht. | 44
+|  | 1 | Ulkoasun kehitystä ja validointilogiikaa. | 
+| yht. | 38
