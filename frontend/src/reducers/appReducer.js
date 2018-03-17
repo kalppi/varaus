@@ -1,5 +1,6 @@
 import bookingService from '../services/bookingService';
 import moment from 'moment';
+import { formatDate } from '../utils';
 
 const initialState = () => {
 	return {
@@ -42,14 +43,23 @@ export const selectBooking = (booking) => {
 			let infoValues = {};
 
 			if(selected) {
+				const start = moment(selected.start, 'YYYY-MM-DD');
+				const end = moment(selected.end, 'YYYY-MM-DD');
+
 				infoValues = {
 					item: {
 						text: selected.Item.name,
 						value: selected.Item.id
 					},
-					start: selected.start,
-					end: selected.end,
-					nights: moment(selected.end, 'YYYY-MM-DD').diff(moment(selected.start, 'YYYY-MM-DD'), 'days'),
+					start: {
+						text: formatDate(start),
+						value: start
+					},
+					end: {
+						text: formatDate(end),
+						value: end
+					},
+					nights: end.diff(start, 'days'),
 					name: selected.UserInfo.name,
 					email: selected.UserInfo.email
 				};
@@ -69,10 +79,19 @@ export const selectBooking = (booking) => {
 
 export const setSelectionInfo = (item, start, end) => {
 	const values = {
-		item: item.name,
-		start: start,
-		end: end,
-		nights: moment(end, 'YYYY-MM-DD').diff(moment(start, 'YYYY-MM-DD'), 'days'),
+		item: {
+			text: item.name,
+			value: item.id
+		},
+		start: {
+			text: formatDate(start),
+			value: start
+		},
+		end: {
+			text: formatDate(end),
+			value: end
+		},
+		nights: end.diff(start, 'days'),
 	};
 
 	return [{

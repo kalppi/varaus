@@ -17,4 +17,6 @@
 | 15.3. | 1 | BookingTablen hiirellä solujen valinnan parantelua. | 
 | 16.3. | 5 | Info komponentin logiikan viilausta, ja whack-a-molen pelaamista siihen liittyvien bugien kanssa. | 
 | 16.3. | 3 | Varauksen tietojen päivitys, Info komponentin nappilogiikkojen eteenpäin viemistä. | 
-| yht. | 31
+| 16.3. | 3 | Info komponenttien logiikan uudelleenkirjoitusta, tietojen validointia. | 
+| 17.3. | 3 | Info komponentin formin rakentelua paremmaksi ja päheemmin toimivaksi. | 
+| yht. | 37

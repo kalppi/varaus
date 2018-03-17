@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setInfoValues } from '../reducers/appReducer';
 import { Form, Field, SingleRow, Button } from 'react-form-helper';
+import moment from 'moment';
 import { formatDate } from '../utils';
 
 import './Info.css';
@@ -13,9 +14,41 @@ class Info extends Component {
 
 	format(name, value) {
 		switch(name) {
+			case 'item':
+				return value.text;
 			case 'start':
 			case 'end':
-				return formatDate(value);
+				return value.text;
+			default:
+				return value;
+		}
+	}
+
+	parse(name, value) {
+		switch(name) {
+			case 'start':
+			case 'end':
+				return {
+					text: value,
+					value: moment(value.replace(/ /g, ''), 'DD.MM.YYYY', true)
+				};
+			default:
+				return value;
+		}
+	}
+
+	onBlur(name, value) {
+		switch(name) {
+			case 'start':
+			case 'end':
+				if(value.value.isValid()) {
+					return {
+						text: formatDate(value.value),
+						value: value.value
+					};
+				} else {
+					return value;
+				}
 			default:
 				return value;
 		}
@@ -47,8 +80,10 @@ class Info extends Component {
 				save={this.props.setValues}
 				values={this.props.values}
 				format={this.format}
+				parse={this.parse}
+				onBlur={this.onBlur}
 				>
-				<Field name='item' />
+				<Field name='item' editable={false} />
 
 				<SingleRow>
 					<Field name='start' />
@@ -71,15 +106,10 @@ const hasChanged = (selected, values) => {
 	const changed = [];
 
 	if(values.item.value !== selected.ItemId) changed.push('item');
-	if(values.start !== selected.start) changed.push('start');
-	if(values.end !== selected.end) changed.push('end');
+	if(values.start.text !== selected.start) changed.push('start');
+	if(values.end.text !== selected.end) changed.push('end');
 	if(values.name !== selected.UserInfo.name) changed.push('name');
 	if(values.email !== selected.UserInfo.email) changed.push('email');
-/*
-	console.log(changed);
-
-	console.log(values.item);
-	console.log(selected.ItemId)*/
 
 	return changed.length > 0;
 };
