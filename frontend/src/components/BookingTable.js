@@ -18,6 +18,8 @@ class BookingTable extends Component {
 
 		this.oldStart = null;
 		this.oldEnd = null;
+
+		this.lastMouseMoveCell = null;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -114,10 +116,12 @@ class BookingTable extends Component {
 		this.selectStart = null;
 	}
 
-	onMouseMove = (item, date) => {
-		if(this.selectStart) {
-			this.selectEnd = { item, date: date.date };
+	onMouseMove = (e, item, date, lr) => {
+		if(e.target === this.lastMouseMoveCell) return;
+		this.lastMouseMoveCell = e.target;
 
+		if(this.selectStart) {
+			this.selectEnd = { item, date: date.date, type: lr };
 			this.markSelection();
 		}
 	}
@@ -142,10 +146,11 @@ class BookingTable extends Component {
 			end = this.selectEnd;
 		}
 
-		if(this.oldStart === start && this.oldEnd === end) return;
+//		if(this.oldStart === start && this.oldEnd === end) return;
 
-		if(start.item !== end.item) return;
+		if(start.item.id !== end.item.id) return;
 
+/*
 		if(this.oldStart && this.oldEnd) {
 			if(this.oldStart.item.id === start.item.id &&
 				this.oldEnd.item.id === end.item.id &&
@@ -154,12 +159,12 @@ class BookingTable extends Component {
 
 				return;
 			}
-		}
+		}*/
 
 		this.clearSelection();
 		if(this.props.selectedBooking) this.props.selectBooking(null);
 
-		if(start.date === end.date) {
+		if(start.date.isSame(end.date, 'day')) {
 			let startDate = start.date;
 			let endDate = end.date;
 
@@ -169,25 +174,14 @@ class BookingTable extends Component {
 				startDate = moment(startDate).add(-1, 'days');
 			}
 
-			let cellStart = this.getCell(start.item.id, startDate, 'right');
-			let cellEnd = this.getCell(end.item.id, endDate, 'left');
-
-			this.selectCell(cellStart);
-			this.selectCell(cellEnd);
-
-			cellEnd.classList.add('select-end');
-
-			this.props.setSelectionInfo(start.item, startDate, endDate);
-		}
-		else if(end.date.isAfter(start.date)) {
-			let startDate = start.date;
-
-			if(start.type === 'left') {
+			if(start.type === 'left' && end.type === 'right') {
+				endDate = moment(endDate).add(1, 'days');
+			} else if(start.type === 'right' && end.type === 'left') {
 				startDate = moment(startDate).add(-1, 'days');
 			}
 
 			let cell = this.getCell(start.item.id, startDate, 'right');
-			const cellEnd = this.getCell(end.item.id, end.date, 'right');
+			const cellEnd = this.getCell(end.item.id, endDate, 'right');
 
 			while(cell !== cellEnd) {
 				if(!cell) break;
@@ -204,23 +198,69 @@ class BookingTable extends Component {
 
 			cellEnd.previousSibling.classList.add('select-end');
 
-			this.props.setSelectionInfo(start.item, startDate, end.date);
+			/*
+			let cellStart = this.getCell(start.item.id, startDate, 'right');
+			let cellEnd = this.getCell(end.item.id, endDate, 'left');
+
+			this.selectCell(cellStart);
+			this.selectCell(cellEnd);
+
+			cellEnd.classList.add('select-end');*/
+
+			this.props.setSelectionInfo(start.item, startDate, endDate);
+		}
+		else if(end.date.isAfter(start.date)) {
+			let startDate = start.date;
+			let endDate = end.date;
+
+			if(start.type === 'left') {
+				startDate = moment(startDate).add(-1, 'days');
+			}
+
+			if(end.type === 'right') {
+				endDate = moment(endDate).add(1, 'days');
+			}
+
+			let cell = this.getCell(start.item.id, startDate, 'right');
+			const cellEnd = this.getCell(end.item.id, endDate, 'right');
+
+			while(cell !== cellEnd) {
+				if(!cell) break;
+
+				if(cell.classList.contains('booking')) {
+					cell.previousSibling.classList.add('select-end');
+					break;
+				}
+
+				this.selectCell(cell);
+
+				cell = cell.nextSibling;
+			}
+
+			cellEnd.previousSibling.classList.add('select-end');
+
+			this.props.setSelectionInfo(start.item, startDate, endDate);
 		} else {
 			let startDate = start.date;
+			let endDate = end.date;
 
 			if(start.type === 'right') {
 				startDate = moment(startDate).add(1, 'days');
 			}
 
+			if(end.type === 'left') {
+				endDate = moment(endDate).add(-1, 'days');
+			}
+
 			let cell = this.getCell(start.item.id, startDate, 'left');
-			const cellEnd = this.getCell(end.item.id, end.date, 'left');
+			const cellEnd = this.getCell(end.item.id, endDate, 'left');
 
 			cell.classList.add('select-end');
 
 			while(cell !== cellEnd) {
 				if(!cell) break;
 
-				if(cell.classList.contains('booking')) {
+				if(cell.classList.contains('booking') || cell.classList.contains('item-name')) {
 					break;
 				}
 
@@ -229,11 +269,11 @@ class BookingTable extends Component {
 				cell = cell.previousSibling;
 			}
 
-			this.props.setSelectionInfo(start.item, end.date, startDate);
+			this.props.setSelectionInfo(start.item, endDate, startDate);
 		}
 
-		this.oldStart = start;
-		this.oldEnd = end;
+		//this.oldStart = start;
+		//this.oldEnd = end;
 	}
 
 	render() {
@@ -320,7 +360,7 @@ class BookingTable extends Component {
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'left')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
-	 							onMouseMove={e => this.onMouseMove(item, date)}
+	 							onMouseMove={e => this.onMouseMove(e, item, date, 'left')}
 	 						></td>,
 	 						<td
 	 							key={`${key}-${date.text}-right`}
@@ -328,7 +368,7 @@ class BookingTable extends Component {
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'right')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
-	 							onMouseMove={e => this.onMouseMove(item, date)}
+	 							onMouseMove={e => this.onMouseMove(e, item, date, 'right')}
 	 						></td>
 	 						]
 	 				})
