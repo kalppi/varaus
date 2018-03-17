@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import deepEqual from 'deep-equal';
-import tinycolor from 'tinycolor2';
 import { selectBooking, setSelectionInfo, clearSelectionInfo } from '../reducers/appReducer';
 import './BookingTable.css';
 
@@ -26,15 +25,16 @@ class BookingTable extends Component {
 			const oldCell = this.getBookingCell(this.props.selectedBooking);
 			const newCell = this.getBookingCell(nextProps.selectedBooking);
 
-			this.clearTint(oldCell);
-			if(newCell) this.tint(newCell);
+			if(oldCell) oldCell.classList.remove('selected');
+			if(newCell) newCell.classList.add('selected');
 
 			if(nextProps.selectedBooking !== null) this.clearSelection();
 		}
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return !deepEqual(nextProps.bookings, this.props.bookings);
+		if(this.props.items.length < nextProps.items.length) return true;
+		else return !deepEqual(nextProps.bookings, this.props.bookings);
 	}
 
 	getBookingCell(booking) {
@@ -57,8 +57,6 @@ class BookingTable extends Component {
 				cell.classList.remove('selected');
 
 				cell.innerHTML = booking.UserInfo.name;
-
-				this.clearTint(cell, true);
 			} else {
 				continue;
 			}
@@ -85,24 +83,6 @@ class BookingTable extends Component {
 			cell = this.getCell(booking.ItemId, date, 'left');
 			if(cell) {
 				cell.style.display = 'none';
-			}
-		}
-	}
-
-	tint(el) {
-		if(!el) return;
-
-		const color = tinycolor(window.getComputedStyle(el).getPropertyValue('background-color'));
-		el.oldColor = color;
-		el.style.backgroundColor = tinycolor.mix(color, '#F9EFA2', 50).toHexString();
-	}
-
-	clearTint(el, force = false) {
-		if(el) {
-			if(force) {
-				el.style.backgroundColor = null;
-			} else if(el.oldColor) {
-				el.style.backgroundColor = el.oldColor;
 			}
 		}
 	}
@@ -144,17 +124,14 @@ class BookingTable extends Component {
 
 	clearSelection() {
 		for(let cell of this.selectedCells) {
-			this.clearTint(cell);
 			cell.classList.remove('selected');
 			cell.classList.remove('select-end');
 		}
 
 		this.selectedCells = [];
-		//this.props.clearSelectionInfo();
 	}
 
 	selectCell(cell) {
-		this.tint(cell);
 		this.selectedCells.push(cell);
 		cell.classList.add('selected');
 	}

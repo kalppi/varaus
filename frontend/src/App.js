@@ -8,7 +8,7 @@ import { loadItems } from './reducers/itemsReducer';
 import './App.css';
 
 class App extends Component {
-	componentDidMount() {
+ componentDidMount() {
 		this.props.loadItems();
 		this.props.loadBookings();
 	}

@@ -1,3 +1,7 @@
+$cell-color: #eee;
+$booking-color: #2ad62a;
+$selected-tint: #f9efa2;
+
 #bookings {
 	width: 100%;
 
@@ -17,7 +21,7 @@
 		width: 35px;
 		height: 35px;
 		text-align: center;
-		background: #eee;
+		background: $cell-color;
 		border-bottom: 1px solid white;
 
 		&.day-left {
@@ -29,7 +33,7 @@
 		}
 
 		&.booking {
-			background: #2ad62a;
+			background: $booking-color;
 			cursor: pointer;
 			text-align: left;
 			padding-left: 3px;
@@ -39,6 +43,13 @@
 		&.selected {
 			border-left: 0;
 			border-right: 0;
+
+			background-color: mix($cell-color, $selected-tint, 50);
+
+			&.booking {
+				background-color: mix($booking-color, $selected-tint, 50);
+				border-right: 2px solid white;			
+			}
 		}
 
 		&.select-end {

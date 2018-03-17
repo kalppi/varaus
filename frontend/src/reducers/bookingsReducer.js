@@ -18,7 +18,7 @@ export const loadBookings = () => {
 		dispatch({
 			type: 'INIT_BOOKINGS',
 			data: bookings
-		})
+		});
 	};
 };
 

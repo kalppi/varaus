@@ -12,7 +12,7 @@ export default (state = [], action) => {
 export const loadItems = () => {
 	return async (dispatch) => {
 		const items = await itemService.getAll();
-
+		
 		dispatch({
 			type: 'INIT_ITEMS',
 			data: items
