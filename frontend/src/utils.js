@@ -7,5 +7,5 @@ export const formatDate = (date) => {
 		return '';
 	}
 
-	return mDate.format('DD.MM. YYYY');
+	return mDate.format('D.M. YYYY');
 };

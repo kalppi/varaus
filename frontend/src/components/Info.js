@@ -42,12 +42,30 @@ class Info extends Component {
 
 	parse(name, value) {
 		switch(name) {
-			case 'start':
-			case 'end':
-				return {
+			case 'start': {
+				const start = {
 					text: value,
-					value: moment(value.replace(/ /g, ''), 'DD.MM.YYYY', true)
+					value: moment(value.replace(/ /g, ''), 'D.M.YYYY', true)
 				};
+
+				const nights = this.props.values.end.value.diff(start.value, 'days');
+
+				this.form.setValue('nights', nights);
+
+				return start;
+			}
+			case 'end': {
+				const end = {
+					text: value,
+					value: moment(value.replace(/ /g, ''), 'D.M.YYYY', true)
+				};
+
+				const nights = end.value.diff(this.props.values.start.value, 'days');
+
+				this.form.setValue('nights', nights);
+
+				return end;
+			}
 			default:
 				return value;
 		}
@@ -76,7 +94,7 @@ class Info extends Component {
 
 		const buttonOptions = {
 			save: {
-				text: 'Save',
+				text: 'Update',
 				deleteText: 'Delete'
 			},
 			create: {
@@ -95,8 +113,8 @@ class Info extends Component {
 				onSubmit={this.onSubmit}
 				onBlur={this.onBlur}
 				save={this.props.setValues}
-				format={this.format}
-				parse={this.parse}
+				format={this.format.bind(this)}
+				parse={this.parse.bind(this)}
 				>
 				<Field name='item' editable={false} label={false} />
 

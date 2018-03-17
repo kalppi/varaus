@@ -295,7 +295,7 @@ class BookingTable extends Component {
 			]}
 		</tr>
 		<tr>
-			{[<th key='empty'></th>,
+			{[<th key='empty' className='empty-date'></th>,
 			dates.map(date => [
 				<th colSpan='2' key={`${date}-left`}  className='day-left'>
 					{ date.text }

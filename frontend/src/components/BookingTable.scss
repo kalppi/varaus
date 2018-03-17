@@ -13,7 +13,11 @@ $selected-tint: #f9efa2;
 		border-bottom: 2px solid white;
 
 		&.empty {
-			background: transparent;
+			border-bottom: 0 !important;
+		}
+
+		&.empty-date {
+			border-right-width: 2px;
 		}
 	}
 

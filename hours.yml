@@ -7,6 +7,7 @@ columns:
     -
       text: päivä
       align: center
+      merge: true
     -
       text: aika
       align: left 
@@ -33,3 +34,5 @@ data:
     - ['17.3.', 3, 'Info komponentin formin rakentelua paremmaksi ja päheemmin toimivaksi.']
     - ['17.3.', 1, 'Uuden varauksen voi luoda.']
     - ['17.3.', 2, 'Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen.']
+    - ['17.3.', 2, 'Varausten poistaminen onnistuu, kysyy varmistuksen.']
+    - ['17.3.', 2, 'Ulkoasun kehitystä ja validointilogiikaa.']

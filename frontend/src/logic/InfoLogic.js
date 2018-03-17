@@ -21,9 +21,13 @@ const validValues = (values) => {
 	const { name = "", email = "", start, end  } = values;
 
 	if(name.length === 0) errors.push('name');
+
 	if(email.length < 5 || email.indexOf('@') === -1) errors.push('email');
+
 	if(!start.value.isValid()) errors.push('start');
+
 	if(!end.value.isValid()) errors.push('end');
+	else if(end.value.isSameOrBefore(start.value)) errors.push('end');
 
 	if(errors.length === 0) {
 		return { isValid: true };
