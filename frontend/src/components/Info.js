@@ -74,16 +74,16 @@ class Info extends Component {
 			<h4>Booking info</h4>
 
 			<Form
-				ref={ref => this.form = ref}
-				onSubmit={this.onSubmit}
 				name='info'
-				save={this.props.setValues}
+				ref={ref => this.form = ref}
 				values={this.props.values}
+				onSubmit={this.onSubmit}
+				onBlur={this.onBlur}
+				save={this.props.setValues}
 				format={this.format}
 				parse={this.parse}
-				onBlur={this.onBlur}
 				>
-				<Field name='item' editable={false} />
+				<Field name='item' editable={false} label={false} />
 
 				<SingleRow>
 					<Field name='start' />

@@ -15,7 +15,7 @@ export default (state = initialState(), action) => {
 		case 'CLEAR_ALL_SELECTION':
 			return {...state, selection: null, selectedBooking: null};
 		case 'SELECT_BOOKING':
-			return {...state, selectedBooking: action.data.booking };
+			return {...state, selectedBooking: action.data.booking, selection: null };
 		case 'SET_SELECTION_INFO':
 			return {...state, selection: action.data};
 		case 'SET_INFO_VALUES':
