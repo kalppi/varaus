@@ -12,7 +12,7 @@ export default async (sequelize, models) => {
 		returning: true
 	});
 
-	const bookings = [{
+	let bookings = [{
 		start: '2018-10-13',
 		end: '2018-10-14',
 		ItemId: items[0].get('id'),
@@ -61,7 +61,7 @@ export default async (sequelize, models) => {
 		bookings[i].UserInfoId = userInfos[i].get('id');
 	}
 
-	await models.Booking.bulkCreate(bookings);
+	bookings = await models.Booking.bulkCreate(bookings, { returning: true });
 
 	return { items, bookings };
 };

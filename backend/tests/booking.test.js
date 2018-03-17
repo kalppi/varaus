@@ -41,7 +41,7 @@ describe('api', () => {
 
 	test('can update a booking', async () => {
 		await api
-			.put('/api/booking/' + items[0].get('id'))
+			.put('/api/booking/' + bookings[4].get('id'))
 			.send({
 				start: '2018-11-12',
 				end: '2018-11-13',
@@ -55,7 +55,7 @@ describe('api', () => {
 			.expect(204);
 
 		const rtn = await api
-			.get('/api/booking/' + items[0].get('id'));
+			.get('/api/booking/' + bookings[4].get('id'));
 
 		const { start, end, ItemId, UserInfo } = rtn.body;
 
