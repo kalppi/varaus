@@ -52,7 +52,7 @@ describe('api', () => {
 				}
 			})
 			.set('Content-Type', 'application/json')
-			.expect(204);
+			.expect(200);
 
 		const rtn = await api
 			.get('/api/booking/' + bookings[4].get('id'));
@@ -64,6 +64,17 @@ describe('api', () => {
 		expect(ItemId).toBe(items[1].get('id'));
 		expect(UserInfo.name).toBe('Matti');
 		expect(UserInfo.email).toBe('matti@google.fi');
+	});
+
+	test('can delete a booking', async () => {
+		await api
+			.delete('/api/booking/' + bookings[4].get('id'))
+			.expect(200);
+
+		const rtn = await api
+			.get('/api/booking/' + bookings[4].get('id'));
+
+		expect(rtn.body).toBe(null);
 	});
 
 	test('can create a booking with info', async () => {

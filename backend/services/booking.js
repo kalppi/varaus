@@ -30,4 +30,10 @@ const update = async (id, data) => {
 	return rtn;
 };
 
-export default { getAll, getOne, create, update };
+const del = async (id) => {
+	const rtn = await Booking.destroy({ where: { id }});
+
+	return rtn;
+};
+
+export default { getAll, getOne, create, update, delete: del };

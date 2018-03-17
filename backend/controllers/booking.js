@@ -40,7 +40,14 @@ route.route('/:id')
 
 		await bookingService.update(id, data);
 
-		res.status(204).json({});
+		res.status(200).json({});
+	})
+	.delete(async (req, res) => {
+		const id = req.params.id;
+
+		await bookingService.delete(id);
+
+		res.status(200).json({});
 	});
 
 export default route;
