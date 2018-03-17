@@ -32,3 +32,4 @@ data:
     - ['16.3.', 3, 'Info komponenttien logiikan uudelleenkirjoitusta, tietojen validointia.']
     - ['17.3.', 3, 'Info komponentin formin rakentelua paremmaksi ja päheemmin toimivaksi.']
     - ['17.3.', 1, 'Uuden varauksen voi luoda.']
+    - ['17.3.', 2, 'Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen.']

@@ -18,7 +18,7 @@ class App extends Component {
 			<div className='container-fluid'>
 				<div className='row'>
 					<div className='col-md-3'>
-						<Info />
+						{ this.props.showInfo ? <Info /> : null }
 					</div>
 					<div className='col-md-7 nopadding'>
 						<BookingTable />
@@ -32,6 +32,10 @@ class App extends Component {
 	}
 }
 
-export default connect(null, {
+export default connect((state) => {
+	return {
+		showInfo: state.app.selectedBooking !== null || state.app.selection !== null
+	};
+}, {
 	loadBookings, loadItems, selectBooking
 })(App);

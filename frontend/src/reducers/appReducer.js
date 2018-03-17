@@ -6,7 +6,8 @@ const initialState = () => {
 	return {
 		selectedBooking: null,
 		selection: null,
-		infoValues: {}
+		infoValues: {},
+		buttonEnabled: false
 	};
 };
 
@@ -22,6 +23,8 @@ export default (state = initialState(), action) => {
 			return {...state, infoValues: { ...state.infoValues, ...action.data }};
 		case 'CLEAR_INFO_VALUES':
 			return {...state, infoValues: {}};
+		case 'SET_BUTTON_ENABLED':
+			return {...state, buttonEnabled: action.data};
 		default:
 			return state;
 	}

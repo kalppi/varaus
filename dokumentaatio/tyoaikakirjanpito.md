@@ -19,4 +19,6 @@
 | 16.3. | 3 | Varauksen tietojen päivitys, Info komponentin nappilogiikkojen eteenpäin viemistä. | 
 | 16.3. | 3 | Info komponenttien logiikan uudelleenkirjoitusta, tietojen validointia. | 
 | 17.3. | 3 | Info komponentin formin rakentelua paremmaksi ja päheemmin toimivaksi. | 
-| yht. | 37
+| 17.3. | 1 | Uuden varauksen voi luoda. | 
+| 17.3. | 2 | Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen. | 
+| yht. | 40
