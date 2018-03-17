@@ -1,4 +1,4 @@
-import bookingService from '../services/bookingService';
+import bookingsService from '../services/bookingsService';
 
 export default (state = [], action) => {
 	switch(action.type) {
@@ -13,7 +13,7 @@ export default (state = [], action) => {
 
 export const loadBookings = () => {
 	return async (dispatch) => {
-		const bookings = await bookingService.getAll();
+		const bookings = await bookingsService.getAll();
 		
 		dispatch({
 			type: 'INIT_BOOKINGS',
@@ -24,7 +24,7 @@ export const loadBookings = () => {
 
 export const createBooking = (data) => {
 	return async (dispatch) => {
-		const booking = await bookingService.create(data);
+		const booking = await bookingsService.create(data);
 
 		dispatch({
 			type: 'CLEAR_ALL_SELECTION'

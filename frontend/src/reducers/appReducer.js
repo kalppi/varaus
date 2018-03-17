@@ -1,4 +1,4 @@
-import bookingService from '../services/bookingService';
+import bookingsService from '../services/bookingsService';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
@@ -42,7 +42,7 @@ export const selectBooking = (booking) => {
 				type: 'CLEAR_ALL_SELECTION'
 			});*/
 
-			const selected = await bookingService.getOne(booking.id);
+			const selected = await bookingsService.getOne(booking.id);
 			let infoValues = {};
 
 			if(selected) {
