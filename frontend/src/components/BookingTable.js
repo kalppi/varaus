@@ -54,8 +54,11 @@ class BookingTable extends Component {
 			if(cell) {
 				cell.colSpan = booking.length * 2;
 				cell.classList.add('booking');
+				cell.classList.remove('selected');
 
 				cell.innerHTML = booking.UserInfo.name;
+
+				this.clearTint(cell, true);
 			} else {
 				continue;
 			}
@@ -94,9 +97,13 @@ class BookingTable extends Component {
 		el.style.backgroundColor = tinycolor.mix(color, '#F9EFA2', 50).toHexString();
 	}
 
-	clearTint(el) {
-		if(el && el.oldColor) {
-			el.style.backgroundColor = el.oldColor;
+	clearTint(el, force = false) {
+		if(el) {
+			if(force) {
+				el.style.backgroundColor = null;
+			} else if(el.oldColor) {
+				el.style.backgroundColor = el.oldColor;
+			}
 		}
 	}
 

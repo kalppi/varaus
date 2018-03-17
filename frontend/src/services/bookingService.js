@@ -12,4 +12,9 @@ const getOne = (id) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, getOne };
+const create = (data) => {
+	const request = axios.post(`${base}`, data);
+	return request.then(response => response.data);
+};
+
+export default { getAll, getOne, create };

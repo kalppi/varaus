@@ -13,7 +13,7 @@ const initialState = () => {
 export default (state = initialState(), action) => {
 	switch(action.type) {
 		case 'CLEAR_ALL_SELECTION':
-			return {...state, selection: null, selectedBooking: null};
+			return {...state, selection: null, selectedBooking: null, infoValues: {}};
 		case 'SELECT_BOOKING':
 			return {...state, selectedBooking: action.data.booking, selection: null };
 		case 'SET_SELECTION_INFO':

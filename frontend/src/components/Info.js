@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setInfoValues } from '../reducers/appReducer';
+import { createBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button } from 'react-form-helper';
 import moment from 'moment';
 import { formatDate } from '../utils';
@@ -9,7 +10,22 @@ import './Info.css';
 
 class Info extends Component {
 	onSubmit = () => {
-		
+		if(this.props.selected) {
+
+		} else {
+			const values = this.props.values;
+			const data = {
+				ItemId: values.item.value,
+				start: values.start.value.format('YYYY-MM-DD'),
+				end: values.end.value.format('YYYY-MM-DD'),
+				UserInfo: {
+					name: values.name,
+					email: values.email
+				}
+			};
+
+			this.props.createBooking(data);
+		}
 	}
 
 	format(name, value) {
@@ -71,8 +87,6 @@ class Info extends Component {
 		}
 
 		return <div id='info'>
-			<h4>Booking info</h4>
-
 			<Form
 				name='info'
 				ref={ref => this.form = ref}
@@ -117,10 +131,12 @@ const hasChanged = (selected, values) => {
 const validValues = (values) => {
 	const errors = [];
 
-	const { name = '', email = '' } = values;
+	const { name = "", email = "", start, end  } = values;
 
 	if(name.length === 0) errors.push('name');
 	if(email.length < 5 || email.indexOf('@') === -1) errors.push('email');
+	if(!start.value.isValid()) errors.push('start');
+	if(!end.value.isValid()) errors.push('end');
 
 	if(errors.length === 0) {
 		return { isValid: true };
@@ -132,7 +148,7 @@ const validValues = (values) => {
 export default connect((state) => {
 	let buttonEnabled = false;
 
-	const { infoValues, selectedBooking } = state.app;
+	const { infoValues, selectedBooking, selection } = state.app;
 	
 	if(infoValues) {
 		if(selectedBooking) {
@@ -142,7 +158,7 @@ export default connect((state) => {
 				const valid = validValues(infoValues);
 				buttonEnabled = valid.isValid;
 			}
-		} else {
+		} else if(selection) {
 			const valid = validValues(infoValues);
 			buttonEnabled = valid.isValid;
 		}
@@ -155,5 +171,5 @@ export default connect((state) => {
 		values: state.app.infoValues
 	}
 }, {
-	setValues: setInfoValues
+	setValues: setInfoValues, createBooking
 })(Info);

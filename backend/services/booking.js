@@ -14,7 +14,7 @@ const create = async (data) => {
 	if(data.UserInfo) {
 		const info = await UserInfo.create(data.UserInfo);
 
-		return await Booking.create({...data, UserInfoId: info.get('id')})
+		return await Booking.create({...data, UserInfoId: info.get('id')}, {include: [Item, UserInfo]});
 	} else {
 		return await Booking.create(data);
 	}
