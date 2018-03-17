@@ -17,4 +17,9 @@ const create = (data) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, getOne, create };
+const del = (id) => {
+	const request = axios.delete(`${base}/${id}`);
+	return request.then(response => response.data);
+}
+
+export default { getAll, getOne, create, delete: del };

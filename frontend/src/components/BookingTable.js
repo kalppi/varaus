@@ -279,6 +279,9 @@ class BookingTable extends Component {
 			return acc;
 		}, []);
 
+		// force rerendering cells with this
+		const key = new Date().getTime();
+
 		return <table id='bookings'>
 		<thead>
 		<tr>
@@ -312,7 +315,7 @@ class BookingTable extends Component {
 	 				dates.map(date => {
 	 					return [
 	 						<td
-	 							key={`${date.text}-left`}
+	 							key={`${key}-${date.text}-left`}
 	 							className='day-left'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'left')}
@@ -320,7 +323,7 @@ class BookingTable extends Component {
 	 							onMouseMove={e => this.onMouseMove(item, date)}
 	 						></td>,
 	 						<td
-	 							key={`${date.text}-right`}
+	 							key={`${key}-${date.text}-right`}
 	 							className='day-right'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'right')}

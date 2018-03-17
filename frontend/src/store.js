@@ -13,9 +13,7 @@ const reducer = combineReducers({
 	items: itemsReducer
 });
 
-const logic = createLogicMiddleware([
-	infoLogic
-]);
+const logic = createLogicMiddleware([].concat(infoLogic));
 
 const store = createStore(
 	reducer,

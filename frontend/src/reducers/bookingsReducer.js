@@ -6,6 +6,8 @@ export default (state = [], action) => {
 			return [...action.data];
 		case 'ADD_BOOKING':
 			return [...state, action.data];
+		case 'DELETE_BOOKING_SUCCESS':
+			return state.filter(b => b.id !== action.data.id);
 		default:
 			return state;
 	}
@@ -35,4 +37,11 @@ export const createBooking = (data) => {
 			data: booking
 		});
 	};
+};
+
+export const deleteBooking = (id) => {
+	return {
+		type: 'DELETE_BOOKING',
+		data: { id }
+	}
 };

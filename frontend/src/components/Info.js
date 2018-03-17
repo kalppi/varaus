@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setInfoValues } from '../reducers/appReducer';
-import { createBooking } from '../reducers/bookingsReducer';
+import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button } from 'react-form-helper';
 import moment from 'moment';
 import { formatDate } from '../utils';
@@ -75,16 +75,17 @@ class Info extends Component {
 		const buttonType = selected ? 'save' : selection ? 'create' : 'none';
 
 		const buttonOptions = {
-			save: { text: 'Save' },
-			create: { text: 'Create '}
+			save: {
+				text: 'Save',
+				deleteText: 'Delete'
+			},
+			create: {
+				text: 'Create',
+				deleteText: 'Cancel'
+			}
 		};
 
-		let button = null;
-
-		if(buttonType !== 'none') {
-			const options = buttonOptions[buttonType];
-			button = <Button enabled={this.props.buttonEnabled} text={options.text} />
-		}
+		const button = buttonOptions[buttonType];
 
 		return <div id='info'>
 			<Form
@@ -108,7 +109,15 @@ class Info extends Component {
 				<Field name='name' />
 				<Field name='email' />
 
-				{ button  }
+				{ buttonType !== 'none' ?
+					<Button enabled={this.props.buttonEnabled} text={button.text} />
+					: null
+				}
+
+				{ buttonType === 'save' ?
+					<Button text={button.deleteText} className='pull-right' onClick={this.props.deleteBooking.bind(null, this.props.selected.id)} />
+					: null
+				}
 			</Form>
 		</div>;
 	}
@@ -122,5 +131,5 @@ export default connect((state) => {
 		values: state.app.infoValues
 	}
 }, {
-	setValues: setInfoValues, createBooking
+	setValues: setInfoValues, createBooking, deleteBooking
 })(Info);
