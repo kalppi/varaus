@@ -23,4 +23,7 @@
 |  | 1 | Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen. | 
 |  | 2 | Varausten poistaminen onnistuu, kysyy varmistuksen. | 
 |  | 1 | Ulkoasun kehitystä ja validointilogiikaa. | 
-| yht. | 38
+| 18.3. | 2 | BookingTablen solujen valinan logiikan mietiskelyä ja parantelua. | 
+|  | 2 | Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona. | 
+|  | 1 | BookingTablen refaktorointia ja siivousta. | 
+| yht. | 43
