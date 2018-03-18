@@ -22,11 +22,8 @@ class App extends Component {
 					<div className='col-md-3'>
 						<Info />
 					</div>
-					<div className='col-md-7 nopadding'>
+					<div className='col-md-9 nopadding'>
 						<BookingTable />
-					</div>
-					<div className='col-md-2'>
-						
 					</div>
 				</div>
 			</div>

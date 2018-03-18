@@ -5,7 +5,8 @@ import { formatDate } from '../utils';
 const initialState = () => {
 	return {
 		selectedBooking: null,
-		selection: null,
+		//selection: null,
+		selection: {},
 		infoValues: {},
 		buttonEnabled: false
 	};
@@ -25,8 +26,19 @@ export default (state = initialState(), action) => {
 			return {...state, infoValues: {}};
 		case 'SET_BUTTON_ENABLED':
 			return {...state, buttonEnabled: action.data};
+
+		case 'SET_SELECTION':
+			return {...state, selection: {...state.selection, ...action.data}};
+
 		default:
 			return state;
+	}
+};
+
+export const unselectBooking = () => {
+	return {
+		type: 'SELECT_BOOKING',
+		data: { booking: null }
 	}
 };
 
@@ -78,6 +90,13 @@ export const selectBooking = (booking) => {
 			
 		}
 	};
+};
+
+export const setSelection = (info) => {
+	return {
+		type: 'SET_SELECTION',
+		data: info
+	}
 };
 
 export const setSelectionInfo = (item, start, end) => {

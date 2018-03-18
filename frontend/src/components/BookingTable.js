@@ -186,7 +186,8 @@ class BookingTable extends Component {
 			while(cell !== cellEnd) {
 				if(!cell) break;
 
-				if(cell.classList.contains('booking')) {
+				//if(cell.classList.contains('booking')) {
+				if(!cell.classList.contains('cell')) {
 					cell.previousSibling.classList.add('select-end');
 					break;
 				}
@@ -227,7 +228,8 @@ class BookingTable extends Component {
 			while(cell !== cellEnd) {
 				if(!cell) break;
 
-				if(cell.classList.contains('booking')) {
+				//if(cell.classList.contains('booking')) {
+				if(!cell.classList.contains('cell')) {
 					cell.previousSibling.classList.add('select-end');
 					break;
 				}
@@ -237,7 +239,7 @@ class BookingTable extends Component {
 				cell = cell.nextSibling;
 			}
 
-			cellEnd.previousSibling.classList.add('select-end');
+			if(cellEnd) cellEnd.previousSibling.classList.add('select-end');
 
 			this.props.setSelectionInfo(start.item, startDate, endDate);
 		} else {
@@ -260,7 +262,8 @@ class BookingTable extends Component {
 			while(cell !== cellEnd) {
 				if(!cell) break;
 
-				if(cell.classList.contains('booking') || cell.classList.contains('item-name')) {
+				//if(cell.classList.contains('booking') || cell.classList.contains('item-name')) {
+				if(!cell.classList.contains('cell')) {
 					break;
 				}
 
@@ -297,11 +300,15 @@ class BookingTable extends Component {
 			date.add(1, 'day');
 		}
 
-		const WeekNumberColumns = weekNumbers.reduce((acc, value) => {
+		weekNumbers.unshift(moment(this.props.startDate).add(-1, 'days').isoWeek());
+		weekNumbers.push(date.isoWeek());
+
+		const weekNumberColumns = weekNumbers.reduce((acc, value) => {
 			if(acc.length === 0) {
 				return [{
 					number: value,
-					count: 1
+					count: 1,
+					width: 2
 				}];
 			}
 
@@ -309,15 +316,20 @@ class BookingTable extends Component {
 
 			if(last.number === value) {
 				last.count++;
+				last.width = last.count * 2;
 			} else {
 				acc.push({
 					number: value,
-					count: 1
+					count: 1,
+					width: 2
 				});
 			}
 
 			return acc;
 		}, []);
+
+		weekNumberColumns[0].width -= 1;
+		weekNumberColumns[weekNumberColumns.length - 1].width -= 1;
 
 		// force rerendering cells with this
 		const key = new Date().getTime();
@@ -326,8 +338,8 @@ class BookingTable extends Component {
 		<thead>
 		<tr>
 			{[<th key='empty' className='empty'></th>,
-			WeekNumberColumns.map(week => [
-				<th colSpan={ week.count * 2 } key={`${week}`}>
+			weekNumberColumns.map((week, index) => [
+				<th colSpan={  week.width } key={`${week}`}>
 					{ week.number }
 				</th>,
 				]
@@ -336,12 +348,13 @@ class BookingTable extends Component {
 		</tr>
 		<tr>
 			{[<th key='empty' className='empty-date'></th>,
-			dates.map(date => [
-				<th colSpan='2' key={`${date}-left`}  className='day-left'>
-					{ date.text }
-				</th>,
-				]
-			)
+				<th key='right-half'></th>,
+				dates.map(date => [
+					<th colSpan='2' key={`${date}-left`}  className='day-left'>
+						{ date.text }
+					</th>,
+				]),
+				<th key='left-half'></th>
 			]}
 		</tr>
 		</thead>
@@ -352,11 +365,12 @@ class BookingTable extends Component {
 	 				<td key={item.id} className='item-name'>
 	 					{item.name}
 	 				</td>,
+	 				<td key='right-half' className='day-right cell'></td>,
 	 				dates.map(date => {
 	 					return [
 	 						<td
 	 							key={`${key}-${date.text}-left`}
-	 							className='day-left'
+	 							className='day-left cell'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'left')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
@@ -364,14 +378,16 @@ class BookingTable extends Component {
 	 						></td>,
 	 						<td
 	 							key={`${key}-${date.text}-right`}
-	 							className='day-right'
+	 							className='day-right cell'
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'right')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
 	 							onMouseMove={e => this.onMouseMove(e, item, date, 'right')}
 	 						></td>
 	 						]
-	 				})
+	 				}),
+	 				<td key='left-half' className='day-left cell'></td>
+	 				
 	 			]}
 	 		</tr>
 		 )}
