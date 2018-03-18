@@ -12,12 +12,12 @@ class Minimap extends Component {
 		const days = nextProps.endDate.diff(nextProps.startDate, 'days') + 2;
 		const items = nextProps.items.length;
 
-		this.canvas.width = days * scale;
+		this.canvas.width = days * scale + days;
 		this.canvas.height = items * scale + 4 + (items - 1);
 
 		const ctx = this.canvas.getContext('2d');
 		ctx.fillStyle = '#eee';
-		ctx.fillRect(0, 0, days * scale, items * scale + 4 + (items - 1));
+		ctx.fillRect(0, 0, days * scale + days, items * scale + 4 + (items - 1));
 
 		ctx.fillStyle = 'green';
 
@@ -53,7 +53,7 @@ class Minimap extends Component {
 		}, []);
 
 		for(let rect of rects) {
-			ctx.fillRect(rect.x * scale, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
+			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
 		}
 
 		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
@@ -61,7 +61,7 @@ class Minimap extends Component {
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
+		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
 		ctx.stroke();
 	}
 
