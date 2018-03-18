@@ -52,17 +52,38 @@ class BookingTable extends Component {
 	componentDidUpdate() {
 		for(let booking of this.props.bookings) {
 			let cell = this.getCell(booking.ItemId, booking.m_start, 'right');
+			const cellEnd = this.getCell(booking.ItemId, booking.m_end, 'right');
 
-			if(cell) {
-				cell.colSpan = booking.length * 2;
-				cell.classList.add('booking');
-				cell.classList.remove('selected');
+			if(!cell) {
+				if(booking.m_start.isBefore(this.props.startDate) && booking.m_end.isSameOrAfter(this.props.startDate)) {
+					cell = this.getCell(booking.ItemId, this.props.startDate, 'left').previousSibling;
+				} else {
+					continue;
+				}
+			}
+	
+			cell.colSpan = booking.length * 2;
+			cell.classList.add('booking');
+			cell.classList.remove('selected');
 
-				cell.innerHTML = booking.UserInfo.name;
-			} else {
-				continue;
+			cell.innerHTML = booking.UserInfo.name;
+
+			cell = cell.nextSibling;
+
+			while(cell !== cellEnd) {
+				if(!cell) break;
+
+				if(!cell.classList.contains('cell')) {
+					break;
+				}
+
+				cell.style.display = 'none';
+
+				cell = cell.nextSibling;
 			}
 
+
+			/*
 			const date = moment(booking.m_start);
 			const end = moment(booking.m_end).subtract(1, 'days');
 
@@ -85,7 +106,7 @@ class BookingTable extends Component {
 			cell = this.getCell(booking.ItemId, date, 'left');
 			if(cell) {
 				cell.style.display = 'none';
-			}
+			}*/
 		}
 	}
 
@@ -359,13 +380,26 @@ class BookingTable extends Component {
 		</tr>
 		</thead>
 		<tbody>
-		 { this.props.items.map(item => 
-	 		<tr key={item.id}>
+		 { this.props.items.map(item => {
+		 	const dl = moment(dates[0].date).add(-1, 'days');
+
+		 	const dateLeft = {
+		 		text: dl.format('DD.MM.'),
+		 		full: dl.format('YYYY-MM-DD'),
+		 		date: dl
+		 	};
+
+	 		return <tr key={item.id}>
 	 			{[
 	 				<td key={item.id} className='item-name'>
 	 					{item.name}
 	 				</td>,
-	 				<td key='right-half' className='day-right cell'></td>,
+	 				<td
+	 					key='right-half'
+	 					className='day-right cell'
+	 					ref={ref => this.cells[`${item.id}-${dateLeft.full}-right`] = ref}
+	 					onMouseDown={e => this.onMouseDown(item, dateLeft, 'right')}
+	 				></td>,
 	 				dates.map(date => {
 	 					return [
 	 						<td
@@ -390,6 +424,7 @@ class BookingTable extends Component {
 	 				
 	 			]}
 	 		</tr>
+	 	}
 		 )}
 		</tbody>
 		</table>;
@@ -401,7 +436,7 @@ export default connect((state) => {
 	return {
 		bookings: state.bookings,
 		items: state.items,
-		startDate: moment('20181011', 'YYYYMMDD'),
+		startDate: moment('20181013', 'YYYYMMDD'),
 		selectedBooking: state.app.selectedBooking
 	}
 }, {
