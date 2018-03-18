@@ -19,7 +19,46 @@ class Minimap extends Component {
 
 		ctx.fillStyle = 'green';
 
-		for(let booking of nextProps.bookings) {
+		const rects = nextProps.bookings.reduce((acc, value) => {
+			let date = moment(value.start, 'YYYY-MM-DD');
+			const endDate = moment(value.end, 'YYYY-MM-DD');
+			const itemIndex = nextProps.items.findIndex(item => item.id === value.ItemId) + 1;
+
+			while(date.isBefore(endDate)) {
+				const dayIndex = date.diff(nextProps.startDate, 'days');
+
+				date.add(1, 'days');
+
+				//ctx.fillRect(dayIndex * scale + dayIndex, itemIndex * scale, scale, scale);
+
+				if(acc.length > 0) {
+					const last = acc[acc.length - 1];
+
+					if(last.id === value.id) {
+						last.w++;
+
+						continue;
+					}
+				}
+
+				acc.push({
+					x: dayIndex,
+					y: itemIndex,
+					w: 1,
+					id: value.id
+				});
+			}		
+
+			return acc;
+		}, []);
+
+		console.log(rects);
+
+		for(let rect of rects) {
+			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale, rect.w * scale, scale);			
+		}
+
+		/*for(let booking of nextProps.bookings) {
 			let date = moment(booking.start, 'YYYY-MM-DD');
 			const endDate = moment(booking.end, 'YYYY-MM-DD');
 			const itemIndex = nextProps.items.findIndex(item => item.id === booking.ItemId) + 1;
@@ -31,14 +70,14 @@ class Minimap extends Component {
 
 				date.add(1, 'days');
 			}			
-		}
+		}*/
 
-		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days') - 1;
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 3 ;
+		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
+		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 1;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale, 5 * scale);
+		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 1, (items + 2) * scale);
 		ctx.stroke();
 	}
 
