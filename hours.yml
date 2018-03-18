@@ -36,4 +36,6 @@ data:
     - ['17.3.', 1, 'Refaktorointia käyttämään redux-logic:ia, jotta business logic saataisiin kivemmin erilleen.']
     - ['17.3.', 2, 'Varausten poistaminen onnistuu, kysyy varmistuksen.']
     - ['17.3.', 1, 'Ulkoasun kehitystä ja validointilogiikaa.']
-    - ['18.2.', 2, 'BookingTablen solujen valinan logiikan mietiskelyä ja parantelua.']
+    - ['18.3.', 2, 'BookingTablen solujen valinan logiikan mietiskelyä ja parantelua.']
+    - ['18.3.', 2, 'Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona.']
+    - ['18.3.', 1, 'BookingTablen refaktorointia ja siivousta.']

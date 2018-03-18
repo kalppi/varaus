@@ -32,6 +32,34 @@ class BookingTable extends Component {
 
 			if(nextProps.selectedBooking !== null) this.clearSelection();
 		}
+
+		if(this.props.selection !== nextProps.selection) {
+			this.markSelection(nextProps.selection.item, nextProps.selection.start, nextProps.selection.end);
+		}
+	}
+
+	markSelection(item, start, end) {
+		if(start.isAfter(end)) {
+			[start, end] = [end, start];
+		}
+
+		let cell = this.getCell(item.id, start, 'right');
+		const cellEnd = this.getCell(item.id, end, 'right');
+
+		while(cell !== cellEnd) {
+			if(!cell) break;
+
+			if(!cell.classList.contains('cell')) {
+				cell.previousSibling.classList.add('select-end');
+				break;
+			}
+
+			this.selectCell(cell);
+
+			cell = cell.nextSibling;
+		}
+
+		if(cellEnd) cellEnd.previousSibling.classList.add('select-end');
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -126,9 +154,9 @@ class BookingTable extends Component {
 			this.selectStart = { item, date: date.date, type: lr };
 
 			if(lr === 'right') {
-				this.markSelection( { item, date: date.date },  { item, date: moment(date.date).add(1, 'days') });
+				this.setSelection( { item, date: date.date },  { item, date: moment(date.date).add(1, 'days') });
 			} else {
-				this.markSelection( { item, date: moment(date.date).add(-1, 'days') },  { item, date: date.date });
+				this.setSelection( { item, date: moment(date.date).add(-1, 'days') },  { item, date: date.date });
 			}
 		}
 	}
@@ -143,7 +171,7 @@ class BookingTable extends Component {
 
 		if(this.selectStart) {
 			this.selectEnd = { item, date: date.date, type: lr };
-			this.markSelection();
+			this.setSelection(this.selectStart, this.selectEnd);
 		}
 	}
 
@@ -161,12 +189,7 @@ class BookingTable extends Component {
 		cell.classList.add('selected');
 	}
 
-	markSelection(start, end) {
-		if(!start && !end) {
-			start = this.selectStart;
-			end = this.selectEnd;
-		}
-
+	setSelection(start, end) {
 //		if(this.oldStart === start && this.oldEnd === end) return;
 
 		if(start.item.id !== end.item.id) return;
@@ -201,6 +224,8 @@ class BookingTable extends Component {
 				startDate = moment(startDate).add(-1, 'days');
 			}
 
+
+/*
 			let cell = this.getCell(start.item.id, startDate, 'right');
 			const cellEnd = this.getCell(end.item.id, endDate, 'right');
 
@@ -218,7 +243,7 @@ class BookingTable extends Component {
 				cell = cell.nextSibling;
 			}
 
-			cellEnd.previousSibling.classList.add('select-end');
+			cellEnd.previousSibling.classList.add('select-end');*/
 
 			/*
 			let cellStart = this.getCell(start.item.id, startDate, 'right');
@@ -243,6 +268,7 @@ class BookingTable extends Component {
 				endDate = moment(endDate).add(1, 'days');
 			}
 
+/*
 			let cell = this.getCell(start.item.id, startDate, 'right');
 			const cellEnd = this.getCell(end.item.id, endDate, 'right');
 
@@ -260,7 +286,7 @@ class BookingTable extends Component {
 				cell = cell.nextSibling;
 			}
 
-			if(cellEnd) cellEnd.previousSibling.classList.add('select-end');
+			if(cellEnd) cellEnd.previousSibling.classList.add('select-end');*/
 
 			this.props.setSelectionInfo(start.item, startDate, endDate);
 		} else {
@@ -275,6 +301,7 @@ class BookingTable extends Component {
 				endDate = moment(endDate).add(-1, 'days');
 			}
 
+/*
 			let cell = this.getCell(start.item.id, startDate, 'left');
 			const cellEnd = this.getCell(end.item.id, endDate, 'left');
 
@@ -291,7 +318,7 @@ class BookingTable extends Component {
 				this.selectCell(cell);
 
 				cell = cell.previousSibling;
-			}
+			}*/
 
 			this.props.setSelectionInfo(start.item, endDate, startDate);
 		}
@@ -437,7 +464,8 @@ export default connect((state) => {
 		bookings: state.bookings,
 		items: state.items,
 		startDate: moment('20181013', 'YYYYMMDD'),
-		selectedBooking: state.app.selectedBooking
+		selectedBooking: state.app.selectedBooking,
+		selection: state.app.selection
 	}
 }, {
 	selectBooking, setSelectionInfo, clearSelectionInfo
