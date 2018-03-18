@@ -1,16 +1,21 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { setDate } from '../reducers/appReducer';
 import './Minimap.css';
 
 class Minimap extends Component {
 	componentWillReceiveProps(nextProps) {
 		if(!nextProps.tableStartDate || !nextProps.tableEndDate) return;
 
+		this.diff = this.props.endDate.diff(this.props.startDate, 'days');
+
 		const scale = 5;
 
 		const days = nextProps.endDate.diff(nextProps.startDate, 'days') + 2;
 		const items = nextProps.items.length;
+
+		this.days = days;
 
 		this.canvas.width = days * scale + days;
 		this.canvas.height = items * scale + 4 + (items - 1);
@@ -65,11 +70,21 @@ class Minimap extends Component {
 		ctx.stroke();
 	}
 
+	onMouseMove(e) {
+		const rect = this.canvas.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const p = x / rect.width;
+
+		const date = moment(this.props.startDate).add(this.diff * p, 'days');
+
+		this.props.setDate(date);
+	}
+
 	render() {
 		return <div id='minimap'>
 			<div className='left'>{this.props.startDate.format('D.M. YYYY')}</div>
 			<div className='right'>{this.props.endDate.format('D.M. YYYY')}</div>
-			<canvas ref={ref => this.canvas = ref} />
+			<canvas ref={ref => this.canvas = ref} onClick={this.onMouseMove.bind(this)} />
 		</div>
 	}
 }
@@ -84,5 +99,5 @@ export default connect((state) => {
 		tableEndDate: state.app.endDate
 	}
 }, {
-	
+	setDate
 })(Minimap);

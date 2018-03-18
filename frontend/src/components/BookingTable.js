@@ -57,7 +57,10 @@ class BookingTable extends Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if(this.props.items.length < nextProps.items.length) return true;
+		if(!this.props.startDate || !this.props.endDate) return false;
+
+		if(!this.props.startDate.isSame(nextProps.startDate, 'day') || !this.props.endDate.isSame(nextProps.endDate, 'day')) return true;
+		else if(this.props.items.length < nextProps.items.length) return true;
 		else return !deepEqual(nextProps.bookings, this.props.bookings);
 	}
 
@@ -314,7 +317,7 @@ class BookingTable extends Component {
 		 		date: dl
 		 	};
 
-	 		return <tr key={item.id}>
+	 		return <tr key={item.id + key}>
 	 			{[
 	 				<td key={item.id} className='item-name'>
 	 					{item.name}
