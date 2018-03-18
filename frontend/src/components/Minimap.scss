@@ -1,0 +1,20 @@
+#minimap {
+	width: 90%;
+
+	.left {
+		float: left;
+	}
+
+	.right {
+		float: right;
+	}
+
+	.left, .right {
+		font-size: 10pt;
+	}
+
+	canvas {
+		awidth: 100%;
+		aimage-rendering: pixelated;
+	}
+}

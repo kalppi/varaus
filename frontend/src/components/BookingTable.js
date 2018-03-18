@@ -78,7 +78,10 @@ class BookingTable extends Component {
 
 			if(!cell) {
 				if(booking.m_start.isBefore(this.props.startDate) && booking.m_end.isSameOrAfter(this.props.startDate)) {
-					cell = this.getCell(booking.ItemId, this.props.startDate, 'left').previousSibling;
+					cell = this.getCell(booking.ItemId, this.props.startDate, 'left');
+					if(!cell) continue;
+
+					cell = cell.previousSibling;
 				} else {
 					continue;
 				}
@@ -221,7 +224,9 @@ class BookingTable extends Component {
 		const dates = [];
 		const date = moment(this.props.startDate);
 
-		for(let i = 0; i < 10; i++) {
+		const diff = this.props.endDate.diff(this.props.startDate, 'days');
+
+		for(let i = 0; i < diff; i++) {
 			dates.push({
 				text: date.format('DD.MM.'),
 				full: date.format('YYYY-MM-DD'),
@@ -346,7 +351,8 @@ export default connect((state) => {
 	return {
 		bookings: state.bookings,
 		items: state.items,
-		startDate: moment('20181013', 'YYYYMMDD'),
+		startDate: state.app.startDate,
+		endDate: state.app.endDate,
 		selectedBooking: state.app.selectedBooking,
 		selection: state.app.selection
 	}

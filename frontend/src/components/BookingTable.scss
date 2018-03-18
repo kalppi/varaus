@@ -12,6 +12,10 @@ $selected-tint: #f9efa2;
 		border-right: 4px solid white;
 		border-bottom: 2px solid white;
 
+		&:last-child {
+			border-right: 0;
+		}
+
 		&.empty {
 			border-bottom: 0 !important;
 		}

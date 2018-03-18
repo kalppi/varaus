@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import BookingTable from './components/BookingTable';
 import Info from './components/Info';
 import Nav from './components/Nav';
+import Minimap from './components/Minimap';
 import { selectBooking } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
 import { loadItems } from './reducers/itemsReducer';
@@ -23,6 +24,7 @@ class App extends Component {
 						<Info />
 					</div>
 					<div className='col-md-9 nopadding'>
+						<Minimap />
 						<BookingTable />
 					</div>
 				</div>

@@ -8,7 +8,9 @@ const initialState = () => {
 		//selection: null,
 		selection: {},
 		infoValues: {},
-		buttonEnabled: false
+		buttonEnabled: false,
+		startDate: moment('20181013', 'YYYYMMDD'),
+		endDate: moment('20181023', 'YYYYMMDD')
 	};
 };
 
