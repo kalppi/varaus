@@ -27,7 +27,7 @@ class BookingTable extends Component {
 			if(nextProps.selectedBooking !== null) this.clearSelection();
 		}
 
-		if(this.props.selection !== nextProps.selection) {
+		if(nextProps.selection && this.props.selection !== nextProps.selection) {
 			this.markSelection(nextProps.selection.item, nextProps.selection.start, nextProps.selection.end);
 		}
 	}
