@@ -11,18 +11,18 @@ class Minimap extends Component {
 		const items = nextProps.items.length;
 
 		this.canvas.width = days * scale;
-		this.canvas.height = (items + 2) * scale;
+		this.canvas.height = items * scale + 4 + (items - 1);
 
 		const ctx = this.canvas.getContext('2d');
 		ctx.fillStyle = '#eee';
-		ctx.fillRect(0, 0, days * scale, (items + 2) * scale);
+		ctx.fillRect(0, 0, days * scale, items * scale + 4 + (items - 1));
 
 		ctx.fillStyle = 'green';
 
 		const rects = nextProps.bookings.reduce((acc, value) => {
 			let date = moment(value.start, 'YYYY-MM-DD');
 			const endDate = moment(value.end, 'YYYY-MM-DD');
-			const itemIndex = nextProps.items.findIndex(item => item.id === value.ItemId) + 1;
+			const itemIndex = nextProps.items.findIndex(item => item.id === value.ItemId);
 
 			while(date.isBefore(endDate)) {
 				const dayIndex = date.diff(nextProps.startDate, 'days');
@@ -52,10 +52,8 @@ class Minimap extends Component {
 			return acc;
 		}, []);
 
-		console.log(rects);
-
 		for(let rect of rects) {
-			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale, rect.w * scale, scale);			
+			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
 		}
 
 		/*for(let booking of nextProps.bookings) {
@@ -72,12 +70,12 @@ class Minimap extends Component {
 			}			
 		}*/
 
-		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 1;
+		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days') - 1;
+		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 2;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 1, (items + 2) * scale);
+		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
 		ctx.stroke();
 	}
 
