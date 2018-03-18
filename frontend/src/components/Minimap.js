@@ -5,6 +5,8 @@ import './Minimap.css';
 
 class Minimap extends Component {
 	componentWillReceiveProps(nextProps) {
+		if(!nextProps.tableStartDate || !nextProps.tableEndDate) return;
+
 		const scale = 5;
 
 		const days = nextProps.endDate.diff(nextProps.startDate, 'days');

@@ -73,11 +73,14 @@ class BookingTable extends Component {
 
 	componentDidUpdate() {
 		for(let booking of this.props.bookings) {
-			let cell = this.getCell(booking.ItemId, booking.m_start, 'right');
-			const cellEnd = this.getCell(booking.ItemId, booking.m_end, 'right');
+			const bookingStart = moment(booking.start);
+			const bookingEnd = moment(booking.end);
+
+			let cell = this.getCell(booking.ItemId, bookingStart, 'right');
+			const cellEnd = this.getCell(booking.ItemId, bookingEnd, 'right');
 
 			if(!cell) {
-				if(booking.m_start.isBefore(this.props.startDate) && booking.m_end.isSameOrAfter(this.props.startDate)) {
+				if(bookingStart.isBefore(this.props.startDate) && bookingEnd.isSameOrAfter(this.props.startDate)) {
 					cell = this.getCell(booking.ItemId, this.props.startDate, 'left');
 					if(!cell) continue;
 
@@ -86,7 +89,7 @@ class BookingTable extends Component {
 					continue;
 				}
 			}
-			
+
 			const firstCell = cell;
 			let colSpan = 1;
 
@@ -219,6 +222,8 @@ class BookingTable extends Component {
 	}
 
 	render() {
+		if(!this.props.startDate || !this.props.endDate) return null;
+
 		for(let booking of this.props.bookings) {
 			booking.m_start = moment(booking.start, 'YYYY-MM-DD');
 			booking.m_end = moment(booking.end, 'YYYY-MM-DD');

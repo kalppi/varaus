@@ -9,8 +9,7 @@ const initialState = () => {
 		selection: {},
 		infoValues: {},
 		buttonEnabled: false,
-		startDate: moment('20181012', 'YYYYMMDD'),
-		endDate: moment('20181022', 'YYYYMMDD')
+		date: null,
 	};
 };
 
@@ -32,8 +31,22 @@ export default (state = initialState(), action) => {
 		case 'SET_SELECTION':
 			return {...state, selection: {...state.selection, ...action.data}};
 
+
+		case 'SET_DATE':
+			const startDate = moment(action.data).add(-4, 'days');
+			const endDate = moment(action.data).add(5, 'days');
+
+			return {...state, date: action.data, startDate, endDate};
+
 		default:
 			return state;
+	}
+};
+
+export const setDate = (date) => {
+	return {
+		type: 'SET_DATE',
+		data: date
 	}
 };
 
