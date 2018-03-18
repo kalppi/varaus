@@ -1,5 +1,7 @@
 #minimap {
-	width: 90%;
+	awidth: 90%;
+	clear: both;
+	display: inline-block;
 
 	.left {
 		float: left;
@@ -17,7 +19,7 @@
 		float: left;
 		clear: both;
 		margin-bottom: 10px;
-		width: 100%;
+		awidth: 100%;
 		image-rendering: pixelated;
 	}
 }

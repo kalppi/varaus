@@ -9,7 +9,7 @@ class Minimap extends Component {
 
 		const scale = 5;
 
-		const days = nextProps.endDate.diff(nextProps.startDate, 'days');
+		const days = nextProps.endDate.diff(nextProps.startDate, 'days') + 2;
 		const items = nextProps.items.length;
 
 		this.canvas.width = days * scale;
@@ -27,11 +27,9 @@ class Minimap extends Component {
 			const itemIndex = nextProps.items.findIndex(item => item.id === value.ItemId);
 
 			while(date.isBefore(endDate)) {
-				const dayIndex = date.diff(nextProps.startDate, 'days');
+				const dayIndex = date.diff(nextProps.startDate, 'days') + 1;
 
 				date.add(1, 'days');
-
-				//ctx.fillRect(dayIndex * scale + dayIndex, itemIndex * scale, scale, scale);
 
 				if(acc.length > 0) {
 					const last = acc[acc.length - 1];
@@ -55,29 +53,15 @@ class Minimap extends Component {
 		}, []);
 
 		for(let rect of rects) {
-			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
+			ctx.fillRect(rect.x * scale, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
 		}
 
-		/*for(let booking of nextProps.bookings) {
-			let date = moment(booking.start, 'YYYY-MM-DD');
-			const endDate = moment(booking.end, 'YYYY-MM-DD');
-			const itemIndex = nextProps.items.findIndex(item => item.id === booking.ItemId) + 1;
-
-			while(date.isBefore(endDate)) {
-				const dayIndex = date.diff(nextProps.startDate, 'days');
-
-				ctx.fillRect(dayIndex * scale + dayIndex, itemIndex * scale, scale, scale);
-
-				date.add(1, 'days');
-			}			
-		}*/
-
-		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days') - 1;
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 2;
+		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
+		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 1;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
+		ctx.rect(startX * scale, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
 		ctx.stroke();
 	}
 
@@ -94,8 +78,8 @@ export default connect((state) => {
 	return {
 		bookings: state.bookings,
 		items: state.items,
-		startDate: moment('20180801', 'YYYYMMDD'),
-		endDate: moment('20181231', 'YYYYMMDD'),
+		startDate: moment(state.app.date).add(-60, 'days'),
+		endDate: moment(state.app.date).add(60, 'days'),
 		tableStartDate: state.app.startDate,
 		tableEndDate: state.app.endDate
 	}
