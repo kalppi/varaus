@@ -86,8 +86,10 @@ class BookingTable extends Component {
 					continue;
 				}
 			}
-	
-			cell.colSpan = booking.length * 2;
+			
+			const firstCell = cell;
+			let colSpan = 1;
+
 			cell.classList.add('booking');
 			cell.classList.remove('selected');
 
@@ -97,7 +99,7 @@ class BookingTable extends Component {
 
 			while(cell !== cellEnd) {
 				if(!cell) break;
-
+				
 				if(!cell.classList.contains('cell')) {
 					break;
 				}
@@ -105,7 +107,10 @@ class BookingTable extends Component {
 				cell.style.display = 'none';
 
 				cell = cell.nextSibling;
+				colSpan++;
 			}
+
+			firstCell.colSpan = colSpan;
 		}
 	}
 

@@ -9,8 +9,8 @@ const initialState = () => {
 		selection: {},
 		infoValues: {},
 		buttonEnabled: false,
-		startDate: moment('20181013', 'YYYYMMDD'),
-		endDate: moment('20181023', 'YYYYMMDD')
+		startDate: moment('20181015', 'YYYYMMDD'),
+		endDate: moment('20181025', 'YYYYMMDD')
 	};
 };
 

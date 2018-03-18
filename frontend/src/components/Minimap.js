@@ -5,7 +5,7 @@ import './Minimap.css';
 
 class Minimap extends Component {
 	componentWillReceiveProps(nextProps) {
-		const scale = 3;
+		const scale = 5;
 
 		const days = nextProps.endDate.diff(nextProps.startDate, 'days');
 		const items = nextProps.items.length;
@@ -27,18 +27,18 @@ class Minimap extends Component {
 			while(date.isBefore(endDate)) {
 				const dayIndex = date.diff(nextProps.startDate, 'days');
 
-				ctx.fillRect(dayIndex * scale, itemIndex * scale, scale, scale);
+				ctx.fillRect(dayIndex * scale + dayIndex, itemIndex * scale, scale, scale);
 
 				date.add(1, 'days');
 			}			
 		}
 
-		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days');
+		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days') - 1;
+		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 3 ;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale, 0, tableDayDiff * scale, 5 * scale);
+		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale, 5 * scale);
 		ctx.stroke();
 	}
 

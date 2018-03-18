@@ -39,3 +39,4 @@ data:
     - ['18.3.', 2, 'BookingTablen solujen valinan logiikan mietiskelyä ja parantelua.']
     - ['18.3.', 2, 'Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona.']
     - ['18.3.', 1, 'BookingTablen refaktorointia ja siivousta.']
+    - ['18.3.', 2, 'Minimapin tekoa.']

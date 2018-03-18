@@ -26,4 +26,5 @@
 | 18.3. | 2 | BookingTablen solujen valinan logiikan mietiskelyä ja parantelua. | 
 |  | 2 | Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona. | 
 |  | 1 | BookingTablen refaktorointia ja siivousta. | 
-| yht. | 43
+|  | 2 | Minimapin tekoa. | 
+| yht. | 45
