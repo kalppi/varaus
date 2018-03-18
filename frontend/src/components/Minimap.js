@@ -57,11 +57,11 @@ class Minimap extends Component {
 		}
 
 		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days');
+		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 2;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale + startX, 0, tableDayDiff * scale + 4, items * scale + 4 + (items - 1));
+		ctx.rect(startX * scale + startX - 1, 0, tableDayDiff * scale + 4 - 1, items * scale + 4 + (items - 1));
 		ctx.stroke();
 	}
 

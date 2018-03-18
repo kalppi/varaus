@@ -12,7 +12,7 @@ import './App.css';
 
 class App extends Component {
 	componentDidMount() {
-		this.props.init(moment('20181018', 'YYYYMMDD'));
+		this.props.init(moment('20181017', 'YYYYMMDD'));
 	}
 
 	render() {
