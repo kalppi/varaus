@@ -71,9 +71,15 @@ class Minimap extends Component {
 	}
 
 	onMouseDown(e) {
-		const rect = this.canvas.getBoundingClientRect();
+		const rect = this.canvas.getBoundingClientRect();		
+		const x = e.clientX - rect.left;
+		const p = x / rect.width;
+		const date = moment(this.props.startDate).add(parseInt(this.diff * p, 10), 'days');
+
+		this.props.setDate(date);
+
 		this.mouseDownX = e.clientX - rect.left;
-		this.mouseStartDate = moment(this.props.date);
+		this.mouseStartDate = moment(date);
 	}
 
 	onMouseUp(e) {
@@ -96,9 +102,9 @@ class Minimap extends Component {
 			<table>
 			<tbody>
 			<tr>
-				<td className='left'></td>
+				<td className='left'>{this.props.startDate.format('D.M. YYYY')}</td>
 				<td className='center'>{this.props.date ? this.props.date.format('D.M. YYYY') : null}</td>
-				<td className='right'></td>
+				<td className='right'>{this.props.endDate.format('D.M. YYYY')}</td>
 			</tr>
 			</tbody>
 			</table>
