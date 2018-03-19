@@ -27,4 +27,6 @@
 |  | 2 | Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona. | 
 |  | 1 | BookingTablen refaktorointia ja siivousta. | 
 |  | 2 | Minimapin tekoa. | 
-| yht. | 45
+|  | 3 | Minimapilla pystyy vaihtaa näkymän päivämäärää. | 
+| 19.3. | 2 | Päivänäkymän vaihtaminen toimii nyt hiirellä sulavammin. | 
+| yht. | 50
