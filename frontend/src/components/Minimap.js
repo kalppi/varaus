@@ -70,21 +70,45 @@ class Minimap extends Component {
 		ctx.stroke();
 	}
 
-	onMouseMove(e) {
+	onMouseDown(e) {
 		const rect = this.canvas.getBoundingClientRect();
-		const x = e.clientX - rect.left;
-		const p = x / rect.width;
+		this.mouseDownX = e.clientX - rect.left;
+		this.mouseStartDate = moment(this.props.date);
+	}
 
-		const date = moment(this.props.startDate).add(this.diff * p, 'days');
+	onMouseUp(e) {
+		this.mouseDownX = null;
+	}
+
+	onMouseMove(e) {
+		if(!this.mouseDownX) return;
+
+		const rect = this.canvas.getBoundingClientRect();
+		const x = (e.clientX - rect.left - this.mouseDownX);
+		const p = x / (rect.width / this.diff);
+		const date = moment(this.mouseStartDate).add(parseInt(p, 10), 'days');
 
 		this.props.setDate(date);
 	}
 
 	render() {
 		return <div id='minimap'>
-			<div className='left'>{this.props.startDate.format('D.M. YYYY')}</div>
-			<div className='right'>{this.props.endDate.format('D.M. YYYY')}</div>
-			<canvas ref={ref => this.canvas = ref} onClick={this.onMouseMove.bind(this)} />
+			<table>
+			<tbody>
+			<tr>
+				<td className='left'></td>
+				<td className='center'>{this.props.date ? this.props.date.format('D.M. YYYY') : null}</td>
+				<td className='right'></td>
+			</tr>
+			</tbody>
+			</table>
+
+			<canvas
+				ref={ref => this.canvas = ref}
+				onMouseDown={this.onMouseDown.bind(this)}
+				onMouseMove={this.onMouseMove.bind(this)}
+				onMouseUp={this.onMouseUp.bind(this)}
+			/>
 		</div>
 	}
 }
@@ -93,6 +117,7 @@ export default connect((state) => {
 	return {
 		bookings: state.bookings,
 		items: state.items,
+		date: state.app.date,
 		startDate: moment(state.app.date).add(-60, 'days'),
 		endDate: moment(state.app.date).add(60, 'days'),
 		tableStartDate: state.app.startDate,

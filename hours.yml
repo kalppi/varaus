@@ -40,3 +40,5 @@ data:
     - ['18.3.', 2, 'Varausten renderöinti silloin, kun se alkaa tai loppuu näkyvien päivien ulkona.']
     - ['18.3.', 1, 'BookingTablen refaktorointia ja siivousta.']
     - ['18.3.', 2, 'Minimapin tekoa.']
+    - ['18.3.', 3, 'Minimapilla pystyy vaihtaa näkymän päivämäärää.']
+    - ['19.3.', 2, 'Päivänäkymän vaihtaminen toimii nyt hiirellä sulavammin.']
