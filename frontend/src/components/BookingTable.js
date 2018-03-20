@@ -282,6 +282,17 @@ class BookingTable extends Component {
 		// force rerendering cells with this
 		const key = new Date().getTime();
 
+		const dl = moment(dates[0].date).add(-1, 'days');
+
+		const dateLeft = {
+			text: dl.format('DD.MM.'),
+			full: dl.format('YYYY-MM-DD'),
+			date: dl
+		};
+
+		const dateLeftWeekend = dateLeft.date.isoWeekday() >= 6 ? 'weekend' : '';
+		const dateRightWeekend = moment(dates[dates.length - 1].date).add(1, 'days').isoWeekday() >= 6 ? 'weekend' : '';
+
 		return <table id='bookings'>
 		<thead>
 		<tr>
@@ -296,7 +307,7 @@ class BookingTable extends Component {
 		</tr>
 		<tr>
 			{[<th key='empty' className='empty-date'></th>,
-				<th key='right-half'></th>,
+				<th key='right-half' className={`left-half ${dateLeftWeekend}`}></th>,
 				dates.map(date => {
 					const weekend = date.date.isoWeekday() >= 6 ? 'weekend' : '';
 
@@ -304,20 +315,12 @@ class BookingTable extends Component {
 						{ date.text }
 					</th>;
 				}),
-				<th key='left-half'></th>
+				<th key='left-half' className={`left-half ${dateRightWeekend}`}></th>
 			]}
 		</tr>
 		</thead>
 		<tbody>
 		 { this.props.items.map(item => {
-		 	const dl = moment(dates[0].date).add(-1, 'days');
-
-		 	const dateLeft = {
-		 		text: dl.format('DD.MM.'),
-		 		full: dl.format('YYYY-MM-DD'),
-		 		date: dl
-		 	};
-
 	 		return <tr key={item.id + key}>
 	 			{[
 	 				<td key={item.id} className='item-name'>
@@ -325,7 +328,7 @@ class BookingTable extends Component {
 	 				</td>,
 	 				<td
 	 					key='right-half'
-	 					className='day-right cell'
+	 					className={`day-right cell ${dateLeftWeekend}`}
 	 					ref={ref => this.cells[`${item.id}-${dateLeft.full}-right`] = ref}
 	 					onMouseDown={e => this.onMouseDown(item, dateLeft, 'right')}
 	 				><div></div></td>,
@@ -351,7 +354,7 @@ class BookingTable extends Component {
 	 						><div></div></td>
 	 						]
 	 				}),
-	 				<td key='left-half' className='day-left cell'><div></div></td>
+	 				<td key='left-half' className={`day-left cell ${dateRightWeekend}`}><div></div></td>
 	 				
 	 			]}
 	 		</tr>
