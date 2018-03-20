@@ -5,6 +5,13 @@ import { setDate } from '../reducers/appReducer';
 import './Minimap.css';
 
 class Minimap extends Component {
+	constructor(props) {
+		super(props);
+
+		document.addEventListener('mouseup', this.onMouseUp.bind(this));
+		document.addEventListener('mousemove', this.onMouseMove.bind(this));
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if(!nextProps.tableStartDate || !nextProps.tableEndDate) return;
 
@@ -116,8 +123,6 @@ class Minimap extends Component {
 			<canvas
 				ref={ref => this.canvas = ref}
 				onMouseDown={this.onMouseDown.bind(this)}
-				onMouseMove={this.onMouseMove.bind(this)}
-				onMouseUp={this.onMouseUp.bind(this)}
 			/>
 		</div>
 	}
