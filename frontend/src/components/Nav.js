@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Search } from './Search';
 import './Nav.css';
 
 class Nav extends Component {
@@ -15,7 +16,7 @@ class Nav extends Component {
 			<div className='col-md-9 nopadding'>
 				<div className="collapse navbar-collapse" id='search'>
 					<form className="form-inline my-2 m-lg-0">
-						<input className="form-control m-sm-0" type="search" placeholder="Search" aria-label="Search" />
+						<Search />
 					</form>
 				</div>
 			</div>

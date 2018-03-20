@@ -5,6 +5,7 @@ import BookingTable from './components/BookingTable';
 import Info from './components/Info';
 import Nav from './components/Nav';
 import Minimap from './components/Minimap';
+import { SearchResults } from './components/Search';
 import { setDate } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
 import { loadItems } from './reducers/itemsReducer';
@@ -26,6 +27,7 @@ class App extends Component {
 					<div className='col-md-9 nopadding'>
 						<Minimap />
 						<BookingTable />
+						<SearchResults />
 					</div>
 				</div>
 			</div>

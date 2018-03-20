@@ -5,8 +5,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "deep-equal": "^1.0.1",
+    "install": "^0.10.4",
+    "js-easy-text-search": "git+https://github.com/kalppi/js-easy-text-search.git",
     "moment": "^2.21.0",
     "node-sass-chokidar": "^1.1.0",
+    "npm": "^5.7.1",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",

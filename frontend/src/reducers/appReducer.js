@@ -10,6 +10,8 @@ const initialState = () => {
 		infoValues: {},
 		buttonEnabled: false,
 		date: null,
+		searchQuery: null,
+		searchResults: []
 	};
 };
 
@@ -37,6 +39,13 @@ export default (state = initialState(), action) => {
 			const endDate = moment(action.data).add(5, 'days');
 
 			return {...state, date: action.data, startDate, endDate};
+
+
+		case 'SET_SEARCH_QUERY':
+			return {...state, searchQuery: action.data};
+
+		case 'SET_SEARCH_RESULTS':
+			return {...state, searchResults: action.data};
 
 		default:
 			return state;
@@ -158,4 +167,11 @@ export const clearInfoValues = () => {
 	return {
 		type: 'CLEAR_INFO_VALUES'
 	};
+};
+
+export const search = (query) => {
+	return {
+		type: 'SET_SEARCH_QUERY',
+		data: query
+	}
 };
