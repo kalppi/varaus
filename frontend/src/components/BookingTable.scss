@@ -15,7 +15,7 @@ $weekend-color: mix($cell-color, #DCC2DC, 15);
 		border-bottom: 2px solid white;
 
 		&.weekend {
-			background-color: $weekend-color;
+			background-color: darken($weekend-color, 10%);
 		}
 
 		&:last-child {

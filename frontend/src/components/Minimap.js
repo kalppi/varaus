@@ -5,11 +5,14 @@ import { setDate } from '../reducers/appReducer';
 import './Minimap.css';
 
 class Minimap extends Component {
-	constructor(props) {
-		super(props);
-
+	componentDidMount() {
 		document.addEventListener('mouseup', this.onMouseUp.bind(this));
 		document.addEventListener('mousemove', this.onMouseMove.bind(this));
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mouseup', this.onMouseUp.bind(this));
+		document.removeEventListener('mousemove', this.onMouseMove.bind(this));
 	}
 
 	componentWillReceiveProps(nextProps) {
