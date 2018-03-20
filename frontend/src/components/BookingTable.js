@@ -98,8 +98,7 @@ class BookingTable extends Component {
 
 			cell.classList.add('booking');
 			cell.classList.remove('selected');
-
-			cell.innerHTML = booking.UserInfo.name;
+			cell.children[0].innerHTML = booking.UserInfo.name;
 
 			cell = cell.nextSibling;
 
@@ -298,11 +297,13 @@ class BookingTable extends Component {
 		<tr>
 			{[<th key='empty' className='empty-date'></th>,
 				<th key='right-half'></th>,
-				dates.map(date => [
-					<th colSpan='2' key={`${date}-left`}  className='day-left'>
+				dates.map(date => {
+					const weekend = date.date.isoWeekday() >= 6 ? 'weekend' : '';
+
+					return <th colSpan='2' key={`date-${date.date}-left`}  className={weekend}>
 						{ date.text }
-					</th>,
-				]),
+					</th>;
+				}),
 				<th key='left-half'></th>
 			]}
 		</tr>
@@ -327,12 +328,14 @@ class BookingTable extends Component {
 	 					className='day-right cell'
 	 					ref={ref => this.cells[`${item.id}-${dateLeft.full}-right`] = ref}
 	 					onMouseDown={e => this.onMouseDown(item, dateLeft, 'right')}
-	 				></td>,
+	 				><div></div></td>,
 	 				dates.map(date => {
+	 					const weekend = date.date.isoWeekday() >= 6 ? 'weekend' : '';
+
 	 					return [
 	 						<td
 	 							key={`${key}-${date.text}-left`}
-	 							className='day-left cell'
+	 							className={`day-left cell ${weekend}`}
 	 							ref={ref => this.cells[`${item.id}-${date.full}-left`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'left')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
@@ -340,15 +343,15 @@ class BookingTable extends Component {
 	 						></td>,
 	 						<td
 	 							key={`${key}-${date.text}-right`}
-	 							className='day-right cell'
+	 							className={`day-right cell ${weekend}`}
 	 							ref={ref => this.cells[`${item.id}-${date.full}-right`] = ref}
 	 							onMouseDown={e => this.onMouseDown(item, date, 'right')}
 	 							onMouseUp={e => this.onMouseUp(item, date)}
 	 							onMouseMove={e => this.onMouseMove(e, item, date, 'right')}
-	 						></td>
+	 						><div></div></td>
 	 						]
 	 				}),
-	 				<td key='left-half' className='day-left cell'></td>
+	 				<td key='left-half' className='day-left cell'><div></div></td>
 	 				
 	 			]}
 	 		</tr>

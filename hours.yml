@@ -42,3 +42,4 @@ data:
     - ['18.3.', 2, 'Minimapin tekoa.']
     - ['18.3.', 3, 'Minimapilla pystyy vaihtaa näkymän päivämäärää.']
     - ['19.3.', 2, 'Päivänäkymän vaihtaminen toimii nyt hiirellä sulavammin.']
+    - ['20.3.', 2, 'Pientä bugifixailua, ja BookingTablen ja Minimapin pieniä parannuksia.']

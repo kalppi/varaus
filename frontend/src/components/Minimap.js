@@ -76,10 +76,14 @@ class Minimap extends Component {
 		const p = x / rect.width;
 		const date = moment(this.props.startDate).add(parseInt(this.diff * p, 10), 'days');
 
-		this.props.setDate(date);
+		if(date.isBefore(this.props.tableStartDate) || date.isAfter(this.props.tableEndDate)) {
+			this.props.setDate(date);
+			this.mouseStartDate = moment(date);
+		} else {
+			this.mouseStartDate = moment(this.props.date);
+		}
 
 		this.mouseDownX = e.clientX - rect.left;
-		this.mouseStartDate = moment(date);
 	}
 
 	onMouseUp(e) {
