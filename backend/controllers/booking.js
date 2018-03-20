@@ -27,6 +27,13 @@ route.route('/')
 		}
 	});
 
+route.route('/search')
+	.get(async (req, res) => {
+		const ret = await bookingService.search(req.body.query);
+
+		res.status(201).json(ret);
+	});
+
 route.route('/:id')
 	.get(async (req, res) => {
 		const id = req.params.id;

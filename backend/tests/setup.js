@@ -1,4 +1,3 @@
-
 export default async (sequelize, models) => {
 	await sequelize.sync({ force: true });
 	
@@ -17,7 +16,7 @@ export default async (sequelize, models) => {
 		end: '2018-10-14',
 		ItemId: items[0].get('id'),
 		info: {
-			name: 'Pera',
+			name: 'Pera Perttilä',
 			email: 'pera@google.fi'
 		}
 	}, {

@@ -1,4 +1,4 @@
-import { models } from '../models';
+import { sequelize, models } from '../models';
 
 const { Booking, UserInfo, Item } = models;
 
@@ -36,4 +36,41 @@ const del = async (id) => {
 	return rtn;
 };
 
-export default { getAll, getOne, create, update, delete: del };
+const search = async (query) => {
+	const rows = await sequelize.query(
+		`SELECT
+			b.id, b.start, b."end",b."UserInfoId",
+			"ItemId", ui.name AS "UserInfo.name", ui.email AS "UserInfo.email", i.name AS "Item.name"
+		FROM (SELECT id, start, "end", "UserInfoId", "ItemId", UNNEST(search_data) AS part FROM "Bookings") b
+		INNER JOIN "UserInfos" ui ON ui.id = b."UserInfoId"
+		INNER JOIN "Items" i ON i.id = b."ItemId"
+		WHERE part LIKE ?
+		GROUP BY b.id, start, "end", "UserInfoId", "ItemId", ui.name, ui.email, i.name
+		LIMIT 20`,
+		{ replacements: [query + '%'], type: sequelize.QueryTypes.SELECT  }
+	);
+
+	const rtn = [];
+
+	for(let row of rows) {
+		const obj = {};
+
+		for(let key in row) {
+			if(key.indexOf('.') !== -1) {
+				const [left, right] = key.split('.', 2);
+
+				if(!obj[left]) obj[left] = {};
+
+				obj[left][right] = row[key];
+			} else {
+				obj[key] = row[key];
+			}
+		}
+
+		rtn.push(obj);
+	}
+
+	return rtn;
+};
+
+export default { getAll, getOne, create, update, delete: del, search };

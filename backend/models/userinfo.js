@@ -6,12 +6,7 @@ export default (sequelize, DataTypes) => {
 	});
 
 	UserInfo.associate = ({UserInfo, Booking}) => {
-		/*UserInfo.hasOne(Booking, {
-			onDelete: 'CASCADE',
-			foreignKey: {
-				allowNull: true
-			}
-		});*/
+		
 	};
 
 	return UserInfo;
