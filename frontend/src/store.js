@@ -7,7 +7,6 @@ import bookingsReducer from './reducers/bookingsReducer';
 import itemsReducer from './reducers/itemsReducer';
 import infoLogic from './logic/InfoLogic';
 import BookingTableLogic from './logic/BookingTableLogic';
-import SearchLogic from './logic/SearchLogic';
 
 const reducer = combineReducers({
 	app: appReducer,
@@ -15,7 +14,7 @@ const reducer = combineReducers({
 	items: itemsReducer
 });
 
-const logic = createLogicMiddleware([].concat(infoLogic).concat(BookingTableLogic).concat(SearchLogic));
+const logic = createLogicMiddleware([].concat(infoLogic).concat(BookingTableLogic));
 
 const store = createStore(
 	reducer,

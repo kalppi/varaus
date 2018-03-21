@@ -10,7 +10,6 @@ const initialState = () => {
 		infoValues: {},
 		buttonEnabled: false,
 		date: null,
-		searchQuery: null,
 		searchResults: []
 	};
 };
@@ -40,9 +39,6 @@ export default (state = initialState(), action) => {
 
 			return {...state, date: action.data, startDate, endDate};
 
-
-		case 'SET_SEARCH_QUERY':
-			return {...state, searchQuery: action.data};
 
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
@@ -74,10 +70,6 @@ export const selectBooking = (booking) => {
 				data: { booking: null }
 			}, clearInfoValues()]);
 		} else {
-			/*dispatch({
-				type: 'CLEAR_ALL_SELECTION'
-			});*/
-
 			const selected = await bookingsService.getOne(booking.id);
 			let infoValues = {};
 
@@ -170,8 +162,12 @@ export const clearInfoValues = () => {
 };
 
 export const search = (query) => {
-	return {
-		type: 'SET_SEARCH_QUERY',
-		data: query
+	return async (dispatch, getState) => {
+		const results = await bookingsService.search(query);
+
+		dispatch({
+			type: 'SET_SEARCH_RESULTS',
+			data: results
+		});
 	}
 };

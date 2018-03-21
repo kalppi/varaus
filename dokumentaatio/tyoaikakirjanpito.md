@@ -29,4 +29,7 @@
 |  | 2 | Minimapin tekoa. | 
 |  | 3 | Minimapilla pystyy vaihtaa näkymän päivämäärää. | 
 | 19.3. | 2 | Päivänäkymän vaihtaminen toimii nyt hiirellä sulavammin. | 
-| yht. | 50
+| 20.3. | 2 | Pientä bugifixailua, ja BookingTablen ja Minimapin pieniä parannuksia. | 
+|  | 3 | Haun backendi ja siihen yksinkertainen testi. | 
+| 21.3. | 2 | Haun parantelua, lisääminen frontendiin. | 
+| yht. | 57

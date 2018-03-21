@@ -37,6 +37,8 @@ const del = async (id) => {
 };
 
 const search = async (query) => {
+	if(query.length < 3) return [];
+
 	const rows = await sequelize.query(
 		`SELECT
 			b.id, b.start, b."end",b."UserInfoId",

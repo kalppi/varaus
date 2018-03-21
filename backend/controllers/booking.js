@@ -29,7 +29,7 @@ route.route('/')
 
 route.route('/search')
 	.get(async (req, res) => {
-		const ret = await bookingService.search(req.body.query);
+		const ret = await bookingService.search(req.query.query);
 
 		res.status(201).json(ret);
 	});

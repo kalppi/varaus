@@ -104,6 +104,11 @@ class Minimap extends Component {
 		if(!this.mouseDownX) return;
 
 		const rect = this.canvas.getBoundingClientRect();
+
+		if(e.clientX < rect.left || e.clientX > rect.right) {
+			return;
+		}
+
 		const x = (e.clientX - rect.left - this.mouseDownX);
 		const p = x / (rect.width / this.diff);
 		const date = moment(this.mouseStartDate).add(parseInt(p, 10), 'days');

@@ -1,4 +1,17 @@
 
 #Search {
 	margin-top: 10px;
+	width: 100%;
+
+	.search-id {
+		width: 40px;
+	}
+
+	.search-start, .search-end {
+		width: 150px;
+	}
+
+	.search-name, .search-email {
+		width: 200px;
+	}
 }
