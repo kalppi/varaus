@@ -37,7 +37,7 @@ const del = async (id) => {
 };
 
 const search = async (query) => {
-	if(query.length < 3) return [];
+	if(!query || query.length < 3) return [];
 
 	const rows = await sequelize.query(
 		`SELECT

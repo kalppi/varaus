@@ -137,7 +137,7 @@ describe('api', () => {
 	test.only('can search', async () => {
 		const rtn = await api
 			.get('/api/booking/search')
-			.send({
+			.query({
 				query: 'per'
 			})
 			.expect(201)
