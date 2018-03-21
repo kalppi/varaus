@@ -25,9 +25,10 @@ class App extends Component {
 						<Info />
 					</div>
 					<div className='col-md-9 nopadding'>
-						<Minimap />
-						<BookingTable />
-						<SearchResults />
+						{
+							this.props.showSearchResults ? <SearchResults />
+							: [<Minimap key='minimap' />, <BookingTable key='booking-table' />]
+						}						
 					</div>
 				</div>
 			</div>
@@ -35,7 +36,11 @@ class App extends Component {
 	}
 }
 
-export default connect(null, {
+export default connect((state) => {
+	return {
+		showSearchResults: state.app.searchResults.length > 0
+	}
+}, {
 	loadBookings, loadItems, setDate,
 }, (stateProps, dispatchProps, ownProps) => {
 	return Object.assign({

@@ -8,6 +8,8 @@ class Minimap extends Component {
 	componentDidMount() {
 		document.addEventListener('mouseup', this.onMouseUp.bind(this));
 		document.addEventListener('mousemove', this.onMouseMove.bind(this));
+
+		this.draw(this.props);
 	}
 
 	componentWillUnmount() {
@@ -16,14 +18,18 @@ class Minimap extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(!nextProps.tableStartDate || !nextProps.tableEndDate) return;
+		this.draw(nextProps);
+	}
+
+	draw(props) {
+		if(!props.tableStartDate || !props.tableEndDate) return;
 
 		this.diff = this.props.endDate.diff(this.props.startDate, 'days');
 
 		const scale = 5;
 
-		const days = nextProps.endDate.diff(nextProps.startDate, 'days') + 2;
-		const items = nextProps.items.length;
+		const days = props.endDate.diff(props.startDate, 'days') + 2;
+		const items = props.items.length;
 
 		this.days = days;
 
@@ -36,13 +42,13 @@ class Minimap extends Component {
 
 		ctx.fillStyle = 'green';
 
-		const rects = nextProps.bookings.reduce((acc, value) => {
+		const rects = props.bookings.reduce((acc, value) => {
 			let date = moment(value.start, 'YYYY-MM-DD');
 			const endDate = moment(value.end, 'YYYY-MM-DD');
-			const itemIndex = nextProps.items.findIndex(item => item.id === value.ItemId);
+			const itemIndex = props.items.findIndex(item => item.id === value.ItemId);
 
 			while(date.isBefore(endDate)) {
-				const dayIndex = date.diff(nextProps.startDate, 'days') + 1;
+				const dayIndex = date.diff(props.startDate, 'days') + 1;
 
 				date.add(1, 'days');
 
@@ -71,8 +77,8 @@ class Minimap extends Component {
 			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
 		}
 
-		const startX = nextProps.tableStartDate.diff(nextProps.startDate, 'days');
-		const tableDayDiff = nextProps.tableEndDate.diff(nextProps.tableStartDate, 'days') + 2;
+		const startX = props.tableStartDate.diff(props.startDate, 'days');
+		const tableDayDiff = props.tableEndDate.diff(props.tableStartDate, 'days') + 2;
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;

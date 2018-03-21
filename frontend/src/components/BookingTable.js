@@ -16,6 +16,10 @@ class BookingTable extends Component {
 		this.lastMouseMoveCell = null;
 	}
 
+	componentDidMount() {
+		this.draw();
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if(this.props.selectedBooking !== nextProps.selectedBooking) {
 			const oldCell = this.getBookingCell(this.props.selectedBooking);
@@ -30,6 +34,10 @@ class BookingTable extends Component {
 		if(nextProps.selection && this.props.selection !== nextProps.selection) {
 			this.markSelection(nextProps.selection.item, nextProps.selection.start, nextProps.selection.end);
 		}
+	}
+
+	componentDidUpdate() {
+		this.draw();
 	}
 
 	markSelection(item, start, end) {
@@ -74,7 +82,7 @@ class BookingTable extends Component {
 		return this.cells[id];
 	}
 
-	componentDidUpdate() {
+	draw() {
 		for(let booking of this.props.bookings) {
 			const bookingStart = moment(booking.start);
 			const bookingEnd = moment(booking.end);
