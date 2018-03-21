@@ -104,9 +104,6 @@ class Minimap extends Component {
 
 	onMouseUp(e) {
 		this.mouseDownX = null;
-
-		//console.log(this.props.date.format('D.M.'));
-
 		this.props.loadBookings();
 	}
 

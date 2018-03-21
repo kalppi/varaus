@@ -56,12 +56,12 @@ export const setDate = (date) => {
 		data: {
 			date,
 			loadBounds: {
-				start: moment(date).add(-80, 'days'),
-				end: moment(date).add(80, 'days')
+				start: moment(date).add(-120, 'days'),
+				end: moment(date).add(120, 'days')
 			},
 			minimapViewBounds: {
-				start: moment(date).add(-40, 'days'),
-				end: moment(date).add(40, 'days')
+				start: moment(date).add(-60, 'days'),
+				end: moment(date).add(60, 'days')
 			}
 		}
 	}

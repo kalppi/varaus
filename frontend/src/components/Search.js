@@ -20,7 +20,16 @@ class Search extends Component {
 	}
 
 	render() {
-		return <input ref={ref => this.input = ref} className="form-control m-sm-0" type="search" placeholder="Search" aria-label="Search" onChange={this.onChange.bind(this)} />;
+		return <div>
+			<input
+				ref={ref => this.input = ref}
+				className="form-control m-sm-0"
+				type="search"
+				placeholder="Search"
+				aria-label="Search"
+				onChange={this.onChange.bind(this)}
+			/>
+			</div>
 	}
 }
 

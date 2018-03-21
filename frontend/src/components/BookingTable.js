@@ -301,6 +301,14 @@ class BookingTable extends Component {
 		const dateLeftWeekend = dateLeft.date.isoWeekday() >= 6 ? 'weekend' : '';
 		const dateRightWeekend = moment(dates[dates.length - 1].date).add(1, 'days').isoWeekday() >= 6 ? 'weekend' : '';
 
+		const items = [...this.props.items];
+
+		// extra row just to keep the table width same with any number of booking cells.
+		items.push({
+			id: Number.MAX_SAFE_INTEGER, 
+			name: '',
+		});
+
 		return <table id='bookings'>
 		<thead>
 		<tr>
@@ -328,7 +336,7 @@ class BookingTable extends Component {
 		</tr>
 		</thead>
 		<tbody>
-		 { this.props.items.map(item => {
+		 { items.map(item => {
 	 		return <tr key={item.id + key}>
 	 			{[
 	 				<td key={item.id} className='item-name'>
