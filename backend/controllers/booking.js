@@ -5,9 +5,16 @@ const route = Router();
 
 route.route('/')
 	.get(async (req, res) => {
-		const data = await bookingService.getAll();
+		const start = req.query.start;
+		const end = req.query.end;
 
-		res.json(data);
+		if(start && end) {
+			const data = await bookingService.getAllBetween(start, end);
+			res.json(data);
+		} else {
+			const data = await bookingService.getAll();
+			res.json(data);
+		}
 	})
 	.post(async (req, res) => {
 		const data = req.body;

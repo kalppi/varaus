@@ -1,10 +1,26 @@
-import { sequelize, models } from '../models';
+import { Sequelize, sequelize, models } from '../models';
 
 const { Booking, UserInfo, Item } = models;
 
 const getAll = async () => {
 	return await Booking.findAll({include: [{model: UserInfo, attributes: ['name']}]});
 };
+
+const getAllBetween = async (start, end) => {
+	const Op = Sequelize.Op;
+
+	return await Booking.findAll({
+		where: {
+			end: {
+				[Op.gte]: start
+			},
+			start: {
+				[Op.lte]: end
+			}
+		},
+		include: [{model: UserInfo, attributes: ['name']}]
+	});
+};	
 
 const getOne = async (id) => {
 	return await Booking.find({ where: { id }, include: [ Item, UserInfo ]});
@@ -75,4 +91,4 @@ const search = async (query) => {
 	return rtn;
 };
 
-export default { getAll, getOne, create, update, delete: del, search };
+export default { getAll, getAllBetween, getOne, create, update, delete: del, search };

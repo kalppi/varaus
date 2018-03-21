@@ -24,6 +24,17 @@ describe('api', () => {
 		expect(data.body.length).toBe(bookings.length);
 	});
 
+	test('bookings are returned between specified dates', async () => {
+		const data = await api
+			.get('/api/booking')
+			.query({
+				start: '2018-08-02',
+				end: '2018-08-31'
+			});
+
+		expect(data.body.length).toBe(1);
+	});
+
 	test('can create a booking', async () => {
 		const rtn = await api
 			.post('/api/booking')
@@ -134,7 +145,7 @@ describe('api', () => {
 		}
 	});
 
-	test.only('can search', async () => {
+	test('can search', async () => {
 		const rtn = await api
 			.get('/api/booking/search')
 			.query({
@@ -143,7 +154,7 @@ describe('api', () => {
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
 
-		expect(rtn.body.length).toBe(2);
+		expect(rtn.body.length).toBe(3);
 	});
 });
 

@@ -59,6 +59,14 @@ export default async (sequelize, models) => {
 			name: 'Maisa-Inkeri Kullervoinen',
 			email: 'kuuuul@google.fi'
 		}
+	}, {
+		start: '2018-08-02',
+		end: '2018-08-04',
+		ItemId: items[1].get('id'),
+		info: {
+			name: 'Maisa-Inkeri Kullervoinen',
+			email: 'kuuuul@google.fi'
+		}
 	}];
 
 	const infos = bookings.map(booking => booking.info);

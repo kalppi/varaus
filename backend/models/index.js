@@ -42,4 +42,4 @@ sequelize.sync = async (...args) => {
 	await sequelize.query(query.toString());
 };
 
-export { sequelize, models };
+export { Sequelize, sequelize, models };
