@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION set_search_data()
 RETURNS trigger AS $$
 BEGIN
   IF NEW.search_data IS NULL THEN
-    NEW.search_data := (SELECT REGEXP_SPLIT_TO_ARRAY(LOWER(CONCAT_WS(' ', i.name, i.email)), '\s+') FROM "UserInfos" i WHERE i.id = new.id );
+    NEW.search_data := (SELECT REGEXP_SPLIT_TO_ARRAY(LOWER(CONCAT_WS(' ', i.name, i.email)), '(\s+|@|\-|\.)') FROM "UserInfos" i WHERE i.id = new.id );
   END IF;
 
   RETURN NEW;
