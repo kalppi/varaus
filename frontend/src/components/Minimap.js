@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { setDate } from '../reducers/appReducer';
+import { loadBookings } from '../reducers/bookingsReducer';
 import './Minimap.css';
 
 class Minimap extends Component {
@@ -22,13 +23,12 @@ class Minimap extends Component {
 	}
 
 	draw(props) {
-		if(!props.tableStartDate || !props.tableEndDate) return;
-
-		this.diff = this.props.endDate.diff(this.props.startDate, 'days');
+		if(!props.tableStartDate || !props.tableEndDate || !props.viewBounds) return;
+		this.diff = props.viewBounds.end.diff(props.viewBounds.start, 'days');
 
 		const scale = 5;
 
-		const days = props.endDate.diff(props.startDate, 'days') + 2;
+		const days = props.viewBounds.end.diff(props.viewBounds.start, 'days') + 2;
 		const items = props.items.length;
 
 		this.days = days;
@@ -41,14 +41,14 @@ class Minimap extends Component {
 		ctx.fillRect(0, 0, days * scale + days, items * scale + 4 + (items - 1));
 
 		ctx.fillStyle = 'green';
-
+		
 		const rects = props.bookings.reduce((acc, value) => {
 			let date = moment(value.start, 'YYYY-MM-DD');
 			const endDate = moment(value.end, 'YYYY-MM-DD');
 			const itemIndex = props.items.findIndex(item => item.id === value.ItemId);
 
 			while(date.isBefore(endDate)) {
-				const dayIndex = date.diff(props.startDate, 'days') + 1;
+				const dayIndex = date.diff(props.viewBounds.start, 'days') + 1;
 
 				date.add(1, 'days');
 
@@ -77,7 +77,7 @@ class Minimap extends Component {
 			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
 		}
 
-		const startX = props.tableStartDate.diff(props.startDate, 'days');
+		const startX = props.tableStartDate.diff(props.viewBounds.start, 'days');
 		const tableDayDiff = props.tableEndDate.diff(props.tableStartDate, 'days') + 2;
 
 		ctx.strokeStyle = 'red';
@@ -90,7 +90,7 @@ class Minimap extends Component {
 		const rect = this.canvas.getBoundingClientRect();		
 		const x = e.clientX - rect.left;
 		const p = x / rect.width;
-		const date = moment(this.props.startDate).add(parseInt(this.diff * p, 10), 'days');
+		const date = moment(this.props.viewBounds.start).add(parseInt(this.diff * p, 10), 'days');
 
 		if(date.isBefore(this.props.tableStartDate) || date.isAfter(this.props.tableEndDate)) {
 			this.props.setDate(date);
@@ -104,6 +104,10 @@ class Minimap extends Component {
 
 	onMouseUp(e) {
 		this.mouseDownX = null;
+
+		//console.log(this.props.date.format('D.M.'));
+
+		this.props.loadBookings();
 	}
 
 	onMouseMove(e) {
@@ -127,9 +131,9 @@ class Minimap extends Component {
 			<table>
 			<tbody>
 			<tr>
-				<td className='left'>{this.props.startDate.format('D.M. YYYY')}</td>
+				<td className='left'>{this.props.viewBounds ? this.props.viewBounds.start.format('D.M. YYYY') : null}</td>
 				<td className='center'>{this.props.date ? this.props.date.format('D.M. YYYY') : null}</td>
-				<td className='right'>{this.props.endDate.format('D.M. YYYY')}</td>
+				<td className='right'>{this.props.viewBounds ? this.props.viewBounds.end.format('D.M. YYYY') : null}</td>
 			</tr>
 			</tbody>
 			</table>
@@ -147,11 +151,10 @@ export default connect((state) => {
 		bookings: state.bookings,
 		items: state.items,
 		date: state.app.date,
-		startDate: moment(state.app.date).add(-60, 'days'),
-		endDate: moment(state.app.date).add(60, 'days'),
+		viewBounds: state.app.minimapViewBounds,
 		tableStartDate: state.app.startDate,
 		tableEndDate: state.app.endDate
 	}
 }, {
-	setDate
+	setDate, loadBookings
 })(Minimap);

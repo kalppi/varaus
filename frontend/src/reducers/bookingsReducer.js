@@ -14,9 +14,11 @@ export default (state = [], action) => {
 };
 
 export const loadBookings = () => {
-	return async (dispatch) => {
-		const bookings = await bookingsService.getAll();
-		
+	return async (dispatch, getState) => {
+		const { loadBounds } = getState().app;
+
+		const bookings = await bookingsService.getAllBetween(loadBounds.start, loadBounds.end);
+
 		dispatch({
 			type: 'INIT_BOOKINGS',
 			data: bookings

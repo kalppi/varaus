@@ -1,9 +1,15 @@
 import axios from 'axios';
+import { formatDateDb } from '../utils';
 
 const base = '/api/booking';
 
 const getAll = () => {
 	const request = axios.get(base);
+	return request.then(response => response.data);
+};
+
+const getAllBetween = (start ,end) => {
+	const request = axios.get(base, {params: { start: formatDateDb(start), end: formatDateDb(end) }});
 	return request.then(response => response.data);
 };
 
@@ -27,4 +33,4 @@ const search = (query) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, getOne, create, delete: del, search };
+export default { getAll, getAllBetween, getOne, create, delete: del, search };

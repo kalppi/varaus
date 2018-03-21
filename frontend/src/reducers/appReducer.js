@@ -10,7 +10,9 @@ const initialState = () => {
 		infoValues: {},
 		buttonEnabled: false,
 		date: null,
-		searchResults: []
+		searchResults: [],
+		loadBounds: null,
+		minimapViewBounds: null
 	};
 };
 
@@ -34,10 +36,10 @@ export default (state = initialState(), action) => {
 
 
 		case 'SET_DATE':
-			const startDate = moment(action.data).add(-4, 'days');
-			const endDate = moment(action.data).add(5, 'days');
+			const startDate = moment(action.data.date).add(-4, 'days');
+			const endDate = moment(action.data.date).add(5, 'days');
 
-			return {...state, date: action.data, startDate, endDate};
+			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
 
 
 		case 'SET_SEARCH_RESULTS':
@@ -51,7 +53,17 @@ export default (state = initialState(), action) => {
 export const setDate = (date) => {
 	return {
 		type: 'SET_DATE',
-		data: date
+		data: {
+			date,
+			loadBounds: {
+				start: moment(date).add(-80, 'days'),
+				end: moment(date).add(80, 'days')
+			},
+			minimapViewBounds: {
+				start: moment(date).add(-40, 'days'),
+				end: moment(date).add(40, 'days')
+			}
+		}
 	}
 };
 

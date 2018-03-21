@@ -9,3 +9,7 @@ export const formatDate = (date) => {
 
 	return mDate.format('D.M. YYYY');
 };
+
+export const formatDateDb = (date) => {
+	return date.format('YYYY-MM-DD');
+};

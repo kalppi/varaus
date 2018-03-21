@@ -1,6 +1,7 @@
 #minimap {
 	clear: both;
 	display: inline-block;
+	user-select: none;
 
 	canvas {
 		float: left;
