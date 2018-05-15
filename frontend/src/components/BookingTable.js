@@ -48,6 +48,10 @@ class BookingTable extends Component {
 		let cell = this.getCell(item.id, start, 'right');
 		const cellEnd = this.getCell(item.id, end, 'right');
 
+		if(cell === null && start.isBefore(this.props.startDate)) {
+			cell = this.getCell(item.id, moment(this.props.startDate).add(-1, 'days'), 'right');
+		}
+
 		while(cell !== cellEnd) {
 			if(!cell) break;
 
@@ -108,6 +112,12 @@ class BookingTable extends Component {
 			cell.classList.remove('selected');
 			cell.children[0].innerHTML = booking.UserInfo.name;
 
+			if(this.props.selectedBooking) {
+				if(this.props.selectedBooking.id === booking.id) {
+					cell.classList.add('selected');
+				}
+			}
+
 			cell = cell.nextSibling;
 
 			while(cell !== cellEnd) {
@@ -124,6 +134,11 @@ class BookingTable extends Component {
 			}
 
 			firstCell.colSpan = colSpan;
+		}
+
+		if(this.props.selection && this.props.selection.start) {
+			const { item, start, end } = this.props.selection;
+			this.markSelection(item, start, end);
 		}
 	}
 

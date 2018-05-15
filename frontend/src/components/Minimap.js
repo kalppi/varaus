@@ -36,13 +36,9 @@ class Minimap extends Component {
 		if(!props.tableStartDate || !props.tableEndDate || !props.viewBounds) return;
 		
 		const diff = props.viewBounds.end.diff(props.viewBounds.start, 'days');
-
 		const scale = 5;
-
 		const days = props.viewBounds.end.diff(props.viewBounds.start, 'days') + 2;
 		const items = props.items.length;
-
-		//this.days = days;
 
 		this.canvas.width = days * scale + days;
 		this.canvas.height = items * scale + 4 + (items - 1);
