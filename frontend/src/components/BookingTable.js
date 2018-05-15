@@ -136,7 +136,7 @@ class BookingTable extends Component {
 			firstCell.colSpan = colSpan;
 		}
 
-		if(this.props.selection && this.props.selection.start) {
+		if(this.props.selection && this.props.selection) {
 			const { item, start, end } = this.props.selection;
 			this.markSelection(item, start, end);
 		}

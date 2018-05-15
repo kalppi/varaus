@@ -5,8 +5,7 @@ import { formatDate } from '../utils';
 const initialState = () => {
 	return {
 		selectedBooking: null,
-		//selection: null,
-		selection: {},
+		selection: null,
 		infoValues: {},
 		buttonEnabled: false,
 		date: null,
@@ -30,18 +29,11 @@ export default (state = initialState(), action) => {
 			return {...state, infoValues: {}};
 		case 'SET_BUTTON_ENABLED':
 			return {...state, buttonEnabled: action.data};
-
-		case 'SET_SELECTION':
-			return {...state, selection: {...state.selection, ...action.data}};
-
-
 		case 'SET_DATE':
 			const startDate = moment(action.data.date).add(-4, 'days');
 			const endDate = moment(action.data.date).add(5, 'days');
 
 			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
-
-
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
 
@@ -118,13 +110,6 @@ export const selectBooking = (booking) => {
 			
 		}
 	};
-};
-
-export const setSelection = (info) => {
-	return {
-		type: 'SET_SELECTION',
-		data: info
-	}
 };
 
 export const setSelectionInfo = (item, start, end) => {
