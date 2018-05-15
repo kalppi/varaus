@@ -6,6 +6,16 @@ import { loadBookings } from '../reducers/bookingsReducer';
 import './Minimap.css';
 
 class Minimap extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			mouseDownX: null,
+			mouseStartDate: null,
+			diff: null
+		};
+	}
+
 	componentDidMount() {
 		document.addEventListener('mouseup', this.onMouseUp.bind(this));
 		document.addEventListener('mousemove', this.onMouseMove.bind(this));
@@ -24,14 +34,15 @@ class Minimap extends Component {
 
 	draw(props) {
 		if(!props.tableStartDate || !props.tableEndDate || !props.viewBounds) return;
-		this.diff = props.viewBounds.end.diff(props.viewBounds.start, 'days');
+		
+		const diff = props.viewBounds.end.diff(props.viewBounds.start, 'days');
 
 		const scale = 5;
 
 		const days = props.viewBounds.end.diff(props.viewBounds.start, 'days') + 2;
 		const items = props.items.length;
 
-		this.days = days;
+		//this.days = days;
 
 		this.canvas.width = days * scale + days;
 		this.canvas.height = items * scale + 4 + (items - 1);
@@ -84,31 +95,38 @@ class Minimap extends Component {
 		ctx.lineWidth = 1;
 		ctx.rect(startX * scale + startX - 1, 0, tableDayDiff * scale + 4 - 1, items * scale + 4 + (items - 1));
 		ctx.stroke();
+
+		this.setState({diff});
 	}
 
 	onMouseDown(e) {
 		const rect = this.canvas.getBoundingClientRect();		
 		const x = e.clientX - rect.left;
 		const p = x / rect.width;
-		const date = moment(this.props.viewBounds.start).add(parseInt(this.diff * p, 10), 'days');
+		const date = moment(this.props.viewBounds.start).add(parseInt(this.state.diff * p, 10), 'days');
+		const state = {};
 
 		if(date.isBefore(this.props.tableStartDate) || date.isAfter(this.props.tableEndDate)) {
 			this.props.setDate(date);
-			this.mouseStartDate = moment(date);
+			state.mouseStartDate = moment(date);
 		} else {
-			this.mouseStartDate = moment(this.props.date);
+			state.mouseStartDate = moment(this.props.date);
 		}
 
-		this.mouseDownX = e.clientX - rect.left;
+		state.mouseDownX = e.clientX - rect.left;
+
+		this.setState(state);
 	}
 
 	onMouseUp(e) {
-		this.mouseDownX = null;
+		if(!this.state.mouseDownX) return;
+
 		this.props.loadBookings();
+		this.setState({mouseDownX: null})
 	}
 
 	onMouseMove(e) {
-		if(!this.mouseDownX) return;
+		if(!this.state.mouseDownX) return;
 
 		const rect = this.canvas.getBoundingClientRect();
 
@@ -116,9 +134,9 @@ class Minimap extends Component {
 			return;
 		}
 
-		const x = (e.clientX - rect.left - this.mouseDownX);
-		const p = x / (rect.width / this.diff);
-		const date = moment(this.mouseStartDate).add(parseInt(p, 10), 'days');
+		const x = (e.clientX - rect.left - this.state.mouseDownX);
+		const p = x / (rect.width / this.state.diff);
+		const date = moment(this.state.mouseStartDate).add(parseInt(p, 10), 'days');
 
 		this.props.setDate(date);
 	}

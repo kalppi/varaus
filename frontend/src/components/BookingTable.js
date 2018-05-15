@@ -116,7 +116,7 @@ class BookingTable extends Component {
 				if(!cell.classList.contains('cell')) {
 					break;
 				}
-
+				
 				cell.style.display = 'none';
 
 				cell = cell.nextSibling;
