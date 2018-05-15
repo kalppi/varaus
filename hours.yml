@@ -45,3 +45,5 @@ data:
     - ['20.3.', 2, 'Pientä bugifixailua, ja BookingTablen ja Minimapin pieniä parannuksia.']
     - ['20.3.', 3, 'Haun backendi ja siihen yksinkertainen testi.']
     - ['21.3.', 2, 'Haun parantelua, lisääminen frontendiin.']
+    - ['21.3.', 1, 'Älä lataa kaikkia varauksia aina, pelkästään näkymän mukaisesti lasketulta ajalta.']
+    - ['15.5.', 2, 'Bugin metsästystä ja korjausta']

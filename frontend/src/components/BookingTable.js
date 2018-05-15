@@ -371,7 +371,6 @@ class BookingTable extends Component {
 	 						]
 	 				}),
 	 				<td key='left-half' className={`day-left cell ${dateRightWeekend}`}><div></div></td>
-	 				
 	 			]}
 	 		</tr>
 	 	}
