@@ -30,7 +30,7 @@ const validValues = (values) => {
 	else if(end.value.isSameOrBefore(start.value)) errors.push('end');
 
 	if(errors.length === 0) {
-		return { isValid: true };
+		return { isValid: true, errors };
 	} else {
 		return { isValid: false, errors };
 	}
@@ -47,6 +47,7 @@ export default [createLogic({
 		const { infoValues, selectedBooking, selection } = state.app;
 
 		let buttonEnabled = false;
+		let errors = [];
 
 		if(infoValues) {
 			if(selectedBooking) {
@@ -55,17 +56,22 @@ export default [createLogic({
 				if(changed) {
 					const valid = validValues(infoValues);
 					buttonEnabled = valid.isValid;
+					errors = valid.errors;
 				}
 			} else if(selection) {
 				const valid = validValues(infoValues);
 				buttonEnabled = valid.isValid;
+				errors = valid.errors;
 			}
 		}
 
-		return {
+		return [{
 			type: 'SET_BUTTON_ENABLED',
 			data: buttonEnabled
-		};
+		}, {
+			type: 'SET_INFO_ERRORS',
+			data: errors
+		}];
 	}
 }), createLogic({
 	type: 'DELETE_BOOKING',

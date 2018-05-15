@@ -115,6 +115,7 @@ class Info extends Component {
 				save={this.props.setValues}
 				format={this.format.bind(this)}
 				parse={this.parse.bind(this)}
+				errors={this.props.errors}
 				>
 				<Field name='item' editable={false} label={false} />
 
@@ -146,7 +147,8 @@ export default connect((state) => {
 		selected: state.app.selectedBooking,
 		selection: state.app.selection,
 		buttonEnabled: state.app.buttonEnabled,
-		values: state.app.infoValues
+		values: state.app.infoValues,
+		errors: state.app.infoErrors
 	}
 }, {
 	setValues: setInfoValues, createBooking, deleteBooking

@@ -8,6 +8,7 @@ const initialState = () => {
 		selection: null,
 		infoValues: {},
 		buttonEnabled: false,
+		infoErrors: [],
 		date: null,
 		searchResults: [],
 		loadBounds: null,
@@ -29,6 +30,8 @@ export default (state = initialState(), action) => {
 			return {...state, infoValues: {}};
 		case 'SET_BUTTON_ENABLED':
 			return {...state, buttonEnabled: action.data};
+		case 'SET_INFO_ERRORS':
+			return {...state, infoErrors: action.data};
 		case 'SET_DATE':
 			const startDate = moment(action.data.date).add(-4, 'days');
 			const endDate = moment(action.data.date).add(5, 'days');
