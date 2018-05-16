@@ -14,6 +14,7 @@ class Info extends Component {
 
 		} else {
 			const values = this.props.values;
+
 			const data = {
 				ItemId: values.item.value,
 				start: values.start.value.format('YYYY-MM-DD'),
@@ -126,21 +127,27 @@ class Info extends Component {
 				</SingleRow>
 				
 				<Group text='Customer'>
-					<Field name='name' />
+					<SingleRow>
+						<Field name='name' />
+						<Button text="#" size='2'onClick={() => {
+							alert(1);
+						}}/>
+					</SingleRow>
 					<Field name='email' />
 				</Group>
 
-				
 
-				{ buttonType !== 'none' ?
-					<Button enabled={this.props.buttonEnabled} text={button.text} />
-					: null
-				}
+				<SingleRow>
+					{ buttonType !== 'none' ?
+						<Button enabled={this.props.buttonEnabled} text={button.text} />
+						: null
+					}
 
-				{ buttonType === 'save' ?
-					<Button text={button.deleteText} className='pull-right' onClick={this.props.deleteBooking.bind(null, this.props.selected.id)} />
-					: null
-				}
+					{ buttonType === 'save' ?
+						<Button text={button.deleteText} className='pull-right' onClick={this.props.deleteBooking.bind(null, this.props.selected.id)} />
+						: null
+					}
+				</SingleRow>
 			</Form>
 		</div>;
 	}

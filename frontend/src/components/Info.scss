@@ -4,6 +4,10 @@
 	max-width: 400px;
 	margin-bottom: 10px;
 
+	.row {
+		align-items: flex-end;
+	}
+
 	.group {
 		padding: 0 10px 10px 10px;
 		border: 1px solid #aaa;
@@ -19,21 +23,17 @@
 		}
 	}
 
-	.form-group {
-		margin-bottom: 3px;
+	label {
+		width: 100%
+	}
 
-		label {
-			width: 100%
-		}
+	input#info-nights, label[for=info-nights] {
+		text-align: center;
+	}
 
-		input#info-nights, label[for=info-nights] {
-			text-align: center;
-		}
-
-		input {
-			&.error {
-				border-color: #e2a3a3;
-			}
+	input {
+		&.error {
+			border-color: #e2a3a3;
 		}
 	}
 
