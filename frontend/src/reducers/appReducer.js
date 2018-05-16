@@ -12,7 +12,8 @@ const initialState = () => {
 		date: null,
 		searchResults: [],
 		loadBounds: null,
-		minimapViewBounds: null
+		minimapViewBounds: null,
+		showOverlay: false
 	};
 };
 
@@ -39,10 +40,26 @@ export default (state = initialState(), action) => {
 			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
+		case 'SET_OVERLAY_VISIBLE':
+			return {...state, showOverlay: action.data};
 
 		default:
 			return state;
 	}
+};
+
+export const showOverlay = () => {
+	return {
+		type: 'SET_OVERLAY_VISIBLE',
+		data: true
+	};
+};
+
+export const hideOverlay = () => {
+	return {
+		type: 'SET_OVERLAY_VISIBLE',
+		data: false
+	};
 };
 
 export const setDate = (date) => {

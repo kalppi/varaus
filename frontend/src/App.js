@@ -5,6 +5,8 @@ import BookingTable from './components/BookingTable';
 import Info from './components/Info';
 import Nav from './components/Nav';
 import Minimap from './components/Minimap';
+import Overlay from './components/Overlay';
+import CustomerSelectList from './components/CustomerSelectList';
 import { SearchResults } from './components/Search';
 import { setDate } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
@@ -19,6 +21,14 @@ class App extends Component {
 	render() {
 		return <div>
 			<Nav />
+
+			{
+				this.props.showOverlay ? 
+				<Overlay>
+					<CustomerSelectList customers={[1,2,3]} />
+				</Overlay> : null
+			}
+
 			<div className='container-fluid'>
 				<div className='row'>
 					{
@@ -44,7 +54,8 @@ class App extends Component {
 
 export default connect((state) => {
 	return {
-		showSearchResults: state.app.searchResults.length > 0
+		showSearchResults: state.app.searchResults.length > 0,
+		showOverlay: state.app.showOverlay
 	}
 }, {
 	loadBookings, loadItems, setDate,

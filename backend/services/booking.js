@@ -2,6 +2,32 @@ import { Sequelize, sequelize, models } from '../models';
 
 const { Booking, User, Item } = models;
 
+const { Op } = Sequelize;
+
+const cleanRows = rows => {
+	const rtn = [];
+
+	for(let row of rows) {
+		const obj = {};
+
+		for(let key in row) {
+			if(key.indexOf('.') !== -1) {
+				const [left, right] = key.split('.', 2);
+
+				if(!obj[left]) obj[left] = {};
+
+				obj[left][right] = row[key];
+			} else {
+				obj[key] = row[key];
+			}
+		}
+
+		rtn.push(obj);
+	}
+
+	return rtn;
+};
+
 const getAll = async () => {
 	return await Booking.findAll({include: [{model: User, attributes: ['name']}]});
 };
@@ -55,6 +81,8 @@ const del = async (id) => {
 const search = async (query) => {
 	if(!query || query.length < 3) return [];
 
+	query = query.toLowerCase();
+
 	const rows = await sequelize.query(
 		`SELECT
 			b.id, b.start, b."end",b."UserId",
@@ -68,27 +96,7 @@ const search = async (query) => {
 		{ replacements: [query + '%'], type: sequelize.QueryTypes.SELECT  }
 	);
 
-	const rtn = [];
-
-	for(let row of rows) {
-		const obj = {};
-
-		for(let key in row) {
-			if(key.indexOf('.') !== -1) {
-				const [left, right] = key.split('.', 2);
-
-				if(!obj[left]) obj[left] = {};
-
-				obj[left][right] = row[key];
-			} else {
-				obj[key] = row[key];
-			}
-		}
-
-		rtn.push(obj);
-	}
-
-	return rtn;
+	return cleanRows(rows);
 };
 
 export default { getAll, getAllBetween, getOne, create, update, delete: del, search };

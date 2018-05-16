@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setInfoValues } from '../reducers/appReducer';
+import { setInfoValues, showOverlay, hideOverlay } from '../reducers/appReducer';
 import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
 import moment from 'moment';
@@ -130,7 +130,7 @@ class Info extends Component {
 					<SingleRow>
 						<Field name='name' />
 						<Button text="#" size='2'onClick={() => {
-							alert(1);
+							this.props.showOverlay();
 						}}/>
 					</SingleRow>
 					<Field name='email' />
@@ -162,5 +162,5 @@ export default connect((state) => {
 		errors: state.app.infoErrors
 	}
 }, {
-	setValues: setInfoValues, createBooking, deleteBooking
+	setValues: setInfoValues, createBooking, deleteBooking, showOverlay, hideOverlay
 })(Info);
