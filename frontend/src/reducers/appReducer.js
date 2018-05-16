@@ -13,7 +13,7 @@ const initialState = () => {
 		searchResults: [],
 		loadBounds: null,
 		minimapViewBounds: null,
-		showOverlay: false
+		overlay: {}
 	};
 };
 
@@ -40,8 +40,8 @@ export default (state = initialState(), action) => {
 			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
-		case 'SET_OVERLAY_VISIBLE':
-			return {...state, showOverlay: action.data};
+		case 'SET_OVERLAY':
+			return {...state, overlay: { ...state.overlay, ...action.data }};
 
 		default:
 			return state;
@@ -49,16 +49,22 @@ export default (state = initialState(), action) => {
 };
 
 export const showOverlay = () => {
-	return {
-		type: 'SET_OVERLAY_VISIBLE',
-		data: true
-	};
+	return async (dispatch, getState) => {
+		const p = new Promise((resolve, reject) => {
+			dispatch({
+				type: 'SET_OVERLAY',
+				data: { visible: true, resolve }
+			});
+		});
+
+		return p;
+	}
 };
 
 export const hideOverlay = () => {
 	return {
-		type: 'SET_OVERLAY_VISIBLE',
-		data: false
+		type: 'SET_OVERLAY',
+		data: { visible: false }
 	};
 };
 

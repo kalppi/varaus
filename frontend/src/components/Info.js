@@ -129,8 +129,12 @@ class Info extends Component {
 				<Group text='Customer'>
 					<SingleRow>
 						<Field name='name' />
-						<Button text="#" size='2'onClick={() => {
-							this.props.showOverlay();
+						<Button text="#" size='2'onClick={async () => {
+							const v = await this.props.showOverlay();
+
+							console.log(v);
+
+							this.props.hideOverlay();
 						}}/>
 					</SingleRow>
 					<Field name='email' />

@@ -22,12 +22,9 @@ class App extends Component {
 		return <div>
 			<Nav />
 
-			{
-				this.props.showOverlay ? 
-				<Overlay>
-					<CustomerSelectList customers={[1,2,3]} />
-				</Overlay> : null
-			}
+			<Overlay options={this.props.overlay}>
+				<CustomerSelectList customers={[1,2,3]} />
+			</Overlay>
 
 			<div className='container-fluid'>
 				<div className='row'>
@@ -55,7 +52,7 @@ class App extends Component {
 export default connect((state) => {
 	return {
 		showSearchResults: state.app.searchResults.length > 0,
-		showOverlay: state.app.showOverlay
+		overlay: state.app.overlay
 	}
 }, {
 	loadBookings, loadItems, setDate,
