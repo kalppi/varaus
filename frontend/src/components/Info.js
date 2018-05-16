@@ -76,7 +76,7 @@ class Info extends Component {
 		switch(name) {
 			case 'start':
 			case 'end':
-				if(value.value.isValid()) {
+				if(value && value.value.isValid()) {
 					return {
 						text: formatDate(value.value),
 						value: value.value
@@ -133,7 +133,8 @@ class Info extends Component {
 							try {
 								const v = await this.props.showOverlay();
 
-								console.log(v);
+								this.form.setValue('name', v.name);
+								this.form.setValue('email', v.email);
 							} catch(e) {
 
 							}
@@ -150,7 +151,11 @@ class Info extends Component {
 					}
 
 					{ buttonType === 'save' ?
-						<Button text={button.deleteText} className='pull-right' onClick={this.props.deleteBooking.bind(null, this.props.selected.id)} />
+						<Button
+							text={button.deleteText}
+							className='pull-right'
+							onClick={this.props.deleteBooking.bind(null, this.props.selected.id)}
+						/>
 						: null
 					}
 				</SingleRow>

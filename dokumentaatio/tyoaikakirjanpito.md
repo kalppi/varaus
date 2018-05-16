@@ -35,5 +35,7 @@
 |  | 1 | Älä lataa kaikkia varauksia aina, pelkästään näkymän mukaisesti lasketulta ajalta. | 
 | 15.5. | 3 | Solujen valinnan säilyminen taulukon uudelleen renderöinnissä bugasi, virheen metsästystä ja korjailua. | 
 |  | 1 | Info formin virheellisten fieldien väritys. | 
-| 16.5. | 2 | Infon ja react-form-helper apukirjaston päivittelyä ja bugifixailua. | 
-| yht. | 64
+| 16.5. | 3 | Infon ja react-form-helper apukirjaston päivittelyä ja bugifixailua. | 
+|  | 3 | Refaktorointia, User modellille service ja api + testejä, viimein käyttämään testeissä lokaalia tietokantaa. | 
+|  | 2 | Overlayn väsäämistä, formin bugifixailua. | 
+| yht. | 70
