@@ -46,7 +46,11 @@ route.route('/:id')
 		const id = req.params.id;
 		const data = await bookingService.getOne(id);
 
-		res.json(data);
+		if(data) {
+			res.json(data);
+		} else {
+			res.status(404).end();
+		}
 	})
 	.put(async (req, res) => {
 		const id = req.params.id;
@@ -59,9 +63,13 @@ route.route('/:id')
 	.delete(async (req, res) => {
 		const id = req.params.id;
 
-		await bookingService.delete(id);
+		const rtn = await bookingService.delete(id);
 
-		res.status(200).json({});
+		if(rtn == 1) {
+			res.status(200).end();
+		} else {
+			res.status(409).end();
+		}
 	});
 
 export default route;

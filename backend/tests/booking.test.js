@@ -24,6 +24,12 @@ describe('api', () => {
 		expect(data.body.length).toBe(bookings.length);
 	});
 
+	test('non-existing id returns 404', async () => {
+		const data = await api
+			.get('/api/booking/10000000')
+			.expect(404);
+	});
+
 	test('bookings are returned between specified dates', async () => {
 		const data = await api
 			.get('/api/booking')
@@ -83,9 +89,14 @@ describe('api', () => {
 			.expect(200);
 
 		const rtn = await api
-			.get('/api/booking/' + bookings[4].get('id'));
+			.get('/api/booking/' + bookings[4].get('id'))
+			.expect(404);
+	});
 
-		expect(rtn.body).toBe(null);
+	test('trying to delete an unknown booking returns 409', async () => {
+		await api
+			.delete('/api/booking/234423')
+			.expect(409);
 	});
 
 	test('can create a booking with info', async () => {

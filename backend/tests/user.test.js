@@ -22,6 +22,21 @@ describe('api', () => {
 
 		expect(data.body.length).toBe(users.length);
 	});
+
+	test('user can be found with an id', async () => {
+		const data = await api
+			.get('/api/user/1')
+			.expect(200)
+			.expect('Content-Type', /application\/json/);
+
+		expect(data.body.id).toBe(1);
+	});
+
+	test('non-existing id returns 404', async () => {
+		const data = await api
+			.get('/api/user/10000000')
+			.expect(404);
+	});
 });
 
 afterAll(() => {

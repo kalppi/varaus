@@ -6,4 +6,8 @@ const getAll = async () => {
 	return await User.findAll();
 };
 
-export default { getAll };
+const getOne = async (id) => {
+	return await User.find({ where: { id }});
+};
+
+export default { getAll, getOne };
