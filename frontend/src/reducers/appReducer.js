@@ -1,4 +1,5 @@
 import bookingsService from '../services/bookingsService';
+import userService from '../services/userService';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
@@ -13,7 +14,8 @@ const initialState = () => {
 		searchResults: [],
 		loadBounds: null,
 		minimapViewBounds: null,
-		overlay: {}
+		overlay: {},
+		customers: []
 	};
 };
 
@@ -42,6 +44,8 @@ export default (state = initialState(), action) => {
 			return {...state, searchResults: action.data};
 		case 'SET_OVERLAY':
 			return {...state, overlay: { ...state.overlay, ...action.data }};
+		case 'SET_CUSTOMERS':
+			return {...state, customers: action.data};
 
 		default:
 			return state;
@@ -50,11 +54,16 @@ export default (state = initialState(), action) => {
 
 export const showOverlay = () => {
 	return async (dispatch, getState) => {
+		const customers = await userService.getAll();
+
 		const p = new Promise((resolve, reject) => {
-			dispatch({
+			dispatch([{
 				type: 'SET_OVERLAY',
-				data: { visible: true, resolve }
-			});
+				data: { visible: true, resolve, reject }
+			}, {
+				type: 'SET_CUSTOMERS',
+				data: customers
+			}]);
 		});
 
 		return p;

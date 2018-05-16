@@ -11,6 +11,7 @@ import { SearchResults } from './components/Search';
 import { setDate } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
 import { loadItems } from './reducers/itemsReducer';
+
 import './App.css';
 
 class App extends Component {
@@ -23,7 +24,7 @@ class App extends Component {
 			<Nav />
 
 			<Overlay options={this.props.overlay}>
-				<CustomerSelectList customers={[1,2,3]} />
+				<CustomerSelectList customers={this.props.customers} />
 			</Overlay>
 
 			<div className='container-fluid'>
@@ -52,7 +53,8 @@ class App extends Component {
 export default connect((state) => {
 	return {
 		showSearchResults: state.app.searchResults.length > 0,
-		overlay: state.app.overlay
+		overlay: state.app.overlay,
+		customers: state.app.customers
 	}
 }, {
 	loadBookings, loadItems, setDate,

@@ -39,7 +39,7 @@ class SearchResults extends Component {
 			return null;
 		}
 
-		return <table id='Search'>
+		return <table className='table' id='Search'>
 			<thead>
 				<tr>
 					<th className='search-id'>#</th>

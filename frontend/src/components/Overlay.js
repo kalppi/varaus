@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { hideOverlay } from '../reducers/appReducer';
 import './Overlay.css';
 
-export default class Overlay extends Component {
+class Overlay extends Component {
 	isVisible() {
 		let visible = false;
 
@@ -12,6 +14,13 @@ export default class Overlay extends Component {
 		return visible;
 	}
 
+	onClick(e) {
+		if(e.target.id === 'overlay') {
+			this.props.options.reject();
+			this.props.hideOverlay();
+		}
+	}
+
 	render() {
 		const visible = this.isVisible();
 
@@ -19,14 +28,16 @@ export default class Overlay extends Component {
 			return null;
 		}
 
-		return <div id="overlay">
+		return <div id="overlay" onClick={this.onClick.bind(this)}>
 			<div className='container'>
 				<div className='row'>
 					<div className='col-md-12'>
 						{
 							React.Children.map(this.props.children, (child, index) => {
 								return React.cloneElement(child, {
-									resolve: this.props.options.resolve
+									resolve: this.props.options.resolve,
+									reject: this.props.options.reject,
+									hide: this.props.hideOverlay
 								});
 							})
 						}
@@ -36,3 +47,5 @@ export default class Overlay extends Component {
 		</div>
 	}
 }
+
+export default connect(null, { hideOverlay })(Overlay);

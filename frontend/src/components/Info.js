@@ -130,11 +130,13 @@ class Info extends Component {
 					<SingleRow>
 						<Field name='name' />
 						<Button text="#" size='2'onClick={async () => {
-							const v = await this.props.showOverlay();
+							try {
+								const v = await this.props.showOverlay();
 
-							console.log(v);
+								console.log(v);
+							} catch(e) {
 
-							this.props.hideOverlay();
+							}
 						}}/>
 					</SingleRow>
 					<Field name='email' />
