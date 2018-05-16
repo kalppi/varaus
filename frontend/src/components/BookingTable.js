@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import deepEqual from 'deep-equal';
 import { selectBooking, setSelectionInfo, clearSelectionInfo } from '../reducers/appReducer';
-import './BookingTable.css';
+
+import './css/BookingTable.css';
 
 class BookingTable extends Component {
 	constructor(props) {

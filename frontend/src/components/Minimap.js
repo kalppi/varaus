@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { setDate } from '../reducers/appReducer';
 import { loadBookings } from '../reducers/bookingsReducer';
-import './Minimap.css';
+
+import './css/Minimap.css';
 
 class Minimap extends Component {
 	constructor(props) {

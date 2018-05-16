@@ -6,7 +6,7 @@ import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
-import './Info.css';
+import './css/Info.css';
 
 class Info extends Component {
 	onSubmit = () => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './CustomerSelectList.css';
+
+import './css/CustomerSelectList.css';
 
 export default class CustomerSelectList extends Component {
 	select(v) {
@@ -15,7 +16,7 @@ export default class CustomerSelectList extends Component {
 	render() {
 		return <div id="customer-select-list">
 				<button className='btn' onClick={this.cancel.bind(this)}>cancel</button>
-				
+
 				<table className='table'>
 					<thead>
 						<tr>

@@ -1,0 +1,21 @@
+
+#customer-select-list {
+	width: 100%;
+	background: white;
+	border: 1px solid #ccc;
+	padding: 10px;
+
+	button {
+		margin-bottom: 10px;
+	}
+
+	table {
+		tr {
+			cursor: pointer;
+
+			td {
+				padding: 5px;
+			}
+		}
+	}
+}

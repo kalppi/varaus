@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { search } from '../reducers/appReducer';
 import { formatDate as fd } from '../utils';
-import './Search.css';
+
+import './css/Search.css';
 
 class Search extends Component {
 	onChange(e) {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { hideOverlay } from '../reducers/appReducer';
-import './Overlay.css';
+
+import './css/Overlay.css';
 
 class Overlay extends Component {
 	isVisible() {
