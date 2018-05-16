@@ -98,8 +98,8 @@ export const selectBooking = (booking) => {
 						value: end
 					},
 					nights: end.diff(start, 'days'),
-					name: selected.UserInfo.name,
-					email: selected.UserInfo.email
+					name: selected.User.name,
+					email: selected.User.email
 				};
 			}
 

@@ -5,7 +5,13 @@ import { log } from '../utils';
 
 pg.defaults.ssl = true;
 
-const sequelize = new Sequelize(process.env.DB, {
+let db = process.env.DB;
+
+if(process.env.NODE_ENV === 'test') {
+	db = process.env.TEST_DB;
+}
+
+const sequelize = new Sequelize(db, {
 	operatorsAliases: false,
 	dialect: 'postgres',
 	logging: (text) => {

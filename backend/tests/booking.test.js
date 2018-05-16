@@ -57,7 +57,7 @@ describe('api', () => {
 				start: '2018-11-12',
 				end: '2018-11-13',
 				ItemId: items[1].get('id'),
-				UserInfo: {
+				User: {
 					name: 'Matti',
 					email: 'matti@google.fi'
 				}
@@ -68,13 +68,13 @@ describe('api', () => {
 		const rtn = await api
 			.get('/api/booking/' + bookings[4].get('id'));
 
-		const { start, end, ItemId, UserInfo } = rtn.body;
+		const { start, end, ItemId, User } = rtn.body;
 
 		expect(start).toBe('2018-11-12');
 		expect(end).toBe('2018-11-13');
 		expect(ItemId).toBe(items[1].get('id'));
-		expect(UserInfo.name).toBe('Matti');
-		expect(UserInfo.email).toBe('matti@google.fi');
+		expect(User.name).toBe('Matti');
+		expect(User.email).toBe('matti@google.fi');
 	});
 
 	test('can delete a booking', async () => {
@@ -95,7 +95,7 @@ describe('api', () => {
 				start: '2018-11-11',
 				end: '2018-11-12',
 				ItemId: items[2].get('id'),
-				UserInfo: {
+				User: {
 					name: 'Pera',
 					email: 'pera@google.fi'
 				}
@@ -103,11 +103,11 @@ describe('api', () => {
 			.set('Content-Type', 'application/json')
 			.expect(201);
 
-		const { start, end, UserInfoId } = rtn.body;
+		const { start, end, UserId } = rtn.body;
 
 		expect(start).toBe('2018-11-11');
 		expect(end).toBe('2018-11-12');
-		expect(UserInfoId).toBeTruthy();
+		expect(UserId).toBeTruthy();
 	});
 
 	test('can\'t create overlapping bookings', async () => {

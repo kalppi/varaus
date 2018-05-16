@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION set_search_data()
 RETURNS trigger AS $$
 BEGIN
   IF NEW.search_data IS NULL THEN
-    NEW.search_data := (SELECT REGEXP_SPLIT_TO_ARRAY(LOWER(CONCAT_WS(' ', i.name, i.email)), '(\s+|@|\-|\.)') FROM "UserInfos" i WHERE i.id = new.id );
+    NEW.search_data := (SELECT REGEXP_SPLIT_TO_ARRAY(LOWER(CONCAT_WS(' ', i.name, i.email)), '(\s+|@|\-|\.)') FROM "Users" i WHERE i.id = new.id );
   END IF;
 
   RETURN NEW;
@@ -49,4 +49,23 @@ $$ LANGUAGE 'plpgsql';
 DROP TRIGGER IF EXISTS set_search_data_trigger ON "Bookings";
 CREATE TRIGGER set_search_data_trigger BEFORE INSERT ON "Bookings"
 	FOR EACH ROW
-		EXECUTE PROCEDURE set_search_data()
+		EXECUTE PROCEDURE set_search_data();
+
+
+
+CREATE OR REPLACE FUNCTION set_simple_name()
+RETURNS trigger AS $$
+BEGIN
+  IF NEW.simple_name IS NULL THEN
+  	NEW.simple_name := UNACCENT(REPLACE(NEW.name, ' ', ''));
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+
+DROP TRIGGER IF EXISTS set_simple_name_trigger ON "Users";
+CREATE TRIGGER set_simple_name_trigger BEFORE INSERT ON "Users"
+	FOR EACH ROW
+		EXECUTE PROCEDURE set_simple_name();

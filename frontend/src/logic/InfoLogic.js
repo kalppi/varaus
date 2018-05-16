@@ -9,8 +9,8 @@ const hasChanged = (selected, values) => {
 	if(values.item.value !== selected.ItemId) changed.push('item');
 	if(values.start.value.format('YYYY-MM-DD') !== selected.start) changed.push('start');
 	if(values.end.value.format('YYYY-MM-DD') !== selected.end) changed.push('end');
-	if(values.name !== selected.UserInfo.name) changed.push('name');
-	if(values.email !== selected.UserInfo.email) changed.push('email');
+	if(values.name !== selected.User.name) changed.push('name');
+	if(values.email !== selected.User.email) changed.push('email');
 
 	return changed.length > 0;
 };

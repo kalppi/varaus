@@ -19,7 +19,7 @@ class Info extends Component {
 				ItemId: values.item.value,
 				start: values.start.value.format('YYYY-MM-DD'),
 				end: values.end.value.format('YYYY-MM-DD'),
-				UserInfo: {
+				User: {
 					name: values.name,
 					email: values.email
 				}

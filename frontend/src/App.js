@@ -21,15 +21,21 @@ class App extends Component {
 			<Nav />
 			<div className='container-fluid'>
 				<div className='row'>
-					<div className='col-md-3'>
-						<Info />
-					</div>
-					<div className='col-md-9 nopadding'>
-						{
-							this.props.showSearchResults ? <SearchResults />
-							: [<Minimap key='minimap' />, <BookingTable key='booking-table' />]
-						}						
-					</div>
+					{
+						this.props.showSearchResults ?
+							<div className='col-md-12'>
+								<SearchResults />
+							</div>
+						: [
+							<div className='col-md-3' key='left'>
+								<Info />
+							</div>,
+							<div className='col-md-9 nopadding' key='right'>
+								<Minimap key='minimap' />
+								<BookingTable key='booking-table' />
+							</div>
+						]
+					}
 				</div>
 			</div>
 		</div>;
