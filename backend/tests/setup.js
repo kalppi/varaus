@@ -24,7 +24,7 @@ export default async (sequelize, models) => {
 		end: '2018-10-16',
 		ItemId: items[0].get('id'),
 		info: {
-			name: 'Mara',
+			name: 'Mará',
 			email: 'mara@google.fi'
 		}
 	}, {
@@ -64,8 +64,8 @@ export default async (sequelize, models) => {
 		end: '2018-08-04',
 		ItemId: items[1].get('id'),
 		info: {
-			name: 'Maisa-Inkeri Kullervoinen',
-			email: 'kuuuul@google.fi'
+			name: 'Pertti Paloheinä',
+			email: 'perrrr@google.fi'
 		}
 	}];
 

@@ -37,6 +37,18 @@ describe('api', () => {
 			.get('/api/user/10000000')
 			.expect(404);
 	});
+
+	test('can search', async () => {
+		const rtn = await api
+			.get('/api/user/search')
+			.query({
+				query: 'Mara'
+			})
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+
+		expect(rtn.body.length).toBe(2);
+	});
 });
 
 afterAll(() => {

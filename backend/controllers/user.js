@@ -10,6 +10,13 @@ route.route('/')
 		res.json(data);
 	});
 
+route.route('/search')
+	.get(async (req, res) => {
+		const ret = await userService.search(req.query.query);
+
+		res.status(201).json(ret);
+	});
+
 route.route('/:id')
 	.get(async (req, res) => {
 		const id = req.params.id;

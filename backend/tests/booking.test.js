@@ -165,7 +165,7 @@ describe('api', () => {
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
 
-		expect(rtn.body.length).toBe(3);
+		expect(rtn.body.length).toBe(4);
 	});
 });
 

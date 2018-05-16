@@ -57,7 +57,7 @@ CREATE OR REPLACE FUNCTION set_simple_name()
 RETURNS trigger AS $$
 BEGIN
   IF NEW.simple_name IS NULL THEN
-  	NEW.simple_name := UNACCENT(REPLACE(NEW.name, ' ', ''));
+  	NEW.simple_name := UNACCENT(REPLACE(LOWER(NEW.name), ' ', ''));
   END IF;
 
   RETURN NEW;

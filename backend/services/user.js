@@ -1,4 +1,6 @@
-import { models } from '../models';
+import { Sequelize, models } from '../models';
+
+const { Op } = Sequelize;
 
 const { User } = models;
 
@@ -10,4 +12,16 @@ const getOne = async (id) => {
 	return await User.find({ where: { id }});
 };
 
-export default { getAll, getOne };
+const search = async (query) => {
+	query = query.toLowerCase();
+
+	return await User.findAll({
+		where: {
+			simple_name: {
+				[Op.like]: `%${query}%`
+			}
+		}
+	});
+};
+
+export default { getAll, getOne, search };
