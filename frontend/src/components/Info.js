@@ -129,7 +129,7 @@ class Info extends Component {
 				<Group text='Customer'>
 					<SingleRow>
 						<Field name='name' />
-						<Button text="#" size='2'onClick={async () => {
+						<Button text="#" size='2' enabled={buttonType !== 'none'} onClick={async () => {
 							try {
 								const v = await this.props.showOverlay();
 
