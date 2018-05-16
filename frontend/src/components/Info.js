@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setInfoValues } from '../reducers/appReducer';
 import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
-import { Form, Field, SingleRow, Button } from 'react-form-helper';
+import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
@@ -125,8 +125,12 @@ class Info extends Component {
 					<Field name='nights' text='#' size='2' editable={false} />
 				</SingleRow>
 				
-				<Field name='name' />
-				<Field name='email' />
+				<Group text='Customer'>
+					<Field name='name' />
+					<Field name='email' />
+				</Group>
+
+				
 
 				{ buttonType !== 'none' ?
 					<Button enabled={this.props.buttonEnabled} text={button.text} />

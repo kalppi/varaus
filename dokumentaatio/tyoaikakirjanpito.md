@@ -33,5 +33,7 @@
 |  | 3 | Haun backendi ja siihen yksinkertainen testi. | 
 | 21.3. | 2 | Haun parantelua, lisääminen frontendiin. | 
 |  | 1 | Älä lataa kaikkia varauksia aina, pelkästään näkymän mukaisesti lasketulta ajalta. | 
-| 15.5. | 2 | Bugin metsästystä ja korjausta | 
-| yht. | 60
+| 15.5. | 3 | Solujen valinnan säilyminen taulukon uudelleen renderöinnissä bugasi, virheen metsästystä ja korjailua. | 
+|  | 1 | Info formin virheellisten fieldien väritys. | 
+| 16.5. | 2 | Infon ja react-form-helper apukirjaston päivittelyä ja bugifixailua. | 
+| yht. | 64
