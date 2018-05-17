@@ -1,5 +1,4 @@
 import bookingsService from '../services/bookingsService';
-import userService from '../services/userService';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
@@ -13,9 +12,7 @@ const initialState = () => {
 		date: null,
 		searchResults: [],
 		loadBounds: null,
-		minimapViewBounds: null,
-		overlay: {},
-		customers: []
+		minimapViewBounds: null
 	};
 };
 
@@ -42,39 +39,9 @@ export default (state = initialState(), action) => {
 			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
-		case 'SET_OVERLAY':
-			return {...state, overlay: { ...action.data }};
-		case 'SET_CUSTOMERS':
-			return {...state, customers: action.data};
-
 		default:
 			return state;
 	}
-};
-
-export const showOverlay = (type) => {
-	return async (dispatch, getState) => {
-		const customers = await userService.getAll();
-
-		const p = new Promise((resolve, reject) => {
-			dispatch([{
-				type: 'SET_OVERLAY',
-				data: { visible: true, resolve, reject, type }
-			}, {
-				type: 'SET_CUSTOMERS',
-				data: customers
-			}]);
-		});
-
-		return p;
-	}
-};
-
-export const hideOverlay = () => {
-	return {
-		type: 'SET_OVERLAY',
-		data: { visible: false }
-	};
 };
 
 export const clearSelection = () => {

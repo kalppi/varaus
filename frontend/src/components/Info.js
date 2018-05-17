@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setInfoValues, showOverlay, hideOverlay, clearSelection } from '../reducers/appReducer';
+import { setInfoValues, clearSelection } from '../reducers/appReducer';
+import { showCustomersOverlay, showOptionsOverlay, hideOverlay } from '../reducers/overlayReducer';
 import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
 import * as FA from 'react-icons/lib/fa';
@@ -121,8 +122,8 @@ class Info extends Component {
 				<SingleRow>
 					<Field name='item' editable={false} label={false} />
 
-					{ buttonType !== 'none' ?
-						<Button className='pull-right options'><FA.FaCog /></Button>
+					{ buttonType === 'save' ?
+						<Button className='pull-right options' onClick={this.props.showOptionsOverlay}><FA.FaCog /></Button>
 						: null
 					}
 				</SingleRow>
@@ -138,7 +139,7 @@ class Info extends Component {
 						<Field name='name' />
 						<Button text="#" size='2' enabled={buttonType !== 'none'} onClick={async () => {
 							try {
-								const v = await this.props.showOverlay('customers');
+								const v = await this.props.showCustomersOverlay();
 
 								this.form.setValue('name', v.name);
 								this.form.setValue('email', v.email);
@@ -158,9 +159,7 @@ class Info extends Component {
 					}
 
 					{ buttonType !== 'none' ?
-						<Button className='pull-right' onClick={() => {
-							this.props.clearSelection();
-						}}><FA.FaClose className='cancel icon' /> Cancel</Button>
+						<Button className='pull-right' onClick={this.props.clearSelection}><FA.FaClose className='cancel icon' /> Cancel</Button>
 						: null
 					}
 				</SingleRow>
@@ -186,5 +185,5 @@ export default connect((state) => {
 		errors: state.app.infoErrors
 	}
 }, {
-	setValues: setInfoValues, createBooking, deleteBooking, showOverlay, hideOverlay, clearSelection
+	setValues: setInfoValues, createBooking, deleteBooking, showCustomersOverlay, showOptionsOverlay, hideOverlay, clearSelection
 })(Info);

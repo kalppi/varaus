@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { hideOverlay } from '../reducers/appReducer';
+import { hideOverlay } from '../reducers/overlayReducer';
 
 import './css/Overlay.css';
 

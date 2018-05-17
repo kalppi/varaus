@@ -6,8 +6,9 @@ import Info from './components/Info';
 import Nav from './components/Nav';
 import Minimap from './components/Minimap';
 import Overlay from './components/Overlay';
-import { Switch } from './components/Switch';
+import Switch from './components/Switch';
 import CustomerSelectList from './components/CustomerSelectList';
+import BookingOptions from './components/BookingOptions';
 import { SearchResults } from './components/Search';
 import { setDate } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
@@ -27,6 +28,7 @@ class App extends Component {
 			<Overlay options={this.props.overlay}>
 				<Switch value={this.props.overlay.type}>
 					<CustomerSelectList case='customers' customers={this.props.customers} />
+					<BookingOptions case='options' />
 				</Switch>
 			</Overlay>
 
@@ -56,8 +58,8 @@ class App extends Component {
 export default connect((state) => {
 	return {
 		showSearchResults: state.app.searchResults.length > 0,
-		overlay: state.app.overlay,
-		customers: state.app.customers
+		overlay: state.overlay.overlay,
+		customers: state.overlay.customers
 	}
 }, {
 	loadBookings, loadItems, setDate,
