@@ -123,7 +123,13 @@ class Info extends Component {
 					<Field name='item' editable={false} label={false} />
 
 					{ buttonType === 'save' ?
-						<Button className='pull-right options' onClick={this.props.showOptionsOverlay}><FA.FaCog /></Button>
+						<Button className='pull-right options' onClick={async () => {
+							try {
+								await this.props.showOptionsOverlay();
+							} catch(e) {
+								// cancel
+							}
+						}}><FA.FaCog /></Button>
 						: null
 					}
 				</SingleRow>
@@ -144,7 +150,7 @@ class Info extends Component {
 								this.form.setValue('name', v.name);
 								this.form.setValue('email', v.email);
 							} catch(e) {
-
+								// cancel
 							}
 						}}/>
 					</SingleRow>

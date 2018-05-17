@@ -5,17 +5,11 @@ import './css/CustomerSelectList.css';
 export default class CustomerSelectList extends Component {
 	select(v) {
 		this.props.resolve(v);
-		this.props.hide();
-	}
-
-	cancel() {
-		this.props.reject();
-		this.props.hide();
 	}
 
 	render() {
 		return <div id="customer-select-list">
-				<button className='btn' onClick={this.cancel.bind(this)}>cancel</button>
+				<button className='btn' onClick={this.props.cancel}>cancel</button>
 
 				<table className='table'>
 					<thead>

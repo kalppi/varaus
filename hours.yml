@@ -52,3 +52,4 @@ data:
     - ['16.5.', 3, 'Refaktorointia, User modellille service ja api + testejä, viimein käyttämään testeissä lokaalia tietokantaa.']
     - ['16.5.', 2, 'Overlayn väsäämistä, formin bugifixailua.']
     - ['17.5.', 2, 'Minimapin renderöinnin bugien metsästystä ja korjailua vieläkin.']
+    - ['17.5.', 2, 'Varauksen lisävalinnoille (esim. varauksen poistaminen) nappi ja overlay.']

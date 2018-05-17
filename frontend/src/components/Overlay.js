@@ -51,9 +51,14 @@ class Overlay extends Component {
 						{
 							React.Children.map(this.props.children, (child, index) => {
 								return React.cloneElement(child, {
-									resolve: this.props.options.resolve,
-									reject: this.props.options.reject,
-									hide: this.props.hideOverlay
+									resolve: (v) => {
+										this.props.options.resolve(v);
+										this.props.hideOverlay()
+									},
+									cancel: () => {
+										this.props.options.reject();
+										this.props.hideOverlay();
+									}
 								});
 							})
 						}
