@@ -25,7 +25,7 @@ export default async (sequelize, models) => {
 		ItemId: items[0].get('id'),
 		info: {
 			name: 'Mará',
-			email: 'mara@google.fi'
+			email: 'maarrraa@google.fi'
 		}
 	}, {
 		start: '2018-10-19',

@@ -43,7 +43,7 @@ export default (state = initialState(), action) => {
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
 		case 'SET_OVERLAY':
-			return {...state, overlay: { ...state.overlay, ...action.data }};
+			return {...state, overlay: { ...action.data }};
 		case 'SET_CUSTOMERS':
 			return {...state, customers: action.data};
 

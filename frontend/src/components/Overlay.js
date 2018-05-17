@@ -5,6 +5,21 @@ import { hideOverlay } from '../reducers/appReducer';
 import './css/Overlay.css';
 
 class Overlay extends Component {
+	componentDidMount(){
+		document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+	}
+
+	componentWillUnmount(){
+		document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
+	}
+
+	onKeyDown(e) {
+		if(e.keyCode === 27 && this.props.options.reject) {
+			this.props.options.reject();
+			this.props.hideOverlay();
+		}
+	}
+
 	isVisible() {
 		let visible = false;
 

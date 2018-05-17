@@ -38,4 +38,5 @@
 | 16.5. | 3 | Infon ja react-form-helper apukirjaston päivittelyä ja bugifixailua. | 
 |  | 3 | Refaktorointia, User modellille service ja api + testejä, viimein käyttämään testeissä lokaalia tietokantaa. | 
 |  | 2 | Overlayn väsäämistä, formin bugifixailua. | 
-| yht. | 70
+| 17.5. | 2 | Minimapin renderöinnin bugien metsästystä ja korjailua vieläkin. | 
+| yht. | 72

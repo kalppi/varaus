@@ -82,7 +82,7 @@ class Minimap extends Component {
 		}, []);
 
 		for(let rect of rects) {
-			ctx.fillRect(rect.x * scale + rect.x, rect.y * scale + 2 + rect.y, rect.w * scale, scale);			
+			ctx.fillRect(Math.floor(rect.x * scale + rect.x), rect.y * scale + 2 + rect.y, rect.w * scale + rect.w - 1, scale);			
 		}
 
 		const startX = props.tableStartDate.diff(props.viewBounds.start, 'days');
@@ -90,7 +90,7 @@ class Minimap extends Component {
 
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 1;
-		ctx.rect(startX * scale + startX - 1, 0, tableDayDiff * scale + 4 - 1, items * scale + 4 + (items - 1));
+		ctx.rect(startX * scale - 1 + tableDayDiff * scale + 4 - 1, 0, tableDayDiff * scale + 4 - 1, items * scale + 4 + (items - 1));
 		ctx.stroke();
 
 		this.setState({diff});
@@ -103,14 +103,14 @@ class Minimap extends Component {
 		const date = moment(this.props.viewBounds.start).add(parseInt(this.state.diff * p, 10), 'days');
 		const state = {};
 
-		if(date.isBefore(this.props.tableStartDate) || date.isAfter(this.props.tableEndDate)) {
+		if(date.isBefore(moment(this.props.tableStartDate).add(-1, 'days')) || date.isSameOrAfter(this.props.tableEndDate)) {
 			this.props.setDate(date);
 			state.mouseStartDate = moment(date);
 		} else {
 			state.mouseStartDate = moment(this.props.date);
 		}
 
-		state.mouseDownX = e.clientX - rect.left;
+		state.mouseDownX = x;
 
 		this.setState(state);
 	}
