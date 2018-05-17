@@ -35,6 +35,10 @@ class BookingTable extends Component {
 		if(nextProps.selection && this.props.selection !== nextProps.selection) {
 			this.markSelection(nextProps.selection.item, nextProps.selection.start, nextProps.selection.end);
 		}
+
+		if(nextProps.selection === null) {
+			this.clearSelection();
+		}
 	}
 
 	componentDidUpdate() {
@@ -137,7 +141,7 @@ class BookingTable extends Component {
 			firstCell.colSpan = colSpan;
 		}
 
-		if(this.props.selection && this.props.selection) {
+		if(this.props.selection) {
 			const { item, start, end } = this.props.selection;
 			this.markSelection(item, start, end);
 		}

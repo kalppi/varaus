@@ -6,6 +6,7 @@ import Info from './components/Info';
 import Nav from './components/Nav';
 import Minimap from './components/Minimap';
 import Overlay from './components/Overlay';
+import { Switch } from './components/Switch';
 import CustomerSelectList from './components/CustomerSelectList';
 import { SearchResults } from './components/Search';
 import { setDate } from './reducers/appReducer';
@@ -24,7 +25,9 @@ class App extends Component {
 			<Nav />
 
 			<Overlay options={this.props.overlay}>
-				<CustomerSelectList customers={this.props.customers} />
+				<Switch value={this.props.overlay.type}>
+					<CustomerSelectList case='customers' customers={this.props.customers} />
+				</Switch>
 			</Overlay>
 
 			<div className='container-fluid'>

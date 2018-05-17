@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setInfoValues, showOverlay, hideOverlay } from '../reducers/appReducer';
+import { setInfoValues, showOverlay, hideOverlay, clearSelection } from '../reducers/appReducer';
 import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
+import * as FA from 'react-icons/lib/fa';
 import moment from 'moment';
 import { formatDate } from '../utils';
 
@@ -95,12 +96,10 @@ class Info extends Component {
 
 		const buttonOptions = {
 			save: {
-				text: 'Update',
-				deleteText: 'Delete'
+				text: 'Update'
 			},
 			create: {
-				text: 'Create',
-				deleteText: 'Cancel'
+				text: 'Create'
 			}
 		};
 
@@ -118,7 +117,15 @@ class Info extends Component {
 				parse={this.parse.bind(this)}
 				errors={this.props.errors}
 				>
-				<Field name='item' editable={false} label={false} />
+
+				<SingleRow>
+					<Field name='item' editable={false} label={false} />
+
+					{ buttonType !== 'none' ?
+						<Button className='pull-right options'><FA.FaCog /></Button>
+						: null
+					}
+				</SingleRow>
 
 				<SingleRow>
 					<Field name='start' />
@@ -131,7 +138,7 @@ class Info extends Component {
 						<Field name='name' />
 						<Button text="#" size='2' enabled={buttonType !== 'none'} onClick={async () => {
 							try {
-								const v = await this.props.showOverlay();
+								const v = await this.props.showOverlay('customers');
 
 								this.form.setValue('name', v.name);
 								this.form.setValue('email', v.email);
@@ -150,15 +157,21 @@ class Info extends Component {
 						: null
 					}
 
-					{ buttonType === 'save' ?
-						<Button
-							text={button.deleteText}
-							className='pull-right'
-							onClick={this.props.deleteBooking.bind(null, this.props.selected.id)}
-						/>
+					{ buttonType !== 'none' ?
+						<Button className='pull-right' onClick={() => {
+							this.props.clearSelection();
+						}}><FA.FaClose className='cancel icon' /> Cancel</Button>
 						: null
 					}
 				</SingleRow>
+
+				{ /*buttonType === 'save' ?
+					<Button
+						text={button.deleteText}
+						onClick={this.props.deleteBooking.bind(null, this.props.selected.id)}
+					/>
+					: null*/
+				}
 			</Form>
 		</div>;
 	}
@@ -173,5 +186,5 @@ export default connect((state) => {
 		errors: state.app.infoErrors
 	}
 }, {
-	setValues: setInfoValues, createBooking, deleteBooking, showOverlay, hideOverlay
+	setValues: setInfoValues, createBooking, deleteBooking, showOverlay, hideOverlay, clearSelection
 })(Info);

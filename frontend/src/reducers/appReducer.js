@@ -22,7 +22,7 @@ const initialState = () => {
 export default (state = initialState(), action) => {
 	switch(action.type) {
 		case 'CLEAR_ALL_SELECTION':
-			return {...state, selection: null, selectedBooking: null, infoValues: {}};
+			return {...state, selection: null, selectedBooking: null, infoValues: {}, infoErrors: []};
 		case 'SELECT_BOOKING':
 			return {...state, selectedBooking: action.data.booking, selection: null };
 		case 'SET_SELECTION_INFO':
@@ -52,14 +52,14 @@ export default (state = initialState(), action) => {
 	}
 };
 
-export const showOverlay = () => {
+export const showOverlay = (type) => {
 	return async (dispatch, getState) => {
 		const customers = await userService.getAll();
 
 		const p = new Promise((resolve, reject) => {
 			dispatch([{
 				type: 'SET_OVERLAY',
-				data: { visible: true, resolve, reject }
+				data: { visible: true, resolve, reject, type }
 			}, {
 				type: 'SET_CUSTOMERS',
 				data: customers
@@ -75,6 +75,12 @@ export const hideOverlay = () => {
 		type: 'SET_OVERLAY',
 		data: { visible: false }
 	};
+};
+
+export const clearSelection = () => {
+	return [{
+		type: 'CLEAR_ALL_SELECTION'
+	}];
 };
 
 export const setDate = (date) => {
