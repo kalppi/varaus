@@ -24,10 +24,16 @@ route.route('/')
 
 			res.status(201).json(ret);
 		} catch (e) {
+			const err = e.toString();
 			let error = 'unknown';
 
-			if(e.toString().match(/overlap/)) {
-				error = 'overlap';
+			switch(true) {
+				case /overlap/i.test(err):
+					error = 'overlap';
+					break;
+				case /customer info/i.test(err):
+					error = 'missing field';
+					break;
 			}
 
 			res.status(400).json({ error });

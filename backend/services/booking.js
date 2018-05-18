@@ -1,4 +1,5 @@
 import { Sequelize, sequelize, models } from '../models';
+import history from './history';
 
 const { Booking, User, Item } = models;
 
@@ -53,13 +54,23 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
+	let booking = null;
+
 	if(data.User) {
 		const info = await User.create(data.User);
 
-		return await Booking.create({...data, UserId: info.get('id')}, {include: [Item, User]});
+		booking = await Booking.create({...data, UserId: info.get('id')}, {include: [Item, User]});
+	} else if(data.UserId) {
+		booking = await Booking.create({...data}, {include: [Item, User]});
 	} else {
-		return await Booking.create(data);
+		throw new Error('Customer info not present');
 	}
+
+	if(booking !== null) {
+		history.addCreate(booking);
+	}
+
+	return booking;
 };
 
 const update = async (id, data) => {
@@ -68,6 +79,8 @@ const update = async (id, data) => {
 	if(data.User) {
 		await User.update(data.User, { where: {id: rtn[1][0].get('UserId')}, fields: Object.keys(data.User)});
 	}
+
+	history.addChange(id, data);
 
 	return rtn;
 };

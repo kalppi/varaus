@@ -6,4 +6,8 @@ const getAll = async () => {
 	return await Item.findAll();
 };
 
-export default { getAll };
+const getOne = async (id) => {
+	return await Item.find({ where: { id }});
+};
+
+export default { getAll, getOne };

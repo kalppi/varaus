@@ -41,7 +41,7 @@ describe('api', () => {
 		expect(data.body.length).toBe(1);
 	});
 
-	test('can create a booking', async () => {
+	test('can\'t create a booking without customer info', async () => {
 		const rtn = await api
 			.post('/api/booking')
 			.send({
@@ -50,10 +50,45 @@ describe('api', () => {
 				ItemId: items[2].get('id')
 			})
 			.set('Content-Type', 'application/json')
+			.expect(400);
+	});
+
+	test('can create a booking with existing customer', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2018-12-12',
+				end: '2018-12-13',
+				ItemId: items[2].get('id'),
+				UserId: 1
+			})
+			.set('Content-Type', 'application/json')
 			.expect(201);
 
 		expect(rtn.body.start).toBe('2018-12-12');
 		expect(rtn.body.end).toBe('2018-12-13');
+	});
+
+	test('can create a booking with a new customer', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2018-11-11',
+				end: '2018-11-12',
+				ItemId: items[2].get('id'),
+				User: {
+					name: 'Pera',
+					email: 'pera@google.fi'
+				}
+			})
+			.set('Content-Type', 'application/json')
+			.expect(201);
+
+		const { start, end, UserId } = rtn.body;
+
+		expect(start).toBe('2018-11-11');
+		expect(end).toBe('2018-11-12');
+		expect(UserId).toBeTruthy();
 	});
 
 	test('can update a booking', async () => {
@@ -99,28 +134,6 @@ describe('api', () => {
 			.expect(409);
 	});
 
-	test('can create a booking with info', async () => {
-		const rtn = await api
-			.post('/api/booking')
-			.send({
-				start: '2018-11-11',
-				end: '2018-11-12',
-				ItemId: items[2].get('id'),
-				User: {
-					name: 'Pera',
-					email: 'pera@google.fi'
-				}
-			})
-			.set('Content-Type', 'application/json')
-			.expect(201);
-
-		const { start, end, UserId } = rtn.body;
-
-		expect(start).toBe('2018-11-11');
-		expect(end).toBe('2018-11-12');
-		expect(UserId).toBeTruthy();
-	});
-
 	test('can\'t create overlapping bookings', async () => {
 		const bookings = [{
 				start: '2018-10-12',
@@ -142,7 +155,8 @@ describe('api', () => {
 				.post('/api/booking')
 				.send({
 					...booking,
-					ItemId: items[0].get('id')
+					ItemId: items[0].get('id'),
+					UserId: 1
 				})
 				.set('Content-Type', 'application/json')
 			);
