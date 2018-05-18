@@ -97,6 +97,19 @@ describe('Booking api', () => {
 		expect(UserId).toBeTruthy();
 	});
 
+	test('booking end must be after start', async () => {
+		await api
+			.post('/api/booking')
+			.send({
+				start: '2016-12-12',
+				end: '2016-12-12',
+				ItemId: items[2].get('id'),
+				UserId: 1
+			})
+			.set('Content-Type', 'application/json')
+			.expect(400);
+	});
+
 	test('can update a booking', async () => {
 		await api
 			.put('/api/booking/' + bookings[4].get('id'))
@@ -122,6 +135,27 @@ describe('Booking api', () => {
 		expect(ItemId).toBe(items[1].get('id'));
 		expect(User.name).toBe('Matti');
 		expect(User.email).toBe('matti@google.fi');
+	});
+
+	test('can update a booking start and end and not get overlapping error', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2016-12-12',
+				end: '2016-12-17',
+				ItemId: items[2].get('id'),
+				UserId: 1
+			})
+			.set('Content-Type', 'application/json')
+			.expect(201);
+
+		await api
+			.put('/api/booking/' + rtn.body.id)
+			.send({
+				start: '2016-12-13',
+				end: '2016-12-16',
+			})
+			.expect(200);
 	});
 
 	test('can delete a booking', async () => {

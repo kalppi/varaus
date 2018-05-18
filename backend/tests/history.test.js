@@ -1,11 +1,9 @@
 import 'dotenv/config';
-import supertest from 'supertest';
-import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import history from '../services/history';
+import bookingService from '../services/booking';
 
 const { Item, User } = models;
-const api = supertest(app);
 
 let item = null;
 
@@ -20,14 +18,14 @@ beforeAll(async () => {
 });
 
 afterAll(() => {
-	server.close();
+	sequelize.close();
 });
+
+let first = null;
 
 describe('History', () => {
 	test('create is recorded', async () => {
-		await api
-			.post('/api/booking')
-			.send({
+		first = await bookingService.create({
 				start: '2018-01-01',
 				end: '2018-01-02',
 				ItemId: item.get('id'),
@@ -35,26 +33,63 @@ describe('History', () => {
 					name: 'Pera',
 					email: 'pera@google.fi'
 				}
-			})
-			.set('Content-Type', 'application/json');
+			});
 
-		expect(history.length()).toBe(1);
+		expect(await history.length()).toBe(1);
+	});
+
+	test('delete is recorded', async () => {
+		await bookingService.delete(first.id);
+
+		expect(await history.length()).toBe(2);
+	});
+
+	test('change is recorded', async () => {
+		const data = await bookingService.create({
+				start: '2016-04-01',
+				end: '2016-04-02',
+				ItemId: item.get('id'),
+				User: {
+					name: 'Mikko',
+					email: 'mikko@google.fi'
+				}
+			});
+
+		await bookingService.update(data.get('id'), {
+			end: '2016-04-03'
+		});
+
+		expect(await history.length()).toBe(4);
 	});
 
 	test('peek works', async () => {
-		const data = await api
-			.post('/api/booking')
-			.send({
-				start: '2018-02-01',
-				end: '2018-02-02',
+		const data = await bookingService.create({
+				start: '2018-03-01',
+				end: '2018-03-02',
 				ItemId: item.get('id'),
 				User: {
 					name: 'Mara',
 					email: 'mara@google.fi'
 				}
-			})
-			.set('Content-Type', 'application/json');
+			});
 
-		expect(history.peek().booking.id).toBe(data.body.id);
+		const peek = await history.peek();
+
+		expect(peek.get('data').id).toBe(data.id);
+		expect(peek.get('type')).toBe('create');
+	});
+
+	test('peekForBooking works', async () => {
+		const peek = await history.peekForBooking(first.id);
+
+		expect(peek.get('data').id).toBe(first.id);
+		expect(peek.get('type')).toBe('delete');
+	});
+
+	test('peek and peekForBooking return null when no history', async () => {
+		await history.clear();
+
+		expect(await history.peek()).toBe(null);
+		expect(await history.peekForBooking(1)).toBe(null);
 	});
 });

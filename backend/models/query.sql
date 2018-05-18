@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION is_valid
-	(s DATE, e DATE, ii INT, OUT result BOOLEAN)
+CREATE OR REPLACE FUNCTION is_overlapping
+	(idd INT, s DATE, e DATE, ii INT, OUT result BOOLEAN)
 	AS $$
 BEGIN
 	SELECT COUNT(*) = 0
@@ -13,15 +13,30 @@ BEGIN
 		 	OR
 		 	(s < b.start AND e > b.end)
 	 	)
-	 INTO result;
-	 RETURN;
+	 	AND b.id != idd
+	INTO result;
+	RETURN;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION is_end_later_than_start
+	(s DATE, e DATE, OUT result BOOLEAN)
+	AS $$
+BEGIN
+	SELECT e - s > 0
+	INTO result;
+	RETURN;
 END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION validity_check() RETURNS trigger AS $$
 BEGIN
-	IF(SELECT is_valid(NEW.start, NEW."end", NEW."ItemId") IS false) THEN
+	IF(SELECT is_overlapping(NEW.id, NEW.start, NEW."end", NEW."ItemId") IS false) THEN
 		RAISE EXCEPTION 'overlap';
+	END IF;
+
+	IF(SELECT is_end_later_than_start(NEW.start, NEW."end") IS false) THEN
+		RAISE EXCEPTION 'error';
 	END IF;
 
 	RETURN NEW;

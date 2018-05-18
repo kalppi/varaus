@@ -53,3 +53,5 @@ data:
     - ['16.5.', 2, 'Overlayn väsäämistä, formin bugifixailua.']
     - ['17.5.', 2, 'Minimapin renderöinnin bugien metsästystä ja korjailua vieläkin.']
     - ['17.5.', 2, 'Varauksen lisävalinnoille (esim. varauksen poistaminen) nappi ja overlay.']
+    - ['18.5.', 3, 'Historian tekemisen aloittelua, yleisiä bugifixailuja sekä testien tekemistä']
+    - ['18.5.', 1, 'Historia servicen tekoa ja sille testien tekoa, pieniä sql fixailuja.']

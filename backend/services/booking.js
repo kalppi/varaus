@@ -67,7 +67,7 @@ const create = async (data) => {
 	}
 
 	if(booking !== null) {
-		history.addCreate(booking);
+		await history.addCreate(booking.get({plain: true}));
 	}
 
 	return booking;
@@ -80,13 +80,18 @@ const update = async (id, data) => {
 		await User.update(data.User, { where: {id: rtn[1][0].get('UserId')}, fields: Object.keys(data.User)});
 	}
 
-	history.addChange(id, data);
+	await history.addChange(id, data);
 
 	return rtn;
 };
 
 const del = async (id) => {
+	const booking = await Booking.find({where: { id }, include: [Item, User]});
 	const rtn = await Booking.destroy({ where: { id }});
+
+	if(booking !== null) {
+		await history.addDelete(booking.get({plain: true}));
+	}
 
 	return rtn;
 };

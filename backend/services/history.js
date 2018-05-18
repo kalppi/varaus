@@ -1,59 +1,85 @@
-const history = [];
+import { Sequelize, sequelize, models } from '../models';
+
+const { History } = models;
+const { Op } = Sequelize;
+
 
 const snapshot = () => {
 
 };
 
-const addChange = (id, change) => {
-
+const addChange = async (id, change) => {
+	await History.create({
+		type: 'change',
+		data: { id, ...change }
+	});
 };
 
-const addDelete = (oldBooking) => {
-
-};
-
-const addCreate = (newBooking) => {
-	history.push({
-		type: 'create',
-		time: newBooking.get('createdAt'),
-		booking: {
-			id: newBooking.get('id'),
-			start: newBooking.get('start'),
-			end: newBooking.get('end'),
-			ItemId: newBooking.get('ItemId'),
-			UserId: newBooking.get('UserId')
+const addDelete = async (booking) => {
+	await History.create({
+		type: 'delete',
+		data: {
+			id: booking.id,
+			start: booking.start,
+			end: booking.end,
+			ItemId: booking.ItemId,
+			UserId: booking.UserId
 		}
 	});
 };
 
-const get = () => {
-	return history;
+const addCreate = async (booking) => {
+	await History.create({
+		type: 'create',
+		data: {
+			id: booking.id,
+			start: booking.start,
+			end: booking.end,
+			ItemId: booking.ItemId,
+			UserId: booking.UserId
+		}
+	});
+};
+
+const getAll = () => {
+	
 };
 
 const getForBooking = (id) => {
-	return history.filter(h => h.booking.id == id);
+	
 };
 
-const length = () => {
-	return history.length;
+const length = async () => {
+	return await History.count();
 };
 
 const lengthForBooking = (id) => {
-	return getForBooking(id).length;
+	
 };
 
-const peek = () => {
-	return history[history.length - 1];
+const peek = async () => {
+	const entries = await History.findAll({
+		limit: 1,
+		order: [['createdAt', 'DESC']]
+	});
+
+	if(entries.length == 0) return null;
+	else return entries[0];
 };
 
-const peekForBooking = (id) => {
-	for(let i = history.length - 1; i >= 0; i--) {
-		if(history[i].booking.id == id) {
-			return history[i];
-		}
-	}
+const peekForBooking = async (id) => {
+	const entries = await History.findAll({
+		limit: 1,
+		where: { 'data.id': id },
+		order: [['createdAt', 'DESC']]
+	});
 
-	return null;
+	if(entries.length == 0) return null;
+	else return entries[0];
 };
 
-export default { snapshot, addChange, addDelete, addCreate, get, getForBooking, length, lengthForBooking, peek, peekForBooking };
+const clear = async () => {
+	await History.destroy({truncate: true});
+};
+
+export default { snapshot, addChange, addDelete, addCreate, getAll, getForBooking, length, lengthForBooking, peek, peekForBooking, clear };
