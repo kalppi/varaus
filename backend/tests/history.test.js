@@ -21,7 +21,7 @@ afterAll(() => {
 	sequelize.close();
 });
 
-let first = null;
+let first = null, second = null;
 
 describe('History', () => {
 	test('create is recorded', async () => {
@@ -45,7 +45,7 @@ describe('History', () => {
 	});
 
 	test('change is recorded', async () => {
-		const data = await bookingService.create({
+		second = await bookingService.create({
 				start: '2016-04-01',
 				end: '2016-04-02',
 				ItemId: item.get('id'),
@@ -55,7 +55,8 @@ describe('History', () => {
 				}
 			});
 
-		await bookingService.update(data.get('id'), {
+		await bookingService.update(second.get('id'), {
+			start: '2016-04-02',
 			end: '2016-04-03'
 		});
 
@@ -77,6 +78,16 @@ describe('History', () => {
 
 		expect(peek.get('data').id).toBe(data.id);
 		expect(peek.get('type')).toBe('create');
+	});
+
+	test('lengthForBooking works', async () => {
+		expect(await history.lengthForBooking(first.id)).toBe(2);
+	});
+
+	test('getForBooking works', async () => {
+		const h = await history.getForBooking(second.id);
+
+		expect(h.length).toBe(2);
 	});
 
 	test('peekForBooking works', async () => {

@@ -74,13 +74,14 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
+	const booking = await Booking.find({where: { id }, attributes: ['start', 'end', 'ItemId', 'UserId']});
 	const rtn = await Booking.update(data, { where: { id }, fields: Object.keys(data), returning: true });
 
 	if(data.User) {
 		await User.update(data.User, { where: {id: rtn[1][0].get('UserId')}, fields: Object.keys(data.User)});
 	}
 
-	await history.addChange(id, data);
+	await history.addChange(id, booking.get({plain: true}), rtn[1][0].get({plain: true}));
 
 	return rtn;
 };

@@ -3,15 +3,21 @@ import { Sequelize, sequelize, models } from '../models';
 const { History } = models;
 const { Op } = Sequelize;
 
+const addChange = async (id, oldValues, newValues) => {
+	const changes = {};
 
-const snapshot = () => {
+	for(let key of Object.keys(oldValues)) {
+		const ov = oldValues[key];
+		const nv = newValues[key];
 
-};
+		if(ov !== nv) {
+			changes[key] = { old: ov, new: nv};
+		}
+	}
 
-const addChange = async (id, change) => {
 	await History.create({
 		type: 'change',
-		data: { id, ...change }
+		data: { id, ...changes }
 	});
 };
 
@@ -41,20 +47,23 @@ const addCreate = async (booking) => {
 	});
 };
 
-const getAll = () => {
-	
-};
+const getForBooking = async (id) => {
+	const entries = await History.findAll({
+		where: { 'data.id': id },
+		order: [['createdAt', 'ASC']]
+	});
 
-const getForBooking = (id) => {
-	
+	return entries;
 };
 
 const length = async () => {
 	return await History.count();
 };
 
-const lengthForBooking = (id) => {
-	
+const lengthForBooking = async (id) => {
+	return await History.count({
+		where: { 'data.id': id }
+	});
 };
 
 const peek = async () => {
@@ -82,4 +91,4 @@ const clear = async () => {
 	await History.destroy({truncate: true});
 };
 
-export default { snapshot, addChange, addDelete, addCreate, getAll, getForBooking, length, lengthForBooking, peek, peekForBooking, clear };
+export default { addChange, addDelete, addCreate, getForBooking, length, lengthForBooking, peek, peekForBooking, clear };
