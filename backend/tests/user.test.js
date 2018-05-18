@@ -2,6 +2,7 @@ import 'dotenv/config';
 import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
+import userService from '../services/user';
 import setup from './setup';
 
 const { Item, Booking, UserData } = models;
@@ -13,7 +14,11 @@ beforeAll(async () => {
 	({users} = await setup(sequelize, models));
 });
 
-describe('api', () => {
+afterAll(() => {
+	server.close();
+});
+
+describe('Customer api', () => {
 	test('users are returned as json', async () => {
 		const data = await api
 			.get('/api/user')
@@ -51,7 +56,8 @@ describe('api', () => {
 	});
 });
 
-afterAll(() => {
-	server.close();
+describe('Misc', () => {
+	test('count is right', async () => {
+		expect(await userService.count()).toBe(users.length);
+	});
 });
-

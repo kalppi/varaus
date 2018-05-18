@@ -24,4 +24,8 @@ const search = async (query) => {
 	});
 };
 
-export default { getAll, getOne, search };
+const count = async () => {
+	return await User.count();
+};
+
+export default { getAll, getOne, search, count };

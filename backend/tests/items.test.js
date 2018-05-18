@@ -13,7 +13,11 @@ beforeAll(async () => {
 	({items} = await setup(sequelize, models));
 });
 
-describe('api', () => {
+afterAll(() => {
+	server.close();
+});
+
+describe('Items api', () => {
 	test('items are returned as json', async () => {
 		const data = await api
 			.get('/api/item')
@@ -22,9 +26,5 @@ describe('api', () => {
 
 		expect(data.body.length).toBe(items.length);
 	});
-});
-
-afterAll(() => {
-	server.close();
 });
 

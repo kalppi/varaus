@@ -3,18 +3,24 @@ import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
+import userService from '../services/user';
 
 const { Item, Booking, UserData } = models;
 const api = supertest(app);
 
 let items = null;
 let bookings = null;
+let users = null;
 
 beforeAll(async () => {
-	({items, bookings} = await setup(sequelize, models));
+	({items, bookings, users} = await setup(sequelize, models));
 });
 
-describe('api', () => {
+afterAll(() => {
+	server.close();
+});
+
+describe('Booking api', () => {
 	test('bookings are returned as json', async () => {
 		const data = await api
 			.get('/api/booking')
@@ -179,11 +185,10 @@ describe('api', () => {
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
 
-		expect(rtn.body.length).toBe(4);
+		expect(rtn.body.length).toBe(3);
+	});
+
+	test('no extra users are created', async () => {
+		expect(await userService.count()).toBe(users.length + 1);
 	});
 });
-
-afterAll(() => {
-	server.close();
-});
-
