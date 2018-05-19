@@ -26,7 +26,7 @@ class Info extends Component {
 					email: values.email
 				}
 			};
-			
+
 			this.props.createBooking(data);
 		}
 	}
@@ -141,14 +141,18 @@ class Info extends Component {
 				</SingleRow>
 				
 				<Group text='Customer'>
+					<Field name='userId' type='hidden' />
+
 					<SingleRow>
 						<Field name='name' />
-						<Button text="#" size='2' enabled={buttonType !== 'none'} onClick={async () => {
+						<Button className='choose-customer' name='choose-customer' text='#' size='3' enabled={buttonType !== 'none'} onClick={async () => {
 							try {
 								const v = await this.props.showCustomersOverlay();
-
+								
+								this.form.setValue('userId', v.id);
 								this.form.setValue('name', v.name);
 								this.form.setValue('email', v.email);
+								this.form.setText('choose-customer', '#' + v.id);
 							} catch(e) {
 								// cancel
 							}

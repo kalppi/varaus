@@ -97,6 +97,30 @@ describe('Booking api', () => {
 		expect(UserId).toBeTruthy();
 	});
 
+	test('can create a booking with existing customer, and update customer info', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2019-11-11',
+				end: '2019-11-12',
+				ItemId: items[2].get('id'),
+				UserId: 1,
+				User: {
+					name: 'Peraa'
+				}
+			})
+			.set('Content-Type', 'application/json')
+			.expect(201);
+
+		const { start, end, UserId, User } = rtn.body;
+
+		expect(start).toBe('2019-11-11');
+		expect(end).toBe('2019-11-12');
+		expect(UserId).toBe(1);
+		expect(User.name).toBe('Peraa');
+		expect(User.email).toBe('peramera@altavista.com');
+	});
+
 	test('booking end must be after start', async () => {
 		await api
 			.post('/api/booking')

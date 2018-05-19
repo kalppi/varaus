@@ -5,4 +5,8 @@ const log = (...args) => {
 	}
 };
 
-export { log };
+const numeric = (s) => {
+	return /^[0-9]+$/.test(String(s));
+};
+
+export { log, numeric };

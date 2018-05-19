@@ -1,5 +1,6 @@
 import { Sequelize, sequelize, models } from '../models';
 import history from './history';
+import { numeric } from '../utils';
 
 const { Booking, User, Item } = models;
 
@@ -56,16 +57,23 @@ const getOne = async (id) => {
 const create = async (data) => {
 	let booking = null;
 
-	if(data.User) {
+	if(numeric(data.UserId)) {
+		if(data.User) {
+			await User.update(data.User, { where: {id: data.UserId}, fields: Object.keys(data.User)});
+
+			delete data['User'];
+		}
+
+		booking = await Booking.create({...data}, {include: [Item, User]});
+	} else if(data.User) {
 		const info = await User.create(data.User);
 		delete data['User'];
 		booking = await Booking.create({...data, UserId: info.get('id')});
-		booking = await getOne(booking.get('id'));
-	} else if(data.UserId) {
-		booking = await Booking.create({...data}, {include: [Item, User]});
 	} else {
 		throw new Error('Customer info not present');
 	}
+
+	booking = await getOne(booking.get('id'));
 
 	if(booking !== null) {
 		await history.addCreate(booking.get({plain: true}));
