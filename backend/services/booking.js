@@ -2,7 +2,7 @@ import { Sequelize, sequelize, models } from '../models';
 import history from './history';
 import { numeric } from '../utils';
 
-const { Booking, User, Item } = models;
+const { Booking, Customer, Item } = models;
 
 const { Op } = Sequelize;
 
@@ -31,7 +31,7 @@ const cleanRows = rows => {
 };
 
 const getAll = async () => {
-	return await Booking.findAll({include: [{model: User, attributes: ['name']}]});
+	return await Booking.findAll({include: [{model: Customer, attributes: ['name']}]});
 };
 
 const getAllBetween = async (start, end) => {
@@ -46,29 +46,29 @@ const getAllBetween = async (start, end) => {
 				[Op.lte]: end
 			}
 		},
-		include: [{model: User, attributes: ['name']}]
+		include: [{model: Customer, attributes: ['name']}]
 	});
 };	
 
 const getOne = async (id) => {
-	return await Booking.find({ where: { id }, include: [ Item, User ]});
+	return await Booking.find({ where: { id }, include: [ Item, Customer ]});
 };
 
 const create = async (data) => {
 	let booking = null;
 
-	if(numeric(data.UserId)) {
-		if(data.User) {
-			await User.update(data.User, { where: {id: data.UserId}, fields: Object.keys(data.User)});
+	if(numeric(data.CustomerId)) {
+		if(data.Customer) {
+			await Customer.update(data.Customer, { where: {id: data.CustomerId}, fields: Object.keys(data.Customer)});
 
-			delete data['User'];
+			delete data['Customer'];
 		}
 
-		booking = await Booking.create({...data}, {include: [Item, User]});
-	} else if(data.User) {
-		const info = await User.create(data.User);
-		delete data['User'];
-		booking = await Booking.create({...data, UserId: info.get('id')});
+		booking = await Booking.create({...data}, {include: [Item, Customer]});
+	} else if(data.Customer) {
+		const info = await Customer.create(data.Customer);
+		delete data['Customer'];
+		booking = await Booking.create({...data, CustomerId: info.get('id')});
 	} else {
 		throw new Error('Customer info not present');
 	}
@@ -83,11 +83,11 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-	const booking = await Booking.find({where: { id }, attributes: ['start', 'end', 'ItemId', 'UserId']});
+	const booking = await Booking.find({where: { id }, attributes: ['start', 'end', 'ItemId', 'CustomerId']});
 	const rtn = await Booking.update(data, { where: { id }, fields: Object.keys(data), returning: true });
 
-	if(data.User) {
-		await User.update(data.User, { where: {id: rtn[1][0].get('UserId')}, fields: Object.keys(data.User)});
+	if(data.Customer) {
+		await Customer.update(data.Customer, { where: {id: rtn[1][0].get('CustomerId')}, fields: Object.keys(data.Customer)});
 	}
 
 	await history.addChange(id, booking.get({plain: true}), rtn[1][0].get({plain: true}));
@@ -96,7 +96,7 @@ const update = async (id, data) => {
 };
 
 const del = async (id) => {
-	const booking = await Booking.find({where: { id }, include: [Item, User]});
+	const booking = await Booking.find({where: { id }, include: [Item, Customer]});
 	const rtn = await Booking.destroy({ where: { id }});
 
 	if(booking !== null) {
@@ -113,13 +113,13 @@ const search = async (query) => {
 
 	const rows = await sequelize.query(
 		`SELECT
-			b.id, b.start, b."end",b."UserId",
-			"ItemId", ui.name AS "User.name", ui.email AS "User.email", i.name AS "Item.name"
-		FROM (SELECT id, start, "end", "UserId", "ItemId", UNNEST(search_data) AS part FROM "Bookings") b
-		INNER JOIN "Users" ui ON ui.id = b."UserId"
+			b.id, b.start, b."end",b."CustomerId",
+			"ItemId", ui.name AS "Customer.name", ui.email AS "Customer.email", i.name AS "Item.name"
+		FROM (SELECT id, start, "end", "CustomerId", "ItemId", UNNEST(search_data) AS part FROM "Bookings") b
+		INNER JOIN "Customers" ui ON ui.id = b."CustomerId"
 		INNER JOIN "Items" i ON i.id = b."ItemId"
 		WHERE part LIKE ?
-		GROUP BY b.id, start, "end", "UserId", "ItemId", ui.name, ui.email, i.name
+		GROUP BY b.id, start, "end", "CustomerId", "ItemId", ui.name, ui.email, i.name
 		LIMIT 20`,
 		{ replacements: [query + '%'], type: sequelize.QueryTypes.SELECT  }
 	);

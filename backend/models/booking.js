@@ -6,7 +6,7 @@ export default (sequelize, DataTypes) => {
 		search_data: DataTypes.ARRAY(DataTypes.STRING)
 	});
 
-	Booking.associate = ({Booking, Item, User}) => {
+	Booking.associate = ({Booking, Item, Customer}) => {
 		Booking.belongsTo(Item, {
 			onDelete: 'CASCADE',
 			foreignKey: {
@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
 			}
 		});
 
-		Booking.belongsTo(User, {
+		Booking.belongsTo(Customer, {
 			onDelete: 'CASCADE',
 			foreignKey: {
 				allowNull: true

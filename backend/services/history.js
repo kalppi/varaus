@@ -29,7 +29,7 @@ const addDelete = async (booking) => {
 			start: booking.start,
 			end: booking.end,
 			ItemId: booking.ItemId,
-			UserId: booking.UserId
+			CustomerId: booking.CustomerId
 		}
 	});
 };
@@ -42,7 +42,7 @@ const addCreate = async (booking) => {
 			start: booking.start,
 			end: booking.end,
 			ItemId: booking.ItemId,
-			UserId: booking.UserId
+			CustomerId: booking.CustomerId
 		}
 	});
 };

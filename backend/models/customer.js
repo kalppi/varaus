@@ -1,14 +1,14 @@
 
 export default (sequelize, DataTypes) => {
-	const User = sequelize.define('User', {
+	const Customer = sequelize.define('Customer', {
 		name: DataTypes.STRING,
 		email: DataTypes.STRING,
 		simple_name: DataTypes.STRING
 	});
 
-	User.associate = ({User, Booking}) => {
+	Customer.associate = ({Customer, Booking}) => {
 		
 	};
 
-	return User;
+	return Customer;
 };

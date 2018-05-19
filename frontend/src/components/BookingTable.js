@@ -115,7 +115,7 @@ class BookingTable extends Component {
 
 			cell.classList.add('booking');
 			cell.classList.remove('selected');
-			cell.children[0].innerHTML = booking.User.name;
+			cell.children[0].innerHTML = booking.Customer.name;
 
 			if(this.props.selectedBooking) {
 				if(this.props.selectedBooking.id === booking.id) {

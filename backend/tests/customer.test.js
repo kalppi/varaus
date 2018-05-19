@@ -2,16 +2,16 @@ import 'dotenv/config';
 import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
-import userService from '../services/user';
+import customerService from '../services/customer';
 import setup from './setup';
 
-const { Item, Booking, UserData } = models;
+const { Item, Booking } = models;
 const api = supertest(app);
 
-let users = null;
+let customers = null;
 
 beforeAll(async () => {
-	({users} = await setup(sequelize, models));
+	({customers} = await setup(sequelize, models));
 });
 
 afterAll(() => {
@@ -19,18 +19,18 @@ afterAll(() => {
 });
 
 describe('Customer api', () => {
-	test('users are returned as json', async () => {
+	test('customers are returned as json', async () => {
 		const data = await api
-			.get('/api/user')
+			.get('/api/customer')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
-		expect(data.body.length).toBe(users.length);
+		expect(data.body.length).toBe(customers.length);
 	});
 
-	test('user can be found with an id', async () => {
+	test('customer can be found with an id', async () => {
 		const data = await api
-			.get('/api/user/1')
+			.get('/api/customer/1')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
@@ -39,13 +39,13 @@ describe('Customer api', () => {
 
 	test('non-existing id returns 404', async () => {
 		const data = await api
-			.get('/api/user/10000000')
+			.get('/api/customer/10000000')
 			.expect(404);
 	});
 
 	test('can search', async () => {
 		const rtn = await api
-			.get('/api/user/search')
+			.get('/api/customer/search')
 			.query({
 				query: 'Mara'
 			})
@@ -58,6 +58,6 @@ describe('Customer api', () => {
 
 describe('Misc', () => {
 	test('count is right', async () => {
-		expect(await userService.count()).toBe(users.length);
+		expect(await customerService.count()).toBe(customers.length);
 	});
 });

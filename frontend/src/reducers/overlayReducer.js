@@ -1,4 +1,4 @@
-import userService from '../services/userService';
+import customerService from '../services/customerService';
 import bookingService from '../services/bookingsService';
 
 const initialState = () => {
@@ -24,7 +24,7 @@ export default (state = initialState(), action) => {
 
 export const showCustomersOverlay = () => {
 	return async (dispatch, getState) => {
-		const customers = await userService.getAll();
+		const customers = await customerService.getAll();
 
 		const p = new Promise((resolve, reject) => {
 			dispatch([{

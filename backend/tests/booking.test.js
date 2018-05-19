@@ -3,17 +3,17 @@ import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
-import userService from '../services/user';
+import customerService from '../services/customer';
 
-const { Item, Booking, UserData } = models;
+const { Item, Booking } = models;
 const api = supertest(app);
 
 let items = null;
 let bookings = null;
-let users = null;
+let customers = null;
 
 beforeAll(async () => {
-	({items, bookings, users} = await setup(sequelize, models));
+	({items, bookings, customers} = await setup(sequelize, models));
 });
 
 afterAll(() => {
@@ -66,7 +66,7 @@ describe('Booking api', () => {
 				start: '2018-12-12',
 				end: '2018-12-13',
 				ItemId: items[2].get('id'),
-				UserId: 1
+				CustomerId: 1
 			})
 			.set('Content-Type', 'application/json')
 			.expect(201);
@@ -82,7 +82,7 @@ describe('Booking api', () => {
 				start: '2018-11-11',
 				end: '2018-11-12',
 				ItemId: items[2].get('id'),
-				User: {
+				Customer: {
 					name: 'Pera',
 					email: 'pera@google.fi'
 				}
@@ -90,11 +90,11 @@ describe('Booking api', () => {
 			.set('Content-Type', 'application/json')
 			.expect(201);
 
-		const { start, end, UserId } = rtn.body;
+		const { start, end, CustomerId } = rtn.body;
 
 		expect(start).toBe('2018-11-11');
 		expect(end).toBe('2018-11-12');
-		expect(UserId).toBeTruthy();
+		expect(CustomerId).toBeTruthy();
 	});
 
 	test('can create a booking with existing customer, and update customer info', async () => {
@@ -104,21 +104,21 @@ describe('Booking api', () => {
 				start: '2019-11-11',
 				end: '2019-11-12',
 				ItemId: items[2].get('id'),
-				UserId: 1,
-				User: {
+				CustomerId: 1,
+				Customer: {
 					name: 'Peraa'
 				}
 			})
 			.set('Content-Type', 'application/json')
 			.expect(201);
 
-		const { start, end, UserId, User } = rtn.body;
+		const { start, end, CustomerId, Customer } = rtn.body;
 
 		expect(start).toBe('2019-11-11');
 		expect(end).toBe('2019-11-12');
-		expect(UserId).toBe(1);
-		expect(User.name).toBe('Peraa');
-		expect(User.email).toBe('peramera@altavista.com');
+		expect(CustomerId).toBe(1);
+		expect(Customer.name).toBe('Peraa');
+		expect(Customer.email).toBe('peramera@altavista.com');
 	});
 
 	test('booking end must be after start', async () => {
@@ -128,7 +128,7 @@ describe('Booking api', () => {
 				start: '2016-12-12',
 				end: '2016-12-12',
 				ItemId: items[2].get('id'),
-				UserId: 1
+				CustomerId: 1
 			})
 			.set('Content-Type', 'application/json')
 			.expect(400);
@@ -141,7 +141,7 @@ describe('Booking api', () => {
 				start: '2018-11-12',
 				end: '2018-11-13',
 				ItemId: items[1].get('id'),
-				User: {
+				Customer: {
 					name: 'Matti',
 					email: 'matti@google.fi'
 				}
@@ -152,13 +152,13 @@ describe('Booking api', () => {
 		const rtn = await api
 			.get('/api/booking/' + bookings[4].get('id'));
 
-		const { start, end, ItemId, User } = rtn.body;
+		const { start, end, ItemId, Customer } = rtn.body;
 
 		expect(start).toBe('2018-11-12');
 		expect(end).toBe('2018-11-13');
 		expect(ItemId).toBe(items[1].get('id'));
-		expect(User.name).toBe('Matti');
-		expect(User.email).toBe('matti@google.fi');
+		expect(Customer.name).toBe('Matti');
+		expect(Customer.email).toBe('matti@google.fi');
 	});
 
 	test('can update a booking start and end and not get overlapping error', async () => {
@@ -168,7 +168,7 @@ describe('Booking api', () => {
 				start: '2016-12-12',
 				end: '2016-12-17',
 				ItemId: items[2].get('id'),
-				UserId: 1
+				CustomerId: 1
 			})
 			.set('Content-Type', 'application/json')
 			.expect(201);
@@ -220,7 +220,7 @@ describe('Booking api', () => {
 				.send({
 					...booking,
 					ItemId: items[0].get('id'),
-					UserId: 1
+					CustomerId: 1
 				})
 				.set('Content-Type', 'application/json')
 			);
@@ -246,8 +246,8 @@ describe('Booking api', () => {
 		expect(rtn.body.length).toBe(2);
 	});
 
-	test('no extra users are created', async () => {
-		expect(await userService.count()).toBe(users.length + 1);
+	test('no extra customers are created', async () => {
+		expect(await customerService.count()).toBe(customers.length + 1);
 	});
 
 	test('history is returned as json', async () => {
@@ -257,7 +257,7 @@ describe('Booking api', () => {
 				start: '2015-12-12',
 				end: '2015-12-13',
 				ItemId: items[2].get('id'),
-				UserId: 1
+				CustomerId: 1
 			})
 			.set('Content-Type', 'application/json');
 

@@ -3,7 +3,7 @@ import { sequelize, models } from '../models';
 import history from '../services/history';
 import bookingService from '../services/booking';
 
-const { Item, User } = models;
+const { Item, Customer } = models;
 
 let item = null;
 
@@ -29,7 +29,7 @@ describe('History', () => {
 				start: '2018-01-01',
 				end: '2018-01-02',
 				ItemId: item.get('id'),
-				User: {
+				Customer: {
 					name: 'Pera',
 					email: 'pera@google.fi'
 				}
@@ -49,7 +49,7 @@ describe('History', () => {
 				start: '2016-04-01',
 				end: '2016-04-02',
 				ItemId: item.get('id'),
-				User: {
+				Customer: {
 					name: 'Mikko',
 					email: 'mikko@google.fi'
 				}
@@ -68,7 +68,7 @@ describe('History', () => {
 				start: '2018-03-01',
 				end: '2018-03-02',
 				ItemId: item.get('id'),
-				User: {
+				Customer: {
 					name: 'Mara',
 					email: 'mara@google.fi'
 				}

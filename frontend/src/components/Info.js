@@ -21,7 +21,8 @@ class Info extends Component {
 				ItemId: values.item.value,
 				start: values.start.value.format('YYYY-MM-DD'),
 				end: values.end.value.format('YYYY-MM-DD'),
-				User: {
+				CustomerId: values.customerId.value,
+				Customer: {
 					name: values.name,
 					email: values.email
 				}
@@ -141,7 +142,7 @@ class Info extends Component {
 				</SingleRow>
 				
 				<Group text='Customer'>
-					<Field name='userId' type='hidden' />
+					<Field name='customerId' type='hidden' />
 
 					<SingleRow>
 						<Field name='name' />
@@ -149,7 +150,7 @@ class Info extends Component {
 							try {
 								const v = await this.props.showCustomersOverlay();
 								
-								this.form.setValue('userId', v.id);
+								this.form.setValue('customerId', v.id);
 								this.form.setValue('name', v.name);
 								this.form.setValue('email', v.email);
 								this.form.setText('choose-customer', '#' + v.id);

@@ -57,8 +57,8 @@ class SearchResults extends Component {
 				<td className='search-id'>{result.id}</td>
 				<td className='search-start'>{fd(result.start)}</td>
 				<td className='search-end'>{fd(result.end)}</td>
-				<td className='search-name'>{result.User.name}</td>
-				<td className='search-email'>{result.User.email}</td>
+				<td className='search-name'>{result.Customer.name}</td>
+				<td className='search-email'>{result.Customer.email}</td>
 				<td className='search-item'>{result.Item.name}</td>
 			</tr>
 		)}

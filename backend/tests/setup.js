@@ -70,13 +70,13 @@ export default async (sequelize, models) => {
 	}];
 
 	const infos = bookings.map(booking => booking.info);
-	const users  = await models.User.bulkCreate(infos, { returning: true });
+	const customers  = await models.Customer.bulkCreate(infos, { returning: true });
 
 	for(let i = 0; i < bookings.length; i++) {
-		bookings[i].UserId = users[i].get('id');
+		bookings[i].CustomerId = customers[i].get('id');
 	}
 
 	bookings = await models.Booking.bulkCreate(bookings, { returning: true });
 
-	return { items, bookings, users };
+	return { items, bookings, customers };
 };

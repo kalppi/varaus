@@ -1,18 +1,18 @@
 import { Router } from 'express';
-import userService from '../services/user';
+import customerService from '../services/customer';
 
 const route = Router();
 
 route.route('/')
 	.get(async (req, res) => {
-		const data = await userService.getAll();
+		const data = await customerService.getAll();
 
 		res.json(data);
 	});
 
 route.route('/search')
 	.get(async (req, res) => {
-		const ret = await userService.search(req.query.query);
+		const ret = await customerService.search(req.query.query);
 
 		res.status(201).json(ret);
 	});
@@ -20,7 +20,7 @@ route.route('/search')
 route.route('/:id')
 	.get(async (req, res) => {
 		const id = req.params.id;
-		const data = await userService.getOne(id);
+		const data = await customerService.getOne(id);
 
 		if(data) {
 			res.json(data);

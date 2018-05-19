@@ -54,7 +54,7 @@ CREATE OR REPLACE FUNCTION set_search_data()
 RETURNS trigger AS $$
 BEGIN
   IF NEW.search_data IS NULL THEN
-    NEW.search_data := (SELECT ARRAY(SELECT DISTINCT UNNEST(REGEXP_SPLIT_TO_ARRAY(LOWER(UNACCENT(CONCAT_WS(' ', i.name, i.email))), '(\s+|@|\-|\.)')) FROM "Users" i WHERE i.id = new."UserId"));
+    NEW.search_data := (SELECT ARRAY(SELECT DISTINCT UNNEST(REGEXP_SPLIT_TO_ARRAY(LOWER(UNACCENT(CONCAT_WS(' ', i.name, i.email))), '(\s+|@|\-|\.)')) FROM "Customers" i WHERE i.id = new."CustomerId"));
   END IF;
 
   RETURN NEW;
@@ -80,7 +80,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 
-DROP TRIGGER IF EXISTS set_simple_name_trigger ON "Users";
-CREATE TRIGGER set_simple_name_trigger BEFORE INSERT ON "Users"
+DROP TRIGGER IF EXISTS set_simple_name_trigger ON "Customers";
+CREATE TRIGGER set_simple_name_trigger BEFORE INSERT ON "Customers"
 	FOR EACH ROW
 		EXECUTE PROCEDURE set_simple_name();

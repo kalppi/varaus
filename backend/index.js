@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import itemRoute from './controllers/item';
-import userRoute from './controllers/user';
+import customerRoute from './controllers/customer';
 import { log } from './utils';
 import { sequelize } from './models';
 
@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 
 app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);
-app.use('/api/user', userRoute);
+app.use('/api/customer', customerRoute);
 
 const server = app.listen(port, () => {
 	log(`Server running on port ${port}`);

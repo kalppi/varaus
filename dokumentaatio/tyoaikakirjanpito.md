@@ -36,7 +36,11 @@
 | 15.5. | 3 | Solujen valinnan säilyminen taulukon uudelleen renderöinnissä bugasi, virheen metsästystä ja korjailua. | 
 |  | 1 | Info formin virheellisten fieldien väritys. | 
 | 16.5. | 3 | Infon ja react-form-helper apukirjaston päivittelyä ja bugifixailua. | 
-|  | 3 | Refaktorointia, User modellille service ja api + testejä, viimein käyttämään testeissä lokaalia tietokantaa. | 
+|  | 3 | Refaktorointia, Customer modellille service ja api + testejä, viimein käyttämään testeissä lokaalia tietokantaa. | 
 |  | 2 | Overlayn väsäämistä, formin bugifixailua. | 
 | 17.5. | 2 | Minimapin renderöinnin bugien metsästystä ja korjailua vieläkin. | 
-| yht. | 72
+|  | 2 | Varauksen lisävalinnoille (esim. varauksen poistaminen) nappi ja overlay. | 
+| 18.5. | 3 | Historian tekemisen aloittelua, yleisiä bugifixailuja sekä testien tekemistä | 
+|  | 1 | Historia servicen tekoa ja sille testien tekoa, pieniä sql fixailuja. | 
+| 19.5. | 5 | Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan | 
+| yht. | 83

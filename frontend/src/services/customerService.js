@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const base = '/api/user';
+const base = '/api/customer';
 
 const getAll = () => {
 	const request = axios.get(base)

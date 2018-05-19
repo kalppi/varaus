@@ -4,7 +4,7 @@ import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
 
-const { Item, Booking, UserData } = models;
+const { Item, Booking } = models;
 const api = supertest(app);
 
 let items = null;
