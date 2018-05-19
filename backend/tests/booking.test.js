@@ -214,15 +214,31 @@ describe('Booking api', () => {
 		const rtn = await api
 			.get('/api/booking/search')
 			.query({
-				query: 'per'
+				query: 'mara'
 			})
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
-
-		expect(rtn.body.length).toBe(3);
+		
+		expect(rtn.body.length).toBe(2);
 	});
 
 	test('no extra users are created', async () => {
 		expect(await userService.count()).toBe(users.length + 1);
+	});
+
+	test('history is returned as json', async () => {
+		const rtn = await api
+			.post('/api/booking')
+			.send({
+				start: '2015-12-12',
+				end: '2015-12-13',
+				ItemId: items[2].get('id'),
+				UserId: 1
+			})
+			.set('Content-Type', 'application/json');
+
+		const history = await api
+			.get(`/api/booking/${rtn.body.id}/history`)
+			.expect('Content-Type', /application\/json/);
 	});
 });
