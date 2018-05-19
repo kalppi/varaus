@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import bookingService from '../services/booking';
+import historyService from '../services/history';
 
 const route = Router();
 
@@ -76,6 +77,15 @@ route.route('/:id')
 		} else {
 			res.status(409).end();
 		}
+	});
+
+route.route('/:id/history')
+	.get(async (req, res) => {
+		const id = req.params.id;
+
+		const data = await historyService.getForBooking(id);
+
+		res.json(data);
 	});
 
 export default route;

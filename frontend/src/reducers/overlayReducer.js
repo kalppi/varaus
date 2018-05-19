@@ -1,9 +1,11 @@
 import userService from '../services/userService';
+import bookingService from '../services/bookingsService';
 
 const initialState = () => {
 	return {
 		overlay: {},
-		customers: []
+		customers: [],
+		bookingInfo: null
 	};
 };
 
@@ -13,6 +15,8 @@ export default (state = initialState(), action) => {
 			return {...state, overlay: { ...action.data }};
 		case 'SET_CUSTOMERS':
 			return {...state, customers: action.data};
+		case 'SET_BOOKING_INFO':
+			return {...state, bookingInfo: action.data};
 		default:
 			return state;
 	}
@@ -36,10 +40,15 @@ export const showCustomersOverlay = () => {
 	}
 };
 
-export const showOptionsOverlay = () => {
+export const showOptionsOverlay = (booking) => {
 	return async (dispatch, getState) => {
+		const history = await bookingService.getHistory(booking.id);
+
 		const p = new Promise((resolve, reject) => {
 			dispatch([{
+				type: 'SET_BOOKING_INFO',
+				data: { booking, history }
+			}, {
 				type: 'SET_OVERLAY',
 				data: { visible: true, resolve, reject, type: 'options' }
 			}]);

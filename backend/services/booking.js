@@ -59,7 +59,8 @@ const create = async (data) => {
 	if(data.User) {
 		const info = await User.create(data.User);
 		delete data['User'];
-		booking = await Booking.create({...data, UserId: info.get('id')}, {include: [Item, User]});
+		booking = await Booking.create({...data, UserId: info.get('id')});
+		booking = await getOne(booking.get('id'));
 	} else if(data.UserId) {
 		booking = await Booking.create({...data}, {include: [Item, User]});
 	} else {

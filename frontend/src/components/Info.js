@@ -26,7 +26,7 @@ class Info extends Component {
 					email: values.email
 				}
 			};
-
+			
 			this.props.createBooking(data);
 		}
 	}
@@ -125,7 +125,7 @@ class Info extends Component {
 					{ buttonType === 'save' ?
 						<Button className='pull-right options' onClick={async () => {
 							try {
-								await this.props.showOptionsOverlay();
+								await this.props.showOptionsOverlay(this.props.selected);
 							} catch(e) {
 								// cancel
 							}

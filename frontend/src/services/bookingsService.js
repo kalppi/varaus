@@ -33,4 +33,9 @@ const search = (query) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, getAllBetween, getOne, create, delete: del, search };
+const getHistory = (id) => {
+	const request = axios.get(`${base}/${id}/history`);
+	return request.then(response => response.data);
+};
+
+export default { getAll, getAllBetween, getOne, create, delete: del, search, getHistory };
