@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { search } from '../reducers/appReducer';
+import { search, clearSearch } from '../reducers/appReducer';
 import { formatDate as fd } from '../utils';
 
 import './css/Search.css';
@@ -15,9 +15,13 @@ class Search extends Component {
 	}
 
 	doSearch() {
-		const search = this.input.value;
+		const search = this.input.value.trim();
 
-		this.props.search(search);
+		if(search.length === 0) {
+			this.props.clearSearch();
+		} else {
+			this.props.search(search);
+		}
 	}
 
 	render() {
@@ -37,7 +41,7 @@ class Search extends Component {
 class SearchResults extends Component {
 	render() {
 		if(this.props.searchResults.length === 0) {
-			return null;
+			//return null;
 		}
 
 		return <table className='table' id='Search'>
@@ -68,7 +72,7 @@ class SearchResults extends Component {
 }
 
 const ConnectedSearch = connect(null, {
-	search
+	search, clearSearch
 })(Search);
 
 const ConnectedSearchResults = connect((state) => {

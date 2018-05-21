@@ -10,7 +10,7 @@ const initialState = () => {
 		buttonEnabled: false,
 		infoErrors: [],
 		date: null,
-		searchResults: [],
+		searchResults: null,
 		loadBounds: null,
 		minimapViewBounds: null
 	};
@@ -176,5 +176,12 @@ export const search = (query) => {
 			type: 'SET_SEARCH_RESULTS',
 			data: results
 		});
+	}
+};
+
+export const clearSearch = () => {
+	return {
+		type: 'SET_SEARCH_RESULTS',
+		data: null
 	}
 };

@@ -57,3 +57,4 @@ data:
     - ['18.5.', 1, 'Historia servicen tekoa ja sille testien tekoa, pieniä sql fixailuja.']
     - ['19.5.', 5, 'Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan']
     - ['21.5.', 2, 'Varausten päivittäminen toimii nyt.']
+    - ['21.5.', 2, 'Käyttäjien kirjautumisen rakentelua.']
