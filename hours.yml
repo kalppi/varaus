@@ -58,3 +58,4 @@ data:
     - ['19.5.', 5, 'Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan']
     - ['21.5.', 2, 'Varausten päivittäminen toimii nyt.']
     - ['21.5.', 2, 'Käyttäjien kirjautumisen rakentelua.']
+    - ['21.5.', 1, 'Api vaatii kirjautumisen.']

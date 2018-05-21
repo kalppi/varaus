@@ -43,4 +43,7 @@
 | 18.5. | 3 | Historian tekemisen aloittelua, yleisiä bugifixailuja sekä testien tekemistä | 
 |  | 1 | Historia servicen tekoa ja sille testien tekoa, pieniä sql fixailuja. | 
 | 19.5. | 5 | Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan | 
-| yht. | 83
+| 21.5. | 2 | Varausten päivittäminen toimii nyt. | 
+|  | 2 | Käyttäjien kirjautumisen rakentelua. | 
+|  | 1 | Api vaatii kirjautumisen. | 
+| yht. | 88
