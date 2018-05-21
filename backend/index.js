@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import itemRoute from './controllers/item';
 import customerRoute from './controllers/customer';
+import loginRoute from './controllers/login';
 import { log } from './utils';
 import { sequelize } from './models';
 
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);
 app.use('/api/customer', customerRoute);
+app.use('/api/login', loginRoute);
 
 const server = app.listen(port, () => {
 	log(`Server running on port ${port}`);

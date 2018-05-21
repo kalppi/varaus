@@ -1,5 +1,9 @@
+import userService from '../services/user';
+
 export default async (sequelize, models) => {
 	await sequelize.sync({ force: true });
+
+	const user = await userService.create('Test User', 'test', 'test');
 	
 	const items = await models.Item.bulkCreate([{
 		name: 'AAA'
@@ -78,5 +82,5 @@ export default async (sequelize, models) => {
 
 	bookings = await models.Booking.bulkCreate(bookings, { returning: true });
 
-	return { items, bookings, customers };
+	return { user, items, bookings, customers };
 };
