@@ -1,13 +1,15 @@
 import axios from 'axios';
-import { setToken } from './serviceHelper';
 
 const base = '/api/login';
 
 const login = async (username, password) => {
 	const request = await axios.post(base, { username, password }).then(response => response.data);
-	setToken(axios, request.token);
-
 	return request;
 };
 
-export default { login };
+const logout = async () => {
+	const request = await axios.get(`${base}/logout`).then(response => response.data);
+	return request;
+};
+
+export default { login, logout };

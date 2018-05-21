@@ -11,19 +11,31 @@ import CustomerSelectList from './components/CustomerSelectList';
 import BookingOptions from './components/BookingOptions';
 import Login from './components/Login';
 import { SearchResults } from './components/Search';
-import { setDate } from './reducers/appReducer';
+import { setDate, setUser } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
 import { loadItems } from './reducers/itemsReducer';
 
 import './App.css';
 
 class App extends Component {
-	onLogin() {
+	componentDidMount() {
+		const userJSON = window.localStorage.getItem('user');
+
+		if(userJSON) {
+			const user = JSON.parse(userJSON);
+
+			this.props.setUser(user);
+
+			this.init();
+		}
+	}
+
+	init() {
 		this.props.init(moment('20181017', 'YYYYMMDD'));
 	}
 
 	render() {
-		return <Login onLogin={this.onLogin.bind(this)}>
+		return <Login onLogin={this.init.bind(this)}>
 				<div>
 					<Nav />
 
@@ -65,7 +77,7 @@ export default connect((state) => {
 		customers: state.overlay.customers
 	}
 }, {
-	loadBookings, loadItems, setDate,
+	loadBookings, loadItems, setDate, setUser,
 }, (stateProps, dispatchProps, ownProps) => {
 	return Object.assign({
 		init: (date) => {
@@ -73,5 +85,5 @@ export default connect((state) => {
 			dispatchProps.loadItems();
 			dispatchProps.loadBookings();
 		}
-	}, ownProps, stateProps);
+	}, ownProps, dispatchProps, stateProps);
 })(App);

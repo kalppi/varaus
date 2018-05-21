@@ -1,6 +1,7 @@
 import bookingsService from '../services/bookingsService';
 import moment from 'moment';
 import { formatDate } from '../utils';
+import { setToken, removeToken } from '../services/serviceHelper';
 
 const initialState = () => {
 	return {
@@ -190,8 +191,19 @@ export const clearSearch = () => {
 };
 
 export const setUser = (user) => {
+	setToken(user);
+
 	return {
 		type: 'SET_USER',
 		data: user
+	}
+};
+
+export const logout = () => {
+	removeToken();
+
+	return {
+		type: 'SET_USER',
+		data: null
 	}
 };

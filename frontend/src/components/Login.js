@@ -24,7 +24,7 @@ class Login extends Component {
 		const user = await loginService.login(name, pw);
 
 		if(user && user.token) {
-			this.props.setUser(user)
+			this.props.setUser(user);
 
 			if(this.props.onLogin) this.props.onLogin();
 		}

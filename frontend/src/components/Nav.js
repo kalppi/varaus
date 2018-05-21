@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Search } from './Search';
+import { logout } from '../reducers/appReducer';
 
 import './css/Nav.css';
 
 class Nav extends Component {
+	logout() {
+		this.props.logout();
+	}
+
 	render() {
 		return <nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<div className='col-md-3'>
@@ -15,14 +21,29 @@ class Nav extends Component {
 				</div>
 			</div>
 			<div className='col-md-9 nopadding'>
-				<div className="collapse navbar-collapse" id='search'>
-					<form className="form-inline my-2 m-lg-0">
-						<Search />
-					</form>
+				<div className="collapse navbar-collapse">
+					<ul className='navbar-nav mr-auto'>
+						<li className='nav-item'>
+							<div id='search'>
+								<Search />
+							</div>
+						</li>
+					</ul>
+					<ul className='navbar-nav mr-auto'>
+						<li className='nav-item'>
+							<button id='logout' className='btn' onClick={this.logout.bind(this)}>logout</button>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</nav>;
 	}
 }
 
-export default Nav;
+export default connect((state) => {
+	return {
+
+	};
+}, {
+	logout 
+})(Nav);
