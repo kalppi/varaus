@@ -4,6 +4,7 @@ import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
 import customerService from '../services/customer';
+import { login, get, post, put, del } from './testHelper';
 
 const { Item, Booking } = models;
 const api = supertest(app);
@@ -14,6 +15,8 @@ let customers = null;
 
 beforeAll(async () => {
 	({items, bookings, customers} = await setup(sequelize, models));
+
+	await login(api);
 });
 
 afterAll(() => {
@@ -22,8 +25,7 @@ afterAll(() => {
 
 describe('Booking api', () => {
 	test('bookings are returned as json', async () => {
-		const data = await api
-			.get('/api/booking')
+		const data = await get('/api/booking')
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
@@ -31,14 +33,12 @@ describe('Booking api', () => {
 	});
 
 	test('non-existing id returns 404', async () => {
-		const data = await api
-			.get('/api/booking/10000000')
+		const data = await get('/api/booking/10000000')
 			.expect(404);
 	});
 
 	test('bookings are returned between specified dates', async () => {
-		const data = await api
-			.get('/api/booking')
+		const data = await get('/api/booking')
 			.query({
 				start: '2018-08-02',
 				end: '2018-08-31'
@@ -48,8 +48,7 @@ describe('Booking api', () => {
 	});
 
 	test('can\'t create a booking without customer info', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2018-12-12',
 				end: '2018-12-13',
@@ -60,8 +59,7 @@ describe('Booking api', () => {
 	});
 
 	test('can create a booking with existing customer', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2018-12-12',
 				end: '2018-12-13',
@@ -76,8 +74,7 @@ describe('Booking api', () => {
 	});
 
 	test('can create a booking with a new customer', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2018-11-11',
 				end: '2018-11-12',
@@ -98,8 +95,7 @@ describe('Booking api', () => {
 	});
 
 	test('can create a booking with existing customer, and update customer info', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2019-11-11',
 				end: '2019-11-12',
@@ -122,8 +118,7 @@ describe('Booking api', () => {
 	});
 
 	test('booking end must be after start', async () => {
-		await api
-			.post('/api/booking')
+		await post('/api/booking')
 			.send({
 				start: '2016-12-12',
 				end: '2016-12-12',
@@ -135,8 +130,7 @@ describe('Booking api', () => {
 	});
 
 	test('can update a booking', async () => {
-		await api
-			.put('/api/booking/' + bookings[4].get('id'))
+		await put('/api/booking/' + bookings[4].get('id'))
 			.send({
 				start: '2018-11-12',
 				end: '2018-11-13',
@@ -149,8 +143,7 @@ describe('Booking api', () => {
 			.set('Content-Type', 'application/json')
 			.expect(200);
 
-		const rtn = await api
-			.get('/api/booking/' + bookings[4].get('id'));
+		const rtn = await get('/api/booking/' + bookings[4].get('id'));
 
 		const { start, end, ItemId, Customer } = rtn.body;
 
@@ -162,8 +155,7 @@ describe('Booking api', () => {
 	});
 
 	test('can update a booking start and end and not get overlapping error', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2016-12-12',
 				end: '2016-12-17',
@@ -173,8 +165,7 @@ describe('Booking api', () => {
 			.set('Content-Type', 'application/json')
 			.expect(201);
 
-		await api
-			.put('/api/booking/' + rtn.body.id)
+		await put('/api/booking/' + rtn.body.id)
 			.send({
 				start: '2016-12-13',
 				end: '2016-12-16',
@@ -183,18 +174,15 @@ describe('Booking api', () => {
 	});
 
 	test('can delete a booking', async () => {
-		await api
-			.delete('/api/booking/' + bookings[4].get('id'))
+		await del('/api/booking/' + bookings[4].get('id'))
 			.expect(200);
 
-		const rtn = await api
-			.get('/api/booking/' + bookings[4].get('id'))
+		const rtn = await get('/api/booking/' + bookings[4].get('id'))
 			.expect(404);
 	});
 
 	test('trying to delete an unknown booking returns 409', async () => {
-		await api
-			.delete('/api/booking/234423')
+		await del('/api/booking/234423')
 			.expect(409);
 	});
 
@@ -215,8 +203,7 @@ describe('Booking api', () => {
 
 		const promises = [];
 		for(let booking of bookings) {
-			promises.push(await api
-				.post('/api/booking')
+			promises.push(await post('/api/booking')
 				.send({
 					...booking,
 					ItemId: items[0].get('id'),
@@ -235,8 +222,7 @@ describe('Booking api', () => {
 	});
 
 	test('can search', async () => {
-		const rtn = await api
-			.get('/api/booking/search')
+		const rtn = await get('/api/booking/search')
 			.query({
 				query: 'mara'
 			})
@@ -251,8 +237,7 @@ describe('Booking api', () => {
 	});
 
 	test('history is returned as json', async () => {
-		const rtn = await api
-			.post('/api/booking')
+		const rtn = await post('/api/booking')
 			.send({
 				start: '2015-12-12',
 				end: '2015-12-13',
@@ -261,8 +246,7 @@ describe('Booking api', () => {
 			})
 			.set('Content-Type', 'application/json');
 
-		const history = await api
-			.get(`/api/booking/${rtn.body.id}/history`)
+		const history = await get(`/api/booking/${rtn.body.id}/history`)
 			.expect('Content-Type', /application\/json/);
 	});
 });
