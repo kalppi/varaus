@@ -5,6 +5,7 @@ import bookingRoute from './controllers/booking';
 import itemRoute from './controllers/item';
 import customerRoute from './controllers/customer';
 import loginRoute from './controllers/login';
+import loginProtect from './middlewares/loginProtect';
 import { log } from './utils';
 import { sequelize } from './models';
 
@@ -26,6 +27,8 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(loginProtect({whitelist: ['/api/login']}));
 
 app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);

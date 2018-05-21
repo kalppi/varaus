@@ -17,8 +17,12 @@ const findByUsername = (username) => {
 	return user;
 };
 
+const getOne = async (id) => {
+	return await User.findOne({ where: { id }});
+};
+
 const passwordMatches = async (user, password) => {
 	return await bcrypt.compare(password, user.get('password'));
 };
 
-export default { create, findByUsername, passwordMatches };
+export default { create, findByUsername, passwordMatches, getOne };
