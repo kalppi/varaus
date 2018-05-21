@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setInfoValues, clearSelection } from '../reducers/appReducer';
 import { showCustomersOverlay, showOptionsOverlay, hideOverlay } from '../reducers/overlayReducer';
-import { createBooking, deleteBooking } from '../reducers/bookingsReducer';
+import { createBooking, deleteBooking, updateBooking } from '../reducers/bookingsReducer';
 import { Form, Field, SingleRow, Button, Group } from 'react-form-helper';
 import * as FA from 'react-icons/lib/fa';
 import moment from 'moment';
@@ -12,22 +12,21 @@ import './css/Info.css';
 
 class Info extends Component {
 	onSubmit = () => {
+		const values = this.props.values;
+		const data = {
+			ItemId: values.item.value,
+			start: values.start.value.format('YYYY-MM-DD'),
+			end: values.end.value.format('YYYY-MM-DD'),
+			CustomerId: values.customerId,
+			Customer: {
+				name: values.name,
+				email: values.email
+			}
+		};
+
 		if(this.props.selected) {
-
+			this.props.updateBooking(values.bookingId, data);
 		} else {
-			const values = this.props.values;
-
-			const data = {
-				ItemId: values.item.value,
-				start: values.start.value.format('YYYY-MM-DD'),
-				end: values.end.value.format('YYYY-MM-DD'),
-				CustomerId: values.customerId.value,
-				Customer: {
-					name: values.name,
-					email: values.email
-				}
-			};
-
 			this.props.createBooking(data);
 		}
 	}
@@ -107,6 +106,12 @@ class Info extends Component {
 
 		const button = buttonOptions[buttonType];
 
+		let chooseCustomerText = '#';
+
+		if(buttonType === 'save') {
+			chooseCustomerText = '#' + selected.CustomerId;
+		}
+
 		return <div id='info'>
 			<Form
 				name='info'
@@ -146,7 +151,7 @@ class Info extends Component {
 
 					<SingleRow>
 						<Field name='name' />
-						<Button className='choose-customer' name='choose-customer' text='#' size='3' enabled={buttonType !== 'none'} onClick={async () => {
+						<Button className='choose-customer' name='choose-customer' text={chooseCustomerText} size='3' enabled={buttonType !== 'none'} onClick={async () => {
 							try {
 								const v = await this.props.showCustomersOverlay();
 								
@@ -196,5 +201,5 @@ export default connect((state) => {
 		errors: state.app.infoErrors
 	}
 }, {
-	setValues: setInfoValues, createBooking, deleteBooking, showCustomersOverlay, showOptionsOverlay, hideOverlay, clearSelection
+	setValues: setInfoValues, createBooking, deleteBooking, updateBooking, showCustomersOverlay, showOptionsOverlay, hideOverlay, clearSelection
 })(Info);

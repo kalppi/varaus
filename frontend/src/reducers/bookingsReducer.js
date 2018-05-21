@@ -8,6 +8,8 @@ export default (state = [], action) => {
 			return [...state, action.data];
 		case 'DELETE_BOOKING_SUCCESS':
 			return state.filter(b => b.id !== action.data.id);
+		case 'UPDATE_BOOKING':
+			return [...state.filter(b => b.id !== action.data.id), action.data];
 		default:
 			return state;
 	}
@@ -46,4 +48,19 @@ export const deleteBooking = (id) => {
 		type: 'DELETE_BOOKING',
 		data: { id }
 	}
+};
+
+export const updateBooking = (id, data) => {
+	return async (dispatch) => {
+		await bookingsService.update(id, data);
+
+		dispatch({
+			type: 'CLEAR_ALL_SELECTION'
+		});
+
+		dispatch({
+			type: 'UPDATE_BOOKING',
+			data: data
+		});
+	};
 };

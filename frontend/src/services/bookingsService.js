@@ -23,6 +23,11 @@ const create = (data) => {
 	return request.then(response => response.data);
 };
 
+const update = (id, data) => {
+	const request = axios.put(`${base}/${id}`, data);
+	return request.then(response => response.data);	
+};
+
 const del = (id) => {
 	const request = axios.delete(`${base}/${id}`);
 	return request.then(response => response.data);
@@ -38,4 +43,4 @@ const getHistory = (id) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, getAllBetween, getOne, create, delete: del, search, getHistory };
+export default { getAll, getAllBetween, getOne, create, update, delete: del, search, getHistory };

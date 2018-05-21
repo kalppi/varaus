@@ -56,3 +56,4 @@ data:
     - ['18.5.', 3, 'Historian tekemisen aloittelua, yleisiä bugifixailuja sekä testien tekemistä']
     - ['18.5.', 1, 'Historia servicen tekoa ja sille testien tekoa, pieniä sql fixailuja.']
     - ['19.5.', 5, 'Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan']
+    - ['21.5.', 2, 'Varausten päivittäminen toimii nyt.']
