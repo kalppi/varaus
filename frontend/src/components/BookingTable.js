@@ -53,7 +53,7 @@ class BookingTable extends Component {
 		let cell = this.getCell(item.id, start, 'right');
 		const cellEnd = this.getCell(item.id, end, 'right');
 
-		if(cell === null && start.isBefore(this.props.startDate)) {
+		if(cell === null && start.isBefore(this.props.startDate) && end.isSameOrAfter(this.props.startDate)) {
 			cell = this.getCell(item.id, moment(this.props.startDate).add(-1, 'days'), 'right');
 		}
 
