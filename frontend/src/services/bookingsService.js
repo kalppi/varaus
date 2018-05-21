@@ -8,7 +8,7 @@ const getAll = () => {
 	return request.then(response => response.data);
 };
 
-const getAllBetween = (start ,end) => {
+const getAllBetween = (start, end) => {
 	const request = axios.get(base, {params: { start: formatDateDb(start), end: formatDateDb(end) }});
 	return request.then(response => response.data);
 };

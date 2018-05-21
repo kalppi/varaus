@@ -8,7 +8,7 @@ route.route('/')
 	.post(async (req, res) => {
 		const body = req.body;
 		const user = await userService.findByUsername(body.username);
-
+		
 		const passwordCorrect = user === null ?
 			false :
 			await userService.passwordMatches(user, body.password);

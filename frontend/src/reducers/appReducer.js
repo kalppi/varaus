@@ -12,7 +12,8 @@ const initialState = () => {
 		date: null,
 		searchResults: null,
 		loadBounds: null,
-		minimapViewBounds: null
+		minimapViewBounds: null,
+		user: null
 	};
 };
 
@@ -39,6 +40,8 @@ export default (state = initialState(), action) => {
 			return {...state, date: action.data.date, startDate, endDate, loadBounds: action.data.loadBounds, minimapViewBounds: action.data.minimapViewBounds};
 		case 'SET_SEARCH_RESULTS':
 			return {...state, searchResults: action.data};
+		case 'SET_USER':
+			return {...state, user: action.data};
 		default:
 			return state;
 	}
@@ -183,5 +186,12 @@ export const clearSearch = () => {
 	return {
 		type: 'SET_SEARCH_RESULTS',
 		data: null
+	}
+};
+
+export const setUser = (user) => {
+	return {
+		type: 'SET_USER',
+		data: user
 	}
 };

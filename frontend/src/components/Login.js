@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import loginService from '../services/loginService';
+import { setUser } from '../reducers/appReducer';
 
 import './css/Login.css';
 
@@ -13,17 +15,19 @@ class Login extends Component {
 		}
 	}
 
-	getUser() {
-		return null;
-	}
-
-	handleSubmit(e) {
+	async handleSubmit(e) {
 		e.preventDefault();
 
 		const name = this.state.name;
 		const pw = this.state.password;
 
-		console.log(name + " " + pw);
+		const user = await loginService.login(name, pw);
+
+		if(user && user.token) {
+			this.props.setUser(user)
+
+			if(this.props.onLogin) this.props.onLogin();
+		}
 	}
 
 	handleChange(name, e) {
@@ -33,9 +37,7 @@ class Login extends Component {
 	}
 
 	render() {
-		const user = this.getUser();
-
-		if(user === null) {
+		if(this.props.user === null) {
 			return <div className='container'>
 				<div id='login'>
 					<h2>Login</h2>
@@ -62,19 +64,17 @@ class Login extends Component {
 				</div>
 			</div>;
 		} else {
-			const props = { user };
-
 			return <div>
-				{
-					React.Children.map(this.props.children, child => {
-						if(!child) return null;
-
-						return React.cloneElement(child, props);
-					})
-				}
+				{ this.props.children }
 			</div>;
 		}
 	}
 }
 
-export default Login;
+export default connect((state) => {
+	return {
+		user: state.app.user
+	}
+}, {
+	setUser 
+})(Login);

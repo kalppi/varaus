@@ -18,12 +18,12 @@ import { loadItems } from './reducers/itemsReducer';
 import './App.css';
 
 class App extends Component {
-	componentDidMount() {
+	onLogin() {
 		this.props.init(moment('20181017', 'YYYYMMDD'));
 	}
 
 	render() {
-		return <Login>
+		return <Login onLogin={this.onLogin.bind(this)}>
 				<div>
 					<Nav />
 
