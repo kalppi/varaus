@@ -232,6 +232,17 @@ describe('Booking api', () => {
 		expect(rtn.body.length).toBe(2);
 	});
 
+	test('can search with multiple terms', async () => {
+		const rtn = await get('/api/booking/search')
+			.query({
+				query: 'mai inkeri'
+			})
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+		
+		expect(rtn.body.length).toBe(1);
+	});
+
 	test('no extra customers are created', async () => {
 		expect(await customerService.count()).toBe(customers.length + 1);
 	});

@@ -109,19 +109,29 @@ const del = async (id) => {
 const search = async (query) => {
 	if(!query || query.length < 3) return [];
 
-	query = query.toLowerCase();
+	const searchParts = query.toLowerCase().split(' ')
+							.map(s => s.trim())
+							.filter(s => s.length > 0)
+							.map(s => `bool_or(part like '${s}%')`)
+							.join(',');
 
 	const rows = await sequelize.query(
 		`SELECT
-			b.id, b.start, b."end",b."CustomerId",
-			"ItemId", ui.name AS "Customer.name", ui.email AS "Customer.email", i.name AS "Item.name"
-		FROM (SELECT id, start, "end", "CustomerId", "ItemId", UNNEST(search_data) AS part FROM "Bookings") b
-		INNER JOIN "Customers" ui ON ui.id = b."CustomerId"
+			b.id, b.start, b."end",b."CustomerId", b."ItemId",
+			c.name AS "Customer.name", c.email AS "Customer.email",
+			i.name AS "Item.name"
+		FROM (
+			SELECT
+				id, start, "end", "CustomerId", "ItemId",
+				ARRAY[${searchParts}] arr
+			FROM "Bookings", UNNEST(search_data) AS part
+			GROUP BY id
+		) b
+		INNER JOIN "Customers" c ON c.id = b."CustomerId"
 		INNER JOIN "Items" i ON i.id = b."ItemId"
-		WHERE part LIKE ?
-		GROUP BY b.id, start, "end", "CustomerId", "ItemId", ui.name, ui.email, i.name
+		WHERE true = ALL (arr)
 		LIMIT 20`,
-		{ replacements: [query + '%'], type: sequelize.QueryTypes.SELECT  }
+		{ type: sequelize.QueryTypes.SELECT }
 	);
 
 	return cleanRows(rows);

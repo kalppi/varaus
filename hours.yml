@@ -58,4 +58,5 @@ data:
     - ['19.5.', 5, 'Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan']
     - ['21.5.', 2, 'Varausten päivittäminen toimii nyt.']
     - ['21.5.', 2, 'Käyttäjien kirjautumisen rakentelua.']
-    - ['21.5.', 1, 'Api vaatii kirjautumisen.']
+    - ['21.5.', 2, 'Api vaatii kirjautumisen. Pystyy kirjautua sisään ja ulos.']
+    - ['21.5.', 3, 'Haku toimimaan useammalla kuin yhdellä termillä. Sopivan Sql lausekkeen kehitys kesti odotettua pidempään, saattaisi olla helpompi toisenlaisella skeemalla.']
