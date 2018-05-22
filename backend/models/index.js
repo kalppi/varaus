@@ -5,10 +5,18 @@ import { log } from '../utils';
 
 pg.defaults.ssl = true;
 
-let db = process.env.DB;
+let db = null;
 
-if(process.env.NODE_ENV === 'test') {
-	db = process.env.TEST_DB;
+switch(process.env.NODE_ENV) {
+	case 'test':
+		db = process.env.TEST_DB;
+		break;
+	case 'dev':
+		db = process.env.DEV_DB;
+		break;
+	case 'production':
+		db = process.env.DB;
+		break;
 }
 
 const sequelize = new Sequelize(db, {
