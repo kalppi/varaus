@@ -112,7 +112,8 @@ const search = async (query) => {
 	const searchParts = query.toLowerCase().split(' ')
 							.map(s => s.trim())
 							.filter(s => s.length > 0)
-							.map(s => `bool_or(part like '${s}%')`)
+							.map(s => sequelize.escape(s + '%'))
+							.map(s => `bool_or(part like ${s})`)
 							.join(',');
 
 	const rows = await sequelize.query(
