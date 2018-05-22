@@ -17,7 +17,7 @@ const addChange = async (id, oldValues, newValues) => {
 
 	await History.create({
 		type: 'change',
-		data: { id, ...changes }
+		data: { id, fields: changes }
 	});
 };
 

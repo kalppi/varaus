@@ -1,7 +1,6 @@
 
 #booking-options {
 	width: 100%;
-	height: 300px;
 	background: white;
 
 	h5 {
@@ -10,5 +9,23 @@
 
 	.delete {
 		color: red;
+	}
+
+	.time {
+		width: 200px;
+	}
+
+	.field {
+		width: 120px;
+		text-align: right;
+	}
+
+	.old {
+		width: 120px;
+		text-align: right;
+	}
+
+	.arrow {
+		width: 20px;
 	}
 }

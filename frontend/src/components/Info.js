@@ -51,9 +51,10 @@ class Info extends Component {
 					value: moment(value.replace(/ /g, ''), 'D.M.YYYY', true)
 				};
 
-				const nights = this.props.values.end.value.diff(start.value, 'days');
-
-				this.form.setValue('nights', nights);
+				if(start.value.isValid()) {
+					const nights = this.props.values.end.value.diff(start.value, 'days');
+					this.form.setValue('nights', nights);
+				}
 
 				return start;
 			}
@@ -63,9 +64,10 @@ class Info extends Component {
 					value: moment(value.replace(/ /g, ''), 'D.M.YYYY', true)
 				};
 
-				const nights = end.value.diff(this.props.values.start.value, 'days');
-
-				this.form.setValue('nights', nights);
+				if(end.value.isValid()) {
+					const nights = end.value.diff(this.props.values.start.value, 'days');
+					this.form.setValue('nights', nights);
+				}
 
 				return end;
 			}
@@ -170,7 +172,7 @@ class Info extends Component {
 
 				<SingleRow>
 					{ buttonType !== 'none' ?
-						<Button enabled={this.props.buttonEnabled} text={button.text} />
+						<Button enabled={this.props.buttonEnabled} text={button.text} className='btn-primary' type='submit' />
 						: null
 					}
 
@@ -179,14 +181,6 @@ class Info extends Component {
 						: null
 					}
 				</SingleRow>
-
-				{ /*buttonType === 'save' ?
-					<Button
-						text={button.deleteText}
-						onClick={this.props.deleteBooking.bind(null, this.props.selected.id)}
-					/>
-					: null*/
-				}
 			</Form>
 		</div>;
 	}

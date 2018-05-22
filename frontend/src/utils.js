@@ -10,6 +10,16 @@ export const formatDate = (date) => {
 	return mDate.format('D.M. YYYY');
 };
 
+export const formatDateTime = (date) => {
+	const mDate =  moment(date);
+
+	if(!mDate.isValid()) {
+		return '';
+	}
+
+	return mDate.format('D.M. YYYY hh:mm:ss');
+};
+
 export const formatDateDb = (date) => {
 	return date.format('YYYY-MM-DD');
 };

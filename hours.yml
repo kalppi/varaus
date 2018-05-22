@@ -60,3 +60,4 @@ data:
     - ['21.5.', 2, 'Käyttäjien kirjautumisen rakentelua.']
     - ['21.5.', 2, 'Api vaatii kirjautumisen. Pystyy kirjautua sisään ja ulos.']
     - ['21.5.', 3, 'Haku toimimaan useammalla kuin yhdellä termillä. Sopivan Sql lausekkeen kehitys kesti odotettua pidempään, saattaisi olla helpompi toisenlaisella skeemalla.']
+    - ['21.5.', 2, 'Varausten historia näkyviin.']
