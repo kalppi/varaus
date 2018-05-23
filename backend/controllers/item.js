@@ -16,9 +16,27 @@ route.route('/')
 			const rtn = await itemService.create(data);
 
 			res.status(201).json(rtn);
-		} catch(e) {console.log(e);
+		} catch(e) {
 			res.status(400).end();
 		}
 	});
+
+route.route('/:id/down')
+	.post(async (req, res) => {
+		const id = req.params.id;
+
+		await itemService.moveDown(id);
+
+		res.status(200).end();
+	});
+
+	route.route('/:id/up')
+		.post(async (req, res) => {
+			const id = req.params.id;
+
+			await itemService.moveUp(id);
+
+			res.status(200).end();
+		});
 
 export default route;
