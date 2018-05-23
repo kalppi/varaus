@@ -19,11 +19,12 @@ switch(process.env.NODE_ENV) {
 		port = process.env.TEST_PORT;
 		break;
 	case 'dev':
+		sequelize.sync();
 		port = process.env.DEV_PORT;	
-		sequelize.sync();
+		break;
 	case 'production':
-		port = process.env.PORT;
 		sequelize.sync();
+		port = process.env.PORT;
 		break;
 	default:
 		process.exit(1);

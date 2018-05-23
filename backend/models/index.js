@@ -30,7 +30,6 @@ const sequelize = new Sequelize(db, {
 const modelFiles = fs.readdirSync(__dirname)
 	.filter(file => !file.startsWith('index') && file.endsWith('.js'));
 
-
 const models = {};
 
 modelFiles.forEach(file => {
