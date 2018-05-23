@@ -89,6 +89,8 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
+	validate.isId(id);
+
 	const booking = await Booking.find({where: { id }, attributes: ['start', 'end', 'ItemId', 'CustomerId']});
 	const rtn = await Booking.update(data, { where: { id }, fields: Object.keys(data), returning: true });
 
@@ -102,6 +104,8 @@ const update = async (id, data) => {
 };
 
 const del = async (id) => {
+	validate.isId(id);
+	
 	const booking = await Booking.find({where: { id }, include: [Item, Customer]});
 	const rtn = await Booking.destroy({ where: { id }});
 

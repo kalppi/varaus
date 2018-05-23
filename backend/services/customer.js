@@ -1,4 +1,5 @@
 import { Sequelize, models } from '../models';
+import validate from '../validate';
 
 const { Op } = Sequelize;
 
@@ -9,6 +10,8 @@ const getAll = async () => {
 };
 
 const getOne = async (id) => {
+	validate.isId(id);
+	
 	return await Customer.find({ where: { id }});
 };
 

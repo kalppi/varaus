@@ -20,12 +20,17 @@ route.route('/search')
 route.route('/:id')
 	.get(async (req, res) => {
 		const id = req.params.id;
-		const data = await customerService.getOne(id);
 
-		if(data) {
-			res.json(data);
-		} else {
-			res.status(404).end();
+		try {
+			const data = await customerService.getOne(id);
+
+			if(data) {
+				res.json(data);
+			} else {
+				res.status(404).end();
+			}
+		} catch (e) {
+			res.status(400).end();
 		}
 	});
 

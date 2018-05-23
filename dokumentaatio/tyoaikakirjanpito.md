@@ -45,5 +45,9 @@
 | 19.5. | 5 | Bugifixailua, testejä, varauksen tekemistä paremmin toimimaan, voi valita olemassa olevan asiakkaan | 
 | 21.5. | 2 | Varausten päivittäminen toimii nyt. | 
 |  | 2 | Käyttäjien kirjautumisen rakentelua. | 
-|  | 1 | Api vaatii kirjautumisen. | 
-| yht. | 88
+|  | 2 | Api vaatii kirjautumisen. Pystyy kirjautua sisään ja ulos. | 
+|  | 3 | Haku toimimaan useammalla kuin yhdellä termillä. Sopivan Sql lausekkeen kehitys kesti odotettua pidempään, saattaisi olla helpompi toisenlaisella skeemalla. | 
+|  | 2 | Varausten historia näkyviin. | 
+| 22.5. | 1 | VIIMEIN käyttämään lokaalia devaus tietokantaa, sekä alussa tarkistus että kaikki ympäristömuuttujat löytyy. | 
+| 23.5. | 3 | Loggaus middleware, joka näyttää requestin sekä siihen responsen. Lisäksi validointia. | 
+| yht. | 98

@@ -1,5 +1,6 @@
 import { Sequelize, models } from '../models';
 import bcrypt from 'bcrypt';
+import validate from '../validate';
 
 const { Op } = Sequelize;
 
@@ -18,6 +19,8 @@ const findByUsername = (username) => {
 };
 
 const getOne = async (id) => {
+	validate.isId(id);
+	
 	return await User.findOne({ where: { id }});
 };
 
