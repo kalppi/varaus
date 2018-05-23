@@ -40,6 +40,19 @@ export const showCustomersOverlay = () => {
 	}
 };
 
+export const showManagementOverlay = () => {
+	return async (dispatch, getState) => {
+		const p = new Promise((resolve, reject) => {
+			dispatch([{
+				type: 'SET_OVERLAY',
+				data: { visible: true, resolve, reject, type: 'management' }
+			}]);
+		});
+
+		return p;
+	}
+};
+
 export const showOptionsOverlay = (booking) => {
 	return async (dispatch, getState) => {
 		const history = await bookingService.getHistory(booking.id);

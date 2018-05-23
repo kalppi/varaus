@@ -9,6 +9,7 @@ import Overlay from './components/Overlay';
 import Switch from './components/Switch';
 import CustomerSelectList from './components/CustomerSelectList';
 import BookingOptions from './components/BookingOptions';
+import Management from './components/Management';
 import Login from './components/Login';
 import { SearchResults } from './components/Search';
 import { setDate, setUser } from './reducers/appReducer';
@@ -43,6 +44,7 @@ class App extends Component {
 						<Switch value={this.props.overlay.type}>
 							<CustomerSelectList case='customers' customers={this.props.customers} />
 							<BookingOptions case='options' />
+							<Management case='management' />
 						</Switch>
 					</Overlay>
 

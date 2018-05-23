@@ -48,12 +48,12 @@ class BookingOptions extends Component {
 		return <div id='booking-options'>
 			<button className='btn' onClick={this.props.cancel}>cancel</button>
 
-			<h5>Actions:</h5>
+			<h4>Actions</h4>
 			<div>
 				<button className='btn delete'><FA.FaTrash className='icon' /> Delete booking</button>
 			</div>
 
-			<h5>History:</h5>
+			<h4>History</h4>
 			<table className='table'>
 				<tbody>
 				{

@@ -2,12 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Search } from './Search';
 import { logout } from '../reducers/appReducer';
+import { showManagementOverlay } from '../reducers/overlayReducer';
+import * as FA from 'react-icons/lib/fa';
 
 import './css/Nav.css';
 
 class Nav extends Component {
 	logout() {
 		this.props.logout();
+	}
+
+	async management() {
+		try {
+			await this.props.showManagementOverlay();
+		} catch (e) {
+			// cancel
+		}
+	}
+
+	componentDidMount() {
+		this.management();
 	}
 
 	render() {
@@ -31,6 +45,9 @@ class Nav extends Component {
 					</ul>
 					<ul className='navbar-nav'>
 						<li className='nav-item'>
+							<button id='management' className='btn' onClick={this.management.bind(this)}><FA.FaCogs /></button>
+						</li>
+						<li className='nav-item'>
 							<button id='logout' className='btn' onClick={this.logout.bind(this)}>logout</button>
 						</li>
 					</ul>
@@ -45,5 +62,5 @@ export default connect((state) => {
 
 	};
 }, {
-	logout 
+	logout, showManagementOverlay
 })(Nav);
