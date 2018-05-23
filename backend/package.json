@@ -12,7 +12,8 @@
     "nodemon": "^1.17.1",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.36.0"
+    "sequelize": "^4.36.0",
+    "validator": "github:ctavan/node-validator"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

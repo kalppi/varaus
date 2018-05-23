@@ -32,6 +32,12 @@ describe('Booking api', () => {
 		expect(data.body.length).toBe(bookings.length);
 	});
 
+	test('a booking is returned by id', async () => {
+		await get('/api/booking/' + bookings[0].get('id'))
+			.expect(200)
+			.expect('Content-Type', /application\/json/);
+	});
+
 	test('non-existing id returns 404', async () => {
 		const data = await get('/api/booking/10000000')
 			.expect(404);
@@ -259,5 +265,28 @@ describe('Booking api', () => {
 
 		const history = await get(`/api/booking/${rtn.body.id}/history`)
 			.expect('Content-Type', /application\/json/);
+	});
+
+	describe('Argument validation', () => {
+		test('booking id', async () => {
+			await get('/api/booking/as22')
+				.expect(400);
+		});
+
+		test('between dates', async () => {
+			await get('/api/booking')
+				.query({
+					start: '2018-08-02',
+					end: '2018-0831'
+				})
+				.expect(400);
+
+			await get('/api/booking')
+				.query({
+					start: '08-02',
+					end: '2018-08-31'
+				})
+				.expect(400);
+		});
 	});
 });

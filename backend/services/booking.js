@@ -1,6 +1,7 @@
 import { Sequelize, sequelize, models } from '../models';
 import history from './history';
 import { numeric } from '../utils';
+import validate from '../validate';
 
 const { Booking, Customer, Item } = models;
 
@@ -35,6 +36,9 @@ const getAll = async () => {
 };
 
 const getAllBetween = async (start, end) => {
+	validate.isDate(start);
+	validate.isDate(end);
+
 	const Op = Sequelize.Op;
 
 	return await Booking.findAll({
@@ -51,6 +55,8 @@ const getAllBetween = async (start, end) => {
 };	
 
 const getOne = async (id) => {
+	validate.isId(id);
+
 	return await Booking.find({ where: { id }, include: [ Item, Customer ]});
 };
 

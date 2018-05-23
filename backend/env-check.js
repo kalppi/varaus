@@ -30,5 +30,5 @@ const missing = checkEnvs();
 
 if(missing.length > 0) {
 	console.log('The following environment variables are missing: ' + missing.join(', '));
-	process.exit(0);
+	process.exit(1);
 }

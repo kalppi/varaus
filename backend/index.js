@@ -8,20 +8,29 @@ import itemRoute from './controllers/item';
 import customerRoute from './controllers/customer';
 import loginRoute from './controllers/login';
 import loginProtect from './middlewares/loginProtect';
+import { logger } from './middlewares/logger';
 import { log } from './utils';
 import { sequelize } from './models';
 
-let port = process.env.PORT;
+let port = null
 
-if (process.env.NODE_ENV === 'test') {
-	port = process.env.TEST_PORT;
-} else {
-	sequelize.sync();
+switch(process.env.NODE_ENV) {
+	case 'test':
+		port = process.env.TEST_PORT;
+		break;
+	case 'dev':
+		port = process.env.DEV_PORT;	
+		sequelize.sync();
+	case 'production':
+		port = process.env.PORT;
+		sequelize.sync();
+		break;
+	default:
+		process.exit(1);
 }
 
-if(port === undefined) {
+if(port === null) {
 	console.log('Error: port not specified');
-
 	process.exit(1);
 }
 
@@ -29,6 +38,25 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+if(process.env.NODE_ENV !== 'test') {
+	app.use(logger({
+		'/api/item': out => out.map(item => {
+			return {
+				id: item.id,
+				name: item.name
+			};
+		}),
+		'/api/booking': out => out.map(item => {
+			return {
+				id: item.id,
+				start: item.start,
+				end: item.end,
+				customer: item.Customer.name
+			};
+		})
+	}));
+}
 
 app.use(loginProtect({whitelist: ['/api/login']}));
 
