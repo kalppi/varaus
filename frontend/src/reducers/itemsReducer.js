@@ -4,6 +4,8 @@ export default (state = [], action) => {
 	switch(action.type) {
 		case 'INIT_ITEMS':
 			return [...action.data];
+		case 'ADD_ITEM':
+			return [...state, action.data];
 		default:
 			return state;
 	}
@@ -17,5 +19,16 @@ export const loadItems = () => {
 			type: 'INIT_ITEMS',
 			data: items
 		})
+	};
+};
+
+export const createItem = (data) => {
+	return async (dispatch) => {
+		const item = await itemService.create(data);
+
+		dispatch({
+			type: 'ADD_ITEM',
+			data: item
+		});
 	};
 };

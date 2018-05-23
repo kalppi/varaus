@@ -13,4 +13,10 @@ const getOne = async (id) => {
 	return await Item.find({ where: { id }});
 };
 
-export default { getAll, getOne };
+const create = async (data) => {
+	const item = await Item.create(data);
+
+	return item;
+};
+
+export default { getAll, getOne, create };

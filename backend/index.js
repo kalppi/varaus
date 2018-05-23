@@ -42,20 +42,32 @@ app.use(bodyParser.json());
 
 if(process.env.NODE_ENV !== 'test') {
 	app.use(logger({
-		'/api/item': out => out.map(item => {
-			return {
-				id: item.id,
-				name: item.name
-			};
-		}),
-		'/api/booking': out => out.map(item => {
-			return {
-				id: item.id,
-				start: item.start,
-				end: item.end,
-				customer: item.Customer.name
-			};
-		})
+		'/api/item': out => {
+			if(Array.isArray(out)) {
+				return out.map(item => {
+					return {
+						id: item.id,
+						name: item.name
+					};
+				});
+			} else {
+				return out;
+			}
+		},
+		'/api/booking': out => {
+			if(Array.isArray(out)) {
+				return out.map(item => {
+					return {
+						id: item.id,
+						start: item.start,
+						end: item.end,
+						customer: item.Customer.name
+					};
+				});
+			} else {
+				return out;
+			}
+		}
 	}));
 }
 

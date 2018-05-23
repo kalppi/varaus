@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { createItem } from '../reducers/itemsReducer';
 import * as FA from 'react-icons/lib/fa';
 
 import './css/Management.css';
@@ -9,8 +10,22 @@ class Management extends Component {
 		const item = prompt('Item name');
 
 		if(item !== null && item.length > 0) {
-
+			this.props.createItem({name: item});
 		}
+	}
+
+	items() {
+		return <table className='table'>
+			<tbody>
+			{ 
+				this.props.items.map(item => {
+					return <tr key={item.id}>
+						<td>{item.name}</td>
+					</tr>;
+				})
+			}
+			</tbody>
+			</table>;
 	}
 
 	render() {
@@ -22,7 +37,7 @@ class Management extends Component {
 			<h5>Items</h5>
 			<div className='items'>
 				{
-					this.props.items.length === 0 ? <p className='none'>&lt;none&gt;</p> : null
+					this.props.items.length === 0 ? <p className='none'>&lt;none&gt;</p> : this.items()
 				}
 				<button className='btn' onClick={this.add.bind(this)}><FA.FaPlusCircle /> add</button>
 			</div>
@@ -35,5 +50,5 @@ export default connect((state) => {
 		items: state.items
 	}
 }, {
-	
+	createItem
 })(Management);

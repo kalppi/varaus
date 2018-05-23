@@ -3,7 +3,7 @@ import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
-import { login, get } from './testHelper';
+import { login, get, post } from './testHelper';
 
 const { Item, Booking } = models;
 const api = supertest(app);
@@ -27,6 +27,16 @@ describe('Items api', () => {
 			.expect('Content-Type', /application\/json/);
 
 		expect(data.body.length).toBe(items.length);
+	});
+
+	test('can create a new item', async () => {
+		const data = await post('/api/item')
+			.send({
+				name: 'DDD'
+			})
+			.expect(200);
+
+		expect(data.body.name).toBe('DDD');
 	});
 });
 
