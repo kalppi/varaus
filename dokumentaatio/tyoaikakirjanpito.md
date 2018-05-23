@@ -50,4 +50,6 @@
 |  | 2 | Varausten historia näkyviin. | 
 |  | 1 | VIIMEIN käyttämään lokaalia devaus tietokantaa, sekä alussa tarkistus että kaikki ympäristömuuttujat löytyy. | 
 | 23.5. | 3 | Loggaus middleware, joka näyttää requestin sekä siihen responsen. Lisäksi validointia. | 
-| yht. | 98
+|  | 2 | Loggerin päivittelyä, managementin kehittelyä. | 
+|  | 2 | Itemeiden järjestystä voi muuttaa, siihen automaattiset triggerit ja sql funktiot + testejä. | 
+| yht. | 102
