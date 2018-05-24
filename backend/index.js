@@ -59,9 +59,9 @@ const server = app.listen(port, async () => {
 		const count = await userService.count();
 
 		if(count === 0) {
-			log('No users found, creating a test user');
+			log('No users found, creating a default user');
 
-			userService.create('test', 'test', 'test');
+			userService.create('default', 'Default user', 'default');
 		}
 	}
 });
