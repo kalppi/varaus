@@ -19,7 +19,9 @@ const checkWhitelist = (req, res, options, next) => {
 		}
 	}
 	
-	res.status(401).end();
+	//res.status(401).end();
+
+	next();
 };
 
 export default (options) => {
