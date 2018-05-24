@@ -43,8 +43,6 @@ class BookingOptions extends Component {
 	}
 
 	render() {
-		console.log(this.props.history)
-
 		return <div id='booking-options'>
 			<button className='btn' onClick={this.props.cancel}>cancel</button>
 
@@ -54,7 +52,7 @@ class BookingOptions extends Component {
 			</div>
 
 			<h4>History</h4>
-			<table className='table'>
+			<table className='table table-sm'>
 				<tbody>
 				{
 					this.props.history.map(h => {

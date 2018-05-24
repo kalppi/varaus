@@ -4,9 +4,7 @@
 		margin-bottom: 10px;
 	}
 
-	.items {
-		padding-left: 20px;
-		
+	.items {		
 		.none {
 			font-style: italic;
 		}
@@ -14,6 +12,13 @@
 
 	.order, .up, .down {
 		width: 50px;
+	}
+
+	.up, .down {
+		button {
+			padding: 0 4px;
+			margin: 0;
+		}
 	}
 
 	td .icon {

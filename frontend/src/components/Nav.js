@@ -20,10 +20,6 @@ class Nav extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.management();
-	}
-
 	render() {
 		return <nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<div className='col-md-3'>

@@ -31,8 +31,8 @@ class Management extends Component {
 	}
 
 	items() {
-		return <table className='table'>
-			<thead>
+		return <table className='table table-sm'>
+			<thead className='thead-dark'>
 				<tr>
 					<th className='order'>order</th>
 					<th className='up'>up</th>
@@ -44,10 +44,10 @@ class Management extends Component {
 			{ 
 				this.props.items.map((item, index) => {
 					return <tr key={item.id}>
-						<td>{item.order}</td>
-						<td>{ index > 0 ? <button className='btn' onClick={this.up.bind(this, item.id)}><FA.FaCaretUp /></button> : null}</td>
-						<td>{ index < this.props.items.length - 1 ? <button className='btn' onClick={this.down.bind(this, item.id)}><FA.FaCaretDown /></button> : null}</td>
-						<td><FA.FaPencil className='icon' onClick={this.rename.bind(this, item.id, item.name)} />{item.name}</td>
+						<td className='order'>{item.order}</td>
+						<td className='up'>{ index > 0 ? <button className='btn' onClick={this.up.bind(this, item.id)}><FA.FaCaretUp /></button> : null}</td>
+						<td className='down'>{ index < this.props.items.length - 1 ? <button className='btn' onClick={this.down.bind(this, item.id)}><FA.FaCaretDown /></button> : null}</td>
+						<td className='name'><FA.FaPencil className='icon' onClick={this.rename.bind(this, item.id, item.name)} />{item.name}</td>
 					</tr>;
 				})
 			}

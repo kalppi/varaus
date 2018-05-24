@@ -53,6 +53,7 @@ export const deleteBooking = (id) => {
 export const updateBooking = (id, data) => {
 	return async (dispatch) => {
 		await bookingsService.update(id, data);
+		const booking = await bookingsService.getOne(id);
 
 		dispatch({
 			type: 'CLEAR_ALL_SELECTION'
@@ -60,7 +61,7 @@ export const updateBooking = (id, data) => {
 
 		dispatch({
 			type: 'UPDATE_BOOKING',
-			data: data
+			data: booking
 		});
 	};
 };
