@@ -10,11 +10,15 @@
 		}
 	}
 
-	.order, .up, .down {
-		width: 50px;
+	.order{
+		width: 60px;
+		text-align: center;
 	}
 
 	.up, .down {
+		width: 50px;
+		text-align: center;
+
 		button {
 			padding: 0 4px;
 			margin: 0;

@@ -1,5 +1,4 @@
 import { createLogic } from 'redux-logic';
-import bookingsService from '../services/bookingsService';
 
 const hasChanged = (selected, values) => {
 	if(values.item === undefined) return false;
@@ -72,20 +71,5 @@ export default [createLogic({
 			type: 'SET_INFO_ERRORS',
 			data: errors
 		}];
-	}
-}), createLogic({
-	type: 'DELETE_BOOKING',
-
-	process({getState, action}, dispatch, done) {
-		if(window.confirm('Are you sure?')) {
-			bookingsService.delete(action.data.id);
-
-			dispatch({
-				type: 'DELETE_BOOKING_SUCCESS',
-				data: { id: action.data.id }
-			});
-
-			done();
-		}
 	}
 })];

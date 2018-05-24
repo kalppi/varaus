@@ -40,19 +40,15 @@ class Search extends Component {
 
 class SearchResults extends Component {
 	render() {
-		if(this.props.searchResults.length === 0) {
-			//return null;
-		}
-
-		return <table className='table' id='Search'>
-			<thead>
+		return <table className='table table-sm' id='Search'>
+			<thead className='thead-dark'>
 				<tr>
 					<th className='search-id'>#</th>
 					<th className='search-start'>start</th>
 					<th className='search-end'>end</th>
 					<th className='search-name'>name</th>
 					<th className='search-email'>email</th>
-					<th className='search-item'>item</th>
+					<th className='search-item'>room</th>
 				</tr>
 			</thead>
 			<tbody>

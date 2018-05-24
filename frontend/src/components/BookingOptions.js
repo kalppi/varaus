@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as FA from 'react-icons/lib/fa';
 import { formatDate, formatDateTime } from '../utils';
+import { deleteBooking } from '../reducers/bookingsReducer';
 
 import './css/BookingOptions.css';
 
@@ -42,13 +43,19 @@ class BookingOptions extends Component {
 		});
 	}
 
+	delete() {
+		this.props.deleteBooking(this.props.booking.id);
+
+		this.props.cancel();
+	}
+
 	render() {
 		return <div id='booking-options'>
 			<button className='btn' onClick={this.props.cancel}>cancel</button>
 
 			<h4>Actions</h4>
 			<div>
-				<button className='btn delete'><FA.FaTrash className='icon' /> Delete booking</button>
+				<button className='btn delete' onClick={this.delete.bind(this)}><FA.FaTrash className='icon' /> Delete booking</button>
 			</div>
 
 			<h4>History</h4>
@@ -72,8 +79,9 @@ class BookingOptions extends Component {
 
 export default connect((state) => {
 	return {
-		history: state.overlay.bookingInfo.history
+		history: state.overlay.bookingInfo.history,
+		booking: state.overlay.bookingInfo.booking
 	}
 }, {
-	
+	deleteBooking
 })(BookingOptions);
