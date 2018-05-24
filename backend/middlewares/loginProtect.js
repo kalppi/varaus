@@ -16,12 +16,12 @@ const checkWhitelist = (req, res, options, next) => {
 		if(options.whitelist.includes(req.originalUrl)) {
 			next();
 			return;
+		} else {
+			res.status(401).end();
 		}
+	} else {
+		next();
 	}
-	
-	//res.status(401).end();
-
-	next();
 };
 
 export default (options) => {
