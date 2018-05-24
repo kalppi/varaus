@@ -20,11 +20,9 @@ switch(process.env.NODE_ENV) {
 		port = process.env.TEST_PORT;
 		break;
 	case 'dev':
-		sequelize.sync();
 		port = process.env.DEV_PORT;	
 		break;
 	case 'production':
-		sequelize.sync();
 		port = process.env.PORT;
 		break;
 	default:
@@ -55,12 +53,16 @@ app.use('/api/login', loginRoute);
 const server = app.listen(port, async () => {
 	log(`Server running on port ${port}`);
 
-	const count = await userService.count();
+	if (process.env.NODE_ENV !== 'test') {
+		await sequelize.sync();
 
-	if(count === 0) {
-		log('No users found, creating a test user');
+		const count = await userService.count();
 
-		userService.create('test', 'test', 'test');
+		if(count === 0) {
+			log('No users found, creating a test user');
+
+			userService.create('test', 'test', 'test');
+		}
 	}
 });
 

@@ -54,5 +54,5 @@
 |  | 2 | Itemeiden järjestystä voi muuttaa, siihen automaattiset triggerit ja sql funktiot + testejä. | 
 | 24.5. | 2 | Itemeiden järjestystä ja nimeä pystyy muuttaa ui:sta. Varauksia voi myös taas poistaa. | 
 |  | 1 | Parantelin ja eriytin loggerin erilliseksi projektiksi, koska se on aika hyödyllinen. [kalppi/logger](https://github.com/kalppi/logger) | 
-|  | 2 | Jos käynnistäessä ei ole yhtään käyttäjää, luodaan yksi. Helpottaa sisäänkirjautumista. Loggerin fixailuja. | 
+|  | 2 | Jos käynnistäessä ei ole yhtään käyttäjää, luodaan yksi. Helpottaa sisäänkirjautumista. Loggerin fixailuja, tietokannan synkronointi fiksaus. | 
 | yht. | 107
