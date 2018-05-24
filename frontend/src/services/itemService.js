@@ -12,6 +12,11 @@ const create = (data) => {
 	return request.then(response => response.data);
 };
 
+const update = (id, data) => {
+	const request = axios.put(`${base}/${id}`, data);
+	return request.then(response => response.data);	
+};
+
 const moveUp = (id) => {
 	const request = axios.post(`${base}/${id}/up`);
 	return request.then(response => response.data);
@@ -22,4 +27,4 @@ const moveDown = (id) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, create, moveUp, moveDown };
+export default { getAll, create, update, moveUp, moveDown };

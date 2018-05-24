@@ -3,7 +3,7 @@ import supertest from 'supertest';
 import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
-import { login, get, post } from './testHelper';
+import { login, get, post, put } from './testHelper';
 
 const { Item, Booking } = models;
 const api = supertest(app);
@@ -74,6 +74,16 @@ describe('Items api', () => {
 
 		expect(names).toEqual(['BBB', 'CCC', 'AAA', 'DDD']);
 		expect(orders).toEqual([1, 2, 3, 4]);
+	});
+
+	test('can update an item', async () => {
+		const data = await put('/api/item/1')
+			.send({
+				name: 'AAA2'
+			});
+
+		expect(data.body).toBeTruthy();
+		expect(data.body.name).toBe('AAA2');
 	});
 });
 

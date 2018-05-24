@@ -6,6 +6,8 @@ export default (state = [], action) => {
 			return [...action.data];
 		case 'ADD_ITEM':
 			return [...state, action.data];
+		case 'UPDATE_ITEM':
+			return state.map(s => s.id === action.data.id ? action.data : s);
 		default:
 			return state;
 	}
@@ -28,6 +30,17 @@ export const createItem = (data) => {
 
 		dispatch({
 			type: 'ADD_ITEM',
+			data: item
+		});
+	};
+};
+
+export const updateItem = (id, data) => {
+	return async (dispatch) => {
+		const item = await itemService.update(id, data);
+
+		dispatch({
+			type: 'UPDATE_ITEM',
 			data: item
 		});
 	};

@@ -73,9 +73,9 @@ route.route('/:id')
 		const data = req.body;
 
 		try {
-			await bookingService.update(id, data);
+			const rtn = await bookingService.update(id, data);
 
-			res.status(200).json({});
+			res.status(200).json(rtn);
 		} catch (e) {
 			res.status(400).end();
 		}

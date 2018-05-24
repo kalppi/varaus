@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createItem, moveUp, moveDown } from '../reducers/itemsReducer';
+import { createItem, updateItem, moveUp, moveDown } from '../reducers/itemsReducer';
 import * as FA from 'react-icons/lib/fa';
 
 import './css/Management.css';
@@ -22,6 +22,14 @@ class Management extends Component {
 		this.props.moveDown(id);
 	}
 
+	rename(id, oldName) {
+		const item = prompt('New name', oldName);
+
+		if(item !== null && item.length > 0 && item !== oldName) {
+			this.props.updateItem(id, {name: item});
+		}
+	}
+
 	items() {
 		return <table className='table'>
 			<thead>
@@ -29,7 +37,7 @@ class Management extends Component {
 					<th className='order'>order</th>
 					<th className='up'>up</th>
 					<th className='down'>down</th>
-					<th>name</th>
+					<th className='name'>name</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,7 +47,7 @@ class Management extends Component {
 						<td>{item.order}</td>
 						<td>{ index > 0 ? <button className='btn' onClick={this.up.bind(this, item.id)}><FA.FaCaretUp /></button> : null}</td>
 						<td>{ index < this.props.items.length - 1 ? <button className='btn' onClick={this.down.bind(this, item.id)}><FA.FaCaretDown /></button> : null}</td>
-						<td>{item.name}</td>
+						<td><FA.FaPencil className='icon' onClick={this.rename.bind(this, item.id, item.name)} />{item.name}</td>
 					</tr>;
 				})
 			}
@@ -69,5 +77,5 @@ export default connect((state) => {
 		items: state.items
 	}
 }, {
-	createItem, moveUp, moveDown
+	createItem, updateItem, moveUp, moveDown
 })(Management);

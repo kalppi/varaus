@@ -39,4 +39,16 @@ const moveUp = async (id) => {
 	);
 };
 
-export default { getAll, getOne, create, moveDown, moveUp };
+const update = async (id, data) => {
+	validate.isId(id);
+
+	const rtn = await Item.update(data, { where: { id }, fields: Object.keys(data), returning: true });
+	
+	if(rtn[0] > 0) {
+		return rtn[1][0];
+	} else {
+		return null;
+	}
+};
+
+export default { getAll, getOne, create, update, moveDown, moveUp };

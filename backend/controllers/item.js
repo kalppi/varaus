@@ -21,6 +21,20 @@ route.route('/')
 		}
 	});
 
+route.route('/:id')
+	.put(async (req, res) => {
+		const id = req.params.id;
+		const data = req.body;
+
+		try {
+			const rtn = await itemService.update(id, data);
+
+			res.status(200).json(rtn);
+		} catch (e) {
+			res.status(400).end();
+		}
+	});
+
 route.route('/:id/down')
 	.post(async (req, res) => {
 		const id = req.params.id;

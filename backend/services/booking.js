@@ -98,9 +98,13 @@ const update = async (id, data) => {
 		await Customer.update(data.Customer, { where: {id: rtn[1][0].get('CustomerId')}, fields: Object.keys(data.Customer)});
 	}
 
-	await history.addChange(id, booking.get({plain: true}), rtn[1][0].get({plain: true}));
+	if(rtn[0] > 0) {
+		await history.addChange(id, booking.get({plain: true}), rtn[1][0].get({plain: true}));
 
-	return rtn;
+		return rtn[1][0];
+	} else {
+		return null;
+	}
 };
 
 const del = async (id) => {
