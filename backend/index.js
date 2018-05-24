@@ -48,7 +48,10 @@ if(process.env.NODE_ENV === 'dev') {
 	}));
 }
 
-app.use(loginProtect({whitelist: ['/', '/api/login']}));
+app.use(loginProtect({
+	prefix: '/api',
+	whitelist: ['/api/login']
+}));
 
 app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);

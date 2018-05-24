@@ -11,12 +11,15 @@ const getToken = (req) => {
 	}
 };
 
-const checkWhitelist = (req, res, whitelist, next) => {
-	if(whitelist.includes(req.originalUrl)) {
-		next();
-	} else {
-		res.status(401).end();
+const checkWhitelist = (req, res, options, next) => {
+	if(req.originalUrl.startsWith(options.prefix)) {
+		if(options.whitelist.includes(req.originalUrl)) {
+			next();
+			return;
+		}
 	}
+	
+	res.status(401).end();
 };
 
 export default (options) => {
@@ -32,11 +35,11 @@ export default (options) => {
 
 				next();
 			} else {
-				checkWhitelist(req, res, options.whitelist, next);
+				checkWhitelist(req, res, options, next);
 			}
 		} catch (e) {
 			if(e.name === 'JsonWebTokenError') {
-				checkWhitelist(req, res, options.whitelist, next);
+				checkWhitelist(req, res, options, next);
 			} else {
 				res.status(500).end();
 			}
