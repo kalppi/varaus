@@ -3,4 +3,3 @@ node_modules
 tmp
 **/*.css
 frontend/build
-backend/frontend
