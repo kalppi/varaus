@@ -66,3 +66,5 @@ data:
     - ['23.5.', 2, 'Loggerin päivittelyä, managementin kehittelyä.']
     - ['23.5.', 2, 'Itemeiden järjestystä voi muuttaa, siihen automaattiset triggerit ja sql funktiot + testejä.']
     - ['24.5.', 2, 'Itemeiden järjestystä ja nimeä pystyy muuttaa ui:sta. Varauksia voi myös taas poistaa.']
+    - ['24.5.', 1, 'Parantelin ja eriytin loggerin erilliseksi projektiksi, koska se on aika hyödyllinen. [kalppi/logger](https://github.com/kalppi/logger)']
+    - ['24.5.', 2, 'Jos käynnistäessä ei ole yhtään käyttäjää, luodaan yksi. Helpottaa sisäänkirjautumista. Loggerin fixailuja.']

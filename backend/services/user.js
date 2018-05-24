@@ -28,4 +28,8 @@ const passwordMatches = async (user, password) => {
 	return await bcrypt.compare(password, user.get('password'));
 };
 
-export default { create, findByUsername, passwordMatches, getOne };
+const count = async () => {
+	return await User.count();
+};
+
+export default { create, findByUsername, passwordMatches, getOne, count };

@@ -8,9 +8,10 @@ import itemRoute from './controllers/item';
 import customerRoute from './controllers/customer';
 import loginRoute from './controllers/login';
 import loginProtect from './middlewares/loginProtect';
-import { logger } from './middlewares/logger';
+import logger from 'logger';
 import { log } from './utils';
 import { sequelize } from './models';
+import userService from './services/user';
 
 let port = null
 
@@ -30,11 +31,6 @@ switch(process.env.NODE_ENV) {
 		process.exit(1);
 }
 
-if(port === null) {
-	console.log('Error: port not specified');
-	process.exit(1);
-}
-
 const app = express();
 
 app.use(cors());
@@ -42,31 +38,9 @@ app.use(bodyParser.json());
 
 if(process.env.NODE_ENV !== 'test') {
 	app.use(logger({
-		'/api/item': out => {
-			if(Array.isArray(out)) {
-				return out.map(item => {
-					return {
-						id: item.id,
-						name: item.name
-					};
-				});
-			} else {
-				return out;
-			}
-		},
-		'/api/booking': out => {
-			if(Array.isArray(out)) {
-				return out.map(item => {
-					return {
-						id: item.id,
-						start: item.start,
-						end: item.end,
-						customer: item.Customer.name
-					};
-				});
-			} else {
-				return out;
-			}
+		colors: {
+			request: 'redBright',
+			response: 'greenBright'
 		}
 	}));
 }
@@ -78,8 +52,16 @@ app.use('/api/item', itemRoute);
 app.use('/api/customer', customerRoute);
 app.use('/api/login', loginRoute);
 
-const server = app.listen(port, () => {
+const server = app.listen(port, async () => {
 	log(`Server running on port ${port}`);
+
+	const count = await userService.count();
+
+	if(count === 0) {
+		log('No users found, creating a test user');
+
+		userService.create('test', 'test', 'test');
+	}
 });
 
 server.on('close', () => {

@@ -14,7 +14,7 @@ route.route('/')
 			await userService.passwordMatches(user, body.password);
 
 		if (!(user && passwordCorrect === true)) {
-			return res.status(401).send({ error: 'invalid username or password' })
+			return res.status(401).json({ error: 'invalid username or password' })
 		} else {
 			const userForToken = {
 				username: user.get('username'),
@@ -23,7 +23,7 @@ route.route('/')
 
 			const token = jwt.sign(userForToken, process.env.SECRET);
 
-			res.status(200).send({
+			res.status(200).json({
 				token,
 				username: user.get('username'),
 				name: user.get('name')
