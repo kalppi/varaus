@@ -52,5 +52,5 @@
 | 23.5. | 3 | Loggaus middleware, joka näyttää requestin sekä siihen responsen. Lisäksi validointia. | 
 |  | 2 | Loggerin päivittelyä, managementin kehittelyä. | 
 |  | 2 | Itemeiden järjestystä voi muuttaa, siihen automaattiset triggerit ja sql funktiot + testejä. | 
-| 24.5. | 2 | Itemeiden järjestystä ja nimeä pystyy muuttaa ui:sta. | 
+| 24.5. | 2 | Itemeiden järjestystä ja nimeä pystyy muuttaa ui:sta. Varauksia voi myös taas poistaa. | 
 | yht. | 104
