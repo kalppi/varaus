@@ -1,5 +1,6 @@
 import './env-check';
 
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -34,7 +35,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-if(process.env.NODE_ENV !== 'test') {
+if(process.env.NODE_ENV === 'production') {
+	app.use('/', express.static(path.join(__dirname, 'frontend')));
+}
+
+if(process.env.NODE_ENV === 'dev') {
 	app.use(logger({
 		colors: {
 			request: 'redBright',
@@ -43,7 +48,7 @@ if(process.env.NODE_ENV !== 'test') {
 	}));
 }
 
-app.use(loginProtect({whitelist: ['/api/login']}));
+app.use(loginProtect({whitelist: ['/', '/api/login']}));
 
 app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);
@@ -61,7 +66,7 @@ const server = app.listen(port, async () => {
 		if(count === 0) {
 			log('No users found, creating a default user');
 
-			userService.create('default', 'Default user', 'default');
+			userService.create('Default user', 'default', 'default');
 		}
 	}
 });

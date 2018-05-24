@@ -2,3 +2,5 @@ node_modules
 .env
 tmp
 **/*.css
+frontend/build
+backend/frontend
