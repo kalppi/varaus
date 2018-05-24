@@ -27,7 +27,7 @@ route.route('/:id/down')
 
 		await itemService.moveDown(id);
 
-		res.status(200).end();
+		res.status(200).json({});
 	});
 
 	route.route('/:id/up')
@@ -36,7 +36,7 @@ route.route('/:id/down')
 
 			await itemService.moveUp(id);
 
-			res.status(200).end();
+			res.status(200).json({});
 		});
 
 export default route;

@@ -18,7 +18,7 @@ export const loadItems = () => {
 		dispatch({
 			type: 'INIT_ITEMS',
 			data: items
-		})
+		});
 	};
 };
 
@@ -32,3 +32,29 @@ export const createItem = (data) => {
 		});
 	};
 };
+
+export const moveUp = (id) => {
+	return async (dispatch) => {
+		await itemService.moveUp(id);
+
+		const items = await itemService.getAll();
+		
+		dispatch({
+			type: 'INIT_ITEMS',
+			data: items
+		});
+	};
+}
+
+export const moveDown = (id) => {
+	return async (dispatch) => {
+		await itemService.moveDown(id);
+
+		const items = await itemService.getAll();
+		
+		dispatch({
+			type: 'INIT_ITEMS',
+			data: items
+		});
+	};
+}

@@ -12,4 +12,14 @@ const create = (data) => {
 	return request.then(response => response.data);
 };
 
-export default { getAll, create };
+const moveUp = (id) => {
+	const request = axios.post(`${base}/${id}/up`);
+	return request.then(response => response.data);
+};
+
+const moveDown = (id) => {
+	const request = axios.post(`${base}/${id}/down`);
+	return request.then(response => response.data);
+};
+
+export default { getAll, create, moveUp, moveDown };

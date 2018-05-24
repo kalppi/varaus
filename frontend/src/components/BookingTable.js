@@ -78,6 +78,7 @@ class BookingTable extends Component {
 
 		if(!this.props.startDate.isSame(nextProps.startDate, 'day') || !this.props.endDate.isSame(nextProps.endDate, 'day')) return true;
 		else if(this.props.items.length < nextProps.items.length) return true;
+		else if (!deepEqual(nextProps.items, this.props.items)) return true;
 		else return !deepEqual(nextProps.bookings, this.props.bookings);
 	}
 
