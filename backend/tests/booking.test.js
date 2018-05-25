@@ -5,6 +5,7 @@ import { sequelize, models } from '../models';
 import setup from './setup';
 import customerService from '../services/customer';
 import { login, get, post, put, del } from './testHelper';
+import Shape from 'shape.js';
 
 const { Item, Booking } = models;
 const api = supertest(app);
@@ -23,6 +24,47 @@ afterAll(() => {
 	server.close();
 });
 
+const idShape = Shape.integer({min: 1});
+const dateShape = Shape.regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
+const dateTimeShape = Shape.regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T/);
+
+const itemShape = Shape.object()
+					.fields({
+						id: idShape,
+						name: Shape.string(),
+						order: Shape.integer(),
+						createdAt: dateTimeShape,
+						updatedAt: dateTimeShape
+					});
+
+const customerShape = Shape.object()
+						.fields({
+							id: idShape,
+							name: Shape.any(),
+							email: Shape.string(),
+							simple_name: Shape.string(),
+							createdAt: dateTimeShape,
+							updatedAt: dateTimeShape
+						});
+
+const bookingShape = Shape.object()
+						.fields({
+							id: idShape,
+							start: dateShape,
+							end: dateShape,
+							search_data: Shape.array(),
+							createdAt: dateTimeShape,
+							updatedAt: dateTimeShape,
+							ItemId: idShape,
+							CustomerId: idShape,
+							Customer: customerShape,
+							Item: itemShape
+						});
+
+const bookingsShape = Shape.arrayOf(bookingShape)
+						.omit('Item')
+						.field('Customer', customerShape.clone().only('name'))
+
 describe('Booking api', () => {
 	test('bookings are returned as json', async () => {
 		const data = await get('/api/booking')
@@ -36,6 +78,18 @@ describe('Booking api', () => {
 		await get('/api/booking/' + bookings[0].get('id'))
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
+	});
+
+	test('a booking has required shape', async () => {
+		await get('/api/booking/' + bookings[0].get('id'))
+			.expect(200)
+			.expect(bookingShape.matchesRequest());
+	});
+
+	test('bookings have required shape', async () => {
+		const data = await get('/api/booking')
+			.expect(200)
+			.expect(bookingsShape.matchesRequest());
 	});
 
 	test('non-existing id returns 404', async () => {
