@@ -32,7 +32,7 @@ const cleanRows = rows => {
 };
 
 const getAll = async () => {
-	return await Booking.findAll({include: [{model: Customer, attributes: ['name']}]});
+	return await Booking.findAll({include: [Customer, Item]});
 };
 
 const getAllBetween = async (start, end) => {

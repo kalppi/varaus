@@ -4,6 +4,7 @@ import { app, server } from '../index';
 import { sequelize, models } from '../models';
 import setup from './setup';
 import { login, get, post, put } from './testHelper';
+import { itemsShape } from './shapes';
 
 const { Item, Booking } = models;
 const api = supertest(app);
@@ -21,6 +22,14 @@ afterAll(() => {
 });
 
 describe('Items api', () => {
+	describe('Shapes', () => {
+		test('items have required shape', async () => {
+			await get('/api/item')
+				.expect(200)
+				.expect(itemsShape.matchesRequest('items'));
+		});
+	});
+
 	test('items are returned as json', async () => {
 		const data = await get('/api/item')
 			.expect(200)

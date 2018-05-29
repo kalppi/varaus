@@ -56,5 +56,6 @@
 |  | 1 | Parantelin ja eriytin loggerin erilliseksi projektiksi, koska se on aika hyödyllinen. [kalppi/logger](https://github.com/kalppi/logger) | 
 |  | 2 | Jos käynnistäessä ei ole yhtään käyttäjää, luodaan yksi. Helpottaa sisäänkirjautumista. Loggerin fixailuja, tietokannan synkronointi fiksaus. | 
 |  | 2 | Kaikenlaisia pieniä fixejä ja tyhmien bugien metsästystä. Siirto herokuun toimii nyt. | 
-| 25.5. | 6 | En tiedä voiko näitä tunteja täysin laskea, mutta välillä kun ärsyttää kun api:ista tulee dataa josta puuttuu joitain fieldejä, ja kun hankala muistaa mitä kaikkea sieltä tuleekaan, niin tein apukirjaston [kalppi/Shape.js](https://github.com/kalppi/Shape.js), jonka avulla pystyy testata että kaikki tarvittava tulee. | 
-| yht. | 115
+| 25.5. | 6 | Apin mallinnusta ja oikean muotoisen datan palautusta helpottamaan tein apukirjaston [kalppi/Shape.js](https://github.com/kalppi/Shape.js). | 
+| 29.5. | 1 | Api testejä luodun apukirjaston avulla, ja sen pieniä fiksailuja. | 
+| yht. | 116
