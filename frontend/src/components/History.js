@@ -60,7 +60,7 @@ class History extends Component {
 				{
 					this.props.history.map(h => {
 						return [<tr key={h.id}>
-								<td className='id'>#{h.id}</td>
+								<td className='id'>#{h.data.id}</td>
 								<td className='time'>{formatDateTime(h.createdAt)}</td>
 								<td colSpan='4'>{this.itemName(h)}</td>
 							</tr>,
