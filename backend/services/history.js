@@ -1,4 +1,5 @@
 import { Sequelize, sequelize, models } from '../models';
+import { itemService } from './item';
 
 const { History } = models;
 const { Op } = Sequelize;
@@ -56,6 +57,14 @@ const getForBooking = async (id) => {
 	return entries;
 };
 
+const getAll = async () => {
+	const entries = await History.findAll({
+		order: [['createdAt', 'ASC']]
+	});
+
+	return entries;
+};
+
 const length = async () => {
 	return await History.count();
 };
@@ -91,4 +100,4 @@ const clear = async () => {
 	await History.destroy({truncate: true});
 };
 
-export default { addChange, addDelete, addCreate, getForBooking, length, lengthForBooking, peek, peekForBooking, clear };
+export default { getAll, addChange, addDelete, addCreate, getForBooking, length, lengthForBooking, peek, peekForBooking, clear };

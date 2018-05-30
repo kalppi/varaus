@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import bookingRoute from './controllers/booking';
 import itemRoute from './controllers/item';
 import customerRoute from './controllers/customer';
+import historyRoute from './controllers/history';
 import loginRoute from './controllers/login';
 import loginProtect from './middlewares/loginProtect';
 import logger from 'logger';
@@ -57,6 +58,7 @@ app.use('/api/booking', bookingRoute);
 app.use('/api/item', itemRoute);
 app.use('/api/customer', customerRoute);
 app.use('/api/login', loginRoute);
+app.use('/api/history', historyRoute);
 
 const server = app.listen(port, async () => {
 	log(`Server running on port ${port}`);

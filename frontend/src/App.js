@@ -11,6 +11,7 @@ import CustomerSelectList from './components/CustomerSelectList';
 import BookingOptions from './components/BookingOptions';
 import Management from './components/Management';
 import Login from './components/Login';
+import History from './components/History';
 import { SearchResults } from './components/Search';
 import { setDate, setUser } from './reducers/appReducer';
 import { loadBookings } from './reducers/bookingsReducer';
@@ -55,6 +56,10 @@ class App extends Component {
 									<div className='col-md-12'>
 										<SearchResults />
 									</div>
+								: this.props.showHistory ? 
+									<div className='col-md-12'>
+										<History history={this.props.history} />
+									</div>
 								: [
 									<div className='col-md-3' key='left'>
 										<Info />
@@ -75,8 +80,10 @@ class App extends Component {
 export default connect((state) => {
 	return {
 		showSearchResults: state.app.searchResults !== null,
+		showHistory: state.app.showHistory,
+		history: state.app.history,
 		overlay: state.overlay.overlay,
-		customers: state.overlay.customers
+		customers: state.overlay.customers,
 	}
 }, {
 	loadBookings, loadItems, setDate, setUser,

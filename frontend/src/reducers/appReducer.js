@@ -1,4 +1,5 @@
 import bookingsService from '../services/bookingsService';
+import historyService from '../services/historyService';
 import moment from 'moment';
 import { formatDate } from '../utils';
 import { setToken, removeToken } from '../services/serviceHelper';
@@ -14,7 +15,9 @@ const initialState = () => {
 		searchResults: null,
 		loadBounds: null,
 		minimapViewBounds: null,
-		user: null
+		user: null,
+		showHistory: false,
+		history: null
 	};
 };
 
@@ -43,6 +46,8 @@ export default (state = initialState(), action) => {
 			return {...state, searchResults: action.data};
 		case 'SET_USER':
 			return {...state, user: action.data};
+		case 'SET_HISTORY_VISIBILITY':
+			return {...state, showHistory: action.data.visible, history: action.data.history };
 		default:
 			return state;
 	}
@@ -69,6 +74,26 @@ export const setDate = (date) => {
 			}
 		}
 	}
+};
+
+export const showHistory = () => {
+	return async (dispatch, getState) => {
+		const history = await historyService.getAll();
+
+		dispatch({
+			type: 'SET_HISTORY_VISIBILITY',
+			data: { visible: true, history }
+		});
+	};
+};
+
+export const hideHistory = () => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: 'SET_HISTORY_VISIBILITY',
+			data: { visible: false, history: null }
+		});
+	};
 };
 
 export const unselectBooking = () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Search } from './Search';
-import { logout } from '../reducers/appReducer';
+import { logout, showHistory } from '../reducers/appReducer';
 import { showManagementOverlay } from '../reducers/overlayReducer';
 import * as FA from 'react-icons/lib/fa';
 
@@ -18,6 +18,10 @@ class Nav extends Component {
 		} catch (e) {
 			// cancel
 		}
+	}
+
+	history() {
+		this.props.showHistory();
 	}
 
 	render() {
@@ -40,6 +44,9 @@ class Nav extends Component {
 						</li>
 					</ul>
 					<ul className='navbar-nav'>
+						<li className='nav-history'>
+							<button id='history' className='btn' onClick={this.history.bind(this)}><FA.FaHistory /></button>
+						</li>
 						<li className='nav-item'>
 							<button id='management' className='btn' onClick={this.management.bind(this)}><FA.FaCogs /></button>
 						</li>
@@ -58,5 +65,5 @@ export default connect((state) => {
 
 	};
 }, {
-	logout, showManagementOverlay
+	logout, showManagementOverlay, showHistory
 })(Nav);

@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as FA from 'react-icons/lib/fa';
+import { hideHistory } from '../reducers/appReducer';
 import { formatDate, formatDateTime } from '../utils';
-import History from './History';
-import { deleteBooking } from '../reducers/bookingsReducer';
+import * as FA from 'react-icons/lib/fa';
 
-import './css/BookingOptions.css';
+import './css/History.css';
 
-class BookingOptions extends Component {
+class History extends Component {
+	hide() {
+		this.props.hideHistory();
+	}
+
 	itemName(history) {
 		switch(history.type) {
 			case 'create':
 				return 'Created';
 			case 'change':
 				return 'Updated';
+			case 'delete':
+				return 'Deleted';
 			default:
-				return '';
+				return history.type;
 		}
 	}
 
@@ -36,6 +41,7 @@ class BookingOptions extends Component {
 		return Object.keys(fields).map(k => {
 			return <tr key={history.id + '-' + k}>
 				<td></td>
+				<td></td>
 				<td className='field'>{k}</td>
 				<td className='old'>{this.formatValue(k, fields[k].old)}</td>
 				<td className='arrow'>→</td>
@@ -44,31 +50,34 @@ class BookingOptions extends Component {
 		});
 	}
 
-	delete() {
-		this.props.deleteBooking(this.props.booking.id);
-
-		this.props.cancel();
-	}
-
 	render() {
-		return <div id='booking-options'>
-			<button className='btn' onClick={this.props.cancel}>cancel</button>
-
-			<h4>Actions</h4>
-			<div>
-				<button className='btn delete' onClick={this.delete.bind(this)}><FA.FaTrash className='icon' /> Delete booking</button>
-			</div>
-
-			<History history={this.props.history} hideClose={true} />
+		return <div id='history'>
+			{ this.props.hideClose ? null : <button className='btn hide' onClick={this.hide.bind(this)}>close</button> }
+			
+			<h4>History</h4>
+			<table className='table table-sm'>
+				<tbody>
+				{
+					this.props.history.map(h => {
+						return [<tr key={h.id}>
+								<td className='id'>#{h.id}</td>
+								<td className='time'>{formatDateTime(h.createdAt)}</td>
+								<td colSpan='4'>{this.itemName(h)}</td>
+							</tr>,
+							h.type === 'change' ? this.changedFields(h) : null
+						]
+					})
+				}
+				</tbody>
+			</table>
 		</div>;
 	}
 }
 
 export default connect((state) => {
 	return {
-		history: state.overlay.bookingInfo.history,
-		booking: state.overlay.bookingInfo.booking
+		
 	}
 }, {
-	deleteBooking
-})(BookingOptions);
+	hideHistory
+})(History);
