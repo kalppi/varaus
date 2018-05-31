@@ -6,4 +6,5 @@ Tätä sovellusta voi käyttää esimerkiksi hotellihuoneiden varausjärjestelm�
 
 ## Dokumentaatio
 [Käyttöohjeet](dokumentaatio/ohjeet.md)
+
 [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
