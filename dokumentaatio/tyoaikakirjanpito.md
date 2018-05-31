@@ -58,4 +58,5 @@
 |  | 2 | Kaikenlaisia pieniä fixejä ja tyhmien bugien metsästystä. Siirto herokuun toimii nyt. | 
 | 25.5. | 6 | Apin mallinnusta ja oikean muotoisen datan palautusta helpottamaan tein apukirjaston [kalppi/Shape.js](https://github.com/kalppi/Shape.js). | 
 | 29.5. | 1 | Api testejä luodun apukirjaston avulla, ja sen pieniä fiksailuja. | 
-| yht. | 116
+| 30.5. | 2 | Kaikkien historia näkyviin napin taakse. | 
+| yht. | 118
