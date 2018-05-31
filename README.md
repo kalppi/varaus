@@ -1,4 +1,4 @@
-# Varausjärjestelmä
+# Varaus
 
 Tätä sovellusta voi käyttää esimerkiksi hotellihuoneiden varausjärjestelmänä.
 
