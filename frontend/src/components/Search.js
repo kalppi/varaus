@@ -9,9 +9,11 @@ class Search extends Component {
 	onChange(e) {
 		clearTimeout(this.timer);
 
-		this.timer = setTimeout(() => {
+		/*this.timer = setTimeout(() => {
 			this.doSearch();
-		}, 300);
+		}, 300);*/
+
+		this.doSearch();
 	}
 
 	doSearch() {
